@@ -1,0 +1,103 @@
+{
+  "app_name": "Muntajat",
+  "language_selection": {
+    "title": "Choose your preferred language",
+    "subtitle": "Choose the app's default language",
+    "languages": {
+      "arabic": "Arabic Language",
+      "english": "English Language",
+      "urdu": "Urdu Language"
+    },
+    "footer": "You can change the language later in Settings",
+    "footer_hint": "Your preferred language will be saved on this device",
+    "save_error": "Unable to change the language. Please try again."
+  },
+  "onboarding": {
+    "pages": {
+      "catalog": "One innovative system: earn points with every purchase and use them to improve your experience and enjoy exclusive offers and benefits.",
+      "experience": "A unique shopping experience with high-quality products. Easily find what fits your needs through our simple and secure app.",
+      "shopping": "Discover featured products and offers efficiently. Track your choices and find suitable products for every category with ease."
+    },
+    "login": "Log in",
+    "create_account": "Create a new account",
+    "save_error": "Unable to save onboarding status. Please try again."
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Log in to your account now to enjoy our services!",
+    "phone_label": "Mobile number",
+    "phone_hint": "055*******",
+    "phone_error": "Enter a valid mobile number",
+    "country_search": "Search country or dialing code",
+    "submit": "Log in",
+    "no_account": "Don't have an account?",
+    "create_account": "Create a new account"
+  },
+  "verification": {
+    "title": "Confirm mobile number",
+    "instruction": "Enter the 4-digit OTP confirmation code sent to the mobile number {phone}",
+    "change_phone": "Change mobile number",
+    "resend_prefix": "You can resend the code within",
+    "resend_action": "Resend",
+    "confirm": "Confirm",
+    "code_error": "Enter the complete 4-digit code"
+  },
+  "home": {
+    "store_name": "Riyadh Store",
+    "address": "27 King Fahd Road, Riyadh, Saudi Arabia",
+    "search_hint": "Search",
+    "new_arrivals": "Just arrived",
+    "navigation": {
+      "home": "Home",
+      "categories": "Categories",
+      "cart": "Cart",
+      "orders": "My orders",
+      "more": "More"
+    },
+    "show_all": "Show all",
+    "categories_title": "Categories",
+    "latest_products": "Recently added products",
+    "brands": "Brands",
+    "featured_products": "Featured products",
+    "offers_for_you": "Offers for you",
+    "special_offers": "Special offers",
+    "shop_by_category": "Shop by category",
+    "currency": "SAR",
+    "add_to_cart": "Add to cart",
+    "unavailable": "Product unavailable",
+    "categories": {
+      "furniture": "Furniture",
+      "toys": "Toys & gifts",
+      "cleaning": "Cleaning & care",
+      "food_containers": "Food containers",
+      "transport": "Carriers",
+      "care": "Pet care"
+    },
+    "products": {
+      "eye_cleaner": "Espree fragrance-free eye cleanser for dogs",
+      "bird_food": "Nutrimeal food for ornamental birds 2 kg",
+      "six_units": "Carton of 6 units",
+      "twelve_units": "Carton of 12 units"
+    }
+  },
+  "categories": {
+    "title": "Categories",
+    "search_hint": "Search for a category",
+    "empty": "No matching categories",
+    "food": "Food",
+    "supplements": "Food supplements & rewards",
+    "furniture": "Furniture",
+    "toys": "Toys",
+    "nutrition": "Nutrition & accessories",
+    "medical": "Medical supplies",
+    "health": "General health",
+    "entertainment": "Entertainment",
+    "cages": "Cages & packages",
+    "transport": "Transport & cages",
+    "grooming": "Grooming",
+    "training": "Training & cleaning",
+    "clothes": "Clothes",
+    "aquariums": "Fish aquariums",
+    "devices": "Devices"
+  }
+}
