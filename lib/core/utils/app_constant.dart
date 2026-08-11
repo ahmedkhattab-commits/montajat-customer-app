@@ -3,7 +3,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:toastification/toastification.dart';
 
-import 'app_colors_white_theme.dart';
 import 'package:geocoding/geocoding.dart';
 
 bool isLoggedInUser = false;
@@ -11,14 +10,26 @@ bool isOnBoarding = true;
 
 class AppConstant {
   static Object? toast(String message, bool isTrue, BuildContext context) {
+    toastification.dismissAll();
     return toastification.show(
       context: context,
-      title: Text(message),
-      icon: Icon(
-        isTrue ? Icons.check_circle_outline_rounded : Icons.close,
-        color: isTrue ? AppColors.greenColor300 : AppColors.errorColor100,
+      alignment: Alignment.topCenter,
+      type: isTrue ? ToastificationType.success : ToastificationType.error,
+      style: ToastificationStyle.flatColored,
+      title: Text(
+        message,
+        textAlign: TextAlign.start,
+        style: const TextStyle(
+          fontFamily: 'IBMPlexSansArabic',
+          fontWeight: FontWeight.w600,
+        ),
       ),
-      autoCloseDuration: const Duration(seconds: 5),
+      margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      borderRadius: BorderRadius.circular(10),
+      showProgressBar: false,
+      closeOnClick: true,
+      dragToClose: true,
+      autoCloseDuration: const Duration(seconds: 4),
     );
   }
 

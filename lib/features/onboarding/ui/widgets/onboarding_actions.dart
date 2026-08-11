@@ -7,13 +7,11 @@ class OnboardingActions extends StatelessWidget {
   const OnboardingActions({
     required this.enabled,
     required this.onLogin,
-    required this.onCreateAccount,
     super.key,
   });
 
   final bool enabled;
   final VoidCallback onLogin;
-  final VoidCallback onCreateAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -23,47 +21,22 @@ class OnboardingActions extends StatelessWidget {
       fontWeight: FontWeight.w700,
     );
 
-    return Column(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          height: 58.h,
-          child: FilledButton(
-            key: const ValueKey('onboarding-login'),
-            onPressed: enabled ? onLogin : null,
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.onboardingPrimary,
-              foregroundColor: Colors.white,
-              disabledBackgroundColor: AppColors.onboardingPrimary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(9.r),
-              ),
-            ),
-            child: Text(context.tr('onboarding.login'), style: textStyle),
+    return SizedBox(
+      width: double.infinity,
+      height: 58.h,
+      child: FilledButton(
+        key: const ValueKey('onboarding-login'),
+        onPressed: enabled ? onLogin : null,
+        style: FilledButton.styleFrom(
+          backgroundColor: AppColors.onboardingPrimary,
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: AppColors.onboardingPrimary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(9.r),
           ),
         ),
-        SizedBox(height: 12.h),
-        SizedBox(
-          width: double.infinity,
-          height: 58.h,
-          child: FilledButton(
-            key: const ValueKey('onboarding-create-account'),
-            onPressed: enabled ? onCreateAccount : null,
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.onboardingSecondary,
-              foregroundColor: Colors.black,
-              disabledBackgroundColor: AppColors.onboardingSecondary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(9.r),
-              ),
-            ),
-            child: Text(
-              context.tr('onboarding.create_account'),
-              style: textStyle,
-            ),
-          ),
-        ),
-      ],
+        child: Text(context.tr('onboarding.login'), style: textStyle),
+      ),
     );
   }
 }

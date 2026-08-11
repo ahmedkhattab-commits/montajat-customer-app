@@ -8,6 +8,10 @@ import 'package:montajat_customer_app/core/services/cache_helper.dart';
 import 'package:montajat_customer_app/core/services/services_locator.dart';
 import 'package:montajat_customer_app/core/utils/constant_keys.dart';
 import 'package:montajat_customer_app/features/language_selection/data/repositories/language_repository.dart';
+import 'package:montajat_customer_app/features/login/data/models/auth_session_model.dart';
+import 'package:montajat_customer_app/features/login/data/repositories/auth_repository.dart';
+import 'package:montajat_customer_app/features/home/data/models/home_response_model.dart';
+import 'package:montajat_customer_app/features/home/data/repositories/home_repository.dart';
 import 'package:montajat_customer_app/features/home/logic/home_cubit.dart';
 import 'package:montajat_customer_app/features/home/ui/home_screen.dart';
 import 'package:montajat_customer_app/features/language_selection/logic/language_selection_cubit.dart';
@@ -18,6 +22,7 @@ import 'package:montajat_customer_app/features/login/ui/login_screen.dart';
 import 'package:montajat_customer_app/features/onboarding/data/repositories/onboarding_repository.dart';
 import 'package:montajat_customer_app/features/onboarding/logic/onboarding_cubit.dart';
 import 'package:montajat_customer_app/features/splash/logic/splash_cubit.dart';
+import 'package:montajat_customer_app/features/splash/logic/splash_state.dart';
 import 'package:montajat_customer_app/features/splash/ui/splash_screen.dart';
 import 'package:montajat_customer_app/features/verification/logic/verification_cubit.dart';
 import 'package:montajat_customer_app/features/verification/logic/verification_state.dart';
@@ -39,6 +44,7 @@ void main() {
       shouldOpenLanguageSelection: true,
       shouldOpenOnboarding: false,
       shouldOpenLogin: false,
+      hasActiveSession: () async => false,
     )..start();
 
     await tester.pumpWidget(
@@ -89,7 +95,7 @@ void main() {
     Navigator.of(tester.element(find.byType(LanguageSelectionScreen))).push(
       MaterialPageRoute<void>(
         builder: (_) => BlocProvider(
-          create: (_) => LoginCubit(),
+          create: (_) => LoginCubit(_FakeAuthRepository()),
           child: const LoginScreen(),
         ),
       ),
@@ -100,16 +106,20 @@ void main() {
     expect(find.text('أهلاً بعودتك'), findsOneWidget);
     expect(find.byKey(const ValueKey('login-phone-field')), findsOneWidget);
     expect(find.byKey(const ValueKey('login-submit')), findsOneWidget);
+    expect(find.byKey(const ValueKey('login-create-account')), findsNothing);
 
     Navigator.of(tester.element(find.byType(LoginScreen))).push(
       MaterialPageRoute<void>(
-        builder: (_) =>
-            BlocProvider(create: (_) => HomeCubit(), child: const HomeScreen()),
+        builder: (_) => BlocProvider(
+          create: (_) => HomeCubit(_FakeHomeRepository())..loadHome(),
+          child: const HomeScreen(),
+        ),
       ),
     );
     await tester.pumpAndSettle();
 
     expect(find.byKey(const ValueKey('home-scroll')), findsOneWidget);
+    expect(find.byType(RefreshIndicator), findsOneWidget);
     expect(find.byKey(const ValueKey('home-search')), findsOneWidget);
     expect(
       find.byKey(const ValueKey('home-bottom-navigation')),
@@ -247,36 +257,131 @@ void main() {
     expect(repository.isCompleted, isTrue);
   });
 
-  test('validates the login phone number', () async {
-    final cubit = LoginCubit();
+  test('opens home after restart when a secure session exists', () async {
+    final cubit = SplashCubit(
+      shouldOpenLanguageSelection: false,
+      shouldOpenOnboarding: false,
+      shouldOpenLogin: true,
+      hasActiveSession: () async => true,
+    );
 
-    cubit.submit(dialCode: '+966', phoneNumber: '12');
+    await cubit.start();
+
+    final state = cubit.state as SplashCompleted;
+    expect(state.shouldOpenHome, isTrue);
+    expect(state.shouldOpenLogin, isFalse);
+    await cubit.close();
+  });
+
+  test('validates the login phone number', () async {
+    final repository = _FakeAuthRepository();
+    final cubit = LoginCubit(repository);
+
+    await cubit.submit(dialCode: '+966', phoneNumber: '12');
     expect(cubit.state, isA<LoginValidationFailure>());
 
-    cubit.submit(dialCode: '+966', phoneNumber: '0551234567');
-    expect(cubit.state, isA<LoginReady>());
+    await cubit.submit(dialCode: '+966', phoneNumber: '0551234567');
+    expect(cubit.state, isA<LoginOtpRequested>());
+    expect(repository.requestedMobile, '+966551234567');
     await cubit.close();
   });
 
   test('validates the four-digit verification code', () async {
-    final cubit = VerificationCubit();
+    final repository = _FakeAuthRepository();
+    final cubit = VerificationCubit(repository);
 
-    cubit.confirm('12');
+    await cubit.confirm(mobile: '+966551234567', code: '12');
     expect(cubit.state, isA<VerificationValidationFailure>());
 
-    cubit.confirm('1234');
+    await cubit.confirm(mobile: '+966551234567', code: '1234');
     expect(cubit.state, isA<VerificationCodeAccepted>());
+    expect(repository.verifiedCode, '1234');
+    await cubit.close();
+  });
+
+  test('requests a new OTP when resend becomes available', () async {
+    final repository = _FakeAuthRepository();
+    final cubit = VerificationCubit(repository)..startTimer(seconds: 0);
+
+    await cubit.resend('+966551234567');
+
+    expect(repository.requestedMobile, '+966551234567');
+    expect(cubit.state, isA<VerificationResent>());
     await cubit.close();
   });
 
   test('updates the selected home navigation item', () async {
-    final cubit = HomeCubit();
+    final cubit = HomeCubit(_FakeHomeRepository());
 
     cubit.navigationSelected(1);
 
     expect(cubit.state.selectedNavigationIndex, 1);
     await cubit.close();
   });
+}
+
+class _FakeHomeRepository implements HomeRepository {
+  @override
+  Future<HomeResponseModel> getHome() async => const HomeResponseModel(
+    sections: [
+      HomeSectionModel(
+        key: 'hero_banners',
+        type: HomeSectionType.banners,
+        title: null,
+        titleEn: null,
+        items: [
+          HomeBannerModel(
+            id: 1,
+            title: 'Banner',
+            imageUrl: 'https://example.com/banner.png',
+          ),
+        ],
+      ),
+      HomeSectionModel(
+        key: 'shop_by_category',
+        type: HomeSectionType.categories,
+        title: 'Categories',
+        titleEn: 'Categories',
+        items: [HomeCategoryModel(value: 'Food', productCount: 1)],
+      ),
+      HomeSectionModel(
+        key: 'new_brands',
+        type: HomeSectionType.brands,
+        title: 'Brands',
+        titleEn: 'Brands',
+        items: [
+          HomeBrandModel(
+            code: '1',
+            name: 'Brand',
+            imageUrl: 'https://example.com/brand.png',
+            productCount: 1,
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+class _FakeAuthRepository implements AuthRepository {
+  String? requestedMobile;
+  String? verifiedCode;
+
+  @override
+  Future<bool> hasActiveSession() async => false;
+
+  @override
+  Future<void> requestOtp(String mobile) async {
+    requestedMobile = mobile;
+  }
+
+  @override
+  Future<AuthSessionModel> verifyOtp({
+    required String mobile,
+    required String code,
+  }) async {
+    verifiedCode = code;
+    return AuthSessionModel(accessToken: 'test-token', mobile: mobile);
+  }
 }
 
 void _usePhoneViewport(WidgetTester tester) {

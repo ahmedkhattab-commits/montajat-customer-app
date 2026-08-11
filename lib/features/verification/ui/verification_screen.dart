@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:montajat_customer_app/core/utils/app_colors_white_theme.dart';
+import 'package:montajat_customer_app/core/utils/app_constant.dart';
 import 'package:montajat_customer_app/config/routes/routes.dart';
 import 'package:montajat_customer_app/features/verification/logic/verification_cubit.dart';
 import 'package:montajat_customer_app/features/verification/logic/verification_state.dart';
@@ -31,6 +32,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
           Navigator.of(
             context,
           ).pushNamedAndRemoveUntil(Routes.home, (route) => false);
+        } else if (state is VerificationRequestFailure) {
+          AppConstant.toast(_message(context, state.message), false, context);
+        } else if (state is VerificationResent) {
+          AppConstant.toast(
+            context.tr('verification.resend_success'),
+            true,
+            context,
+          );
         }
       },
       builder: (context, state) => Scaffold(
@@ -95,14 +104,26 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   ),
                 ],
                 SizedBox(height: 24.h),
-                _ResendRow(secondsRemaining: state.secondsRemaining),
+                _ResendRow(
+                  mobile: widget.phoneNumber,
+                  secondsRemaining: state.secondsRemaining,
+                  busy:
+                      state is VerificationSubmitting ||
+                      state is VerificationResending,
+                ),
                 SizedBox(height: 28.h),
                 SizedBox(
                   height: 60.h,
                   child: FilledButton(
                     key: const ValueKey('verification-confirm'),
-                    onPressed: () =>
-                        context.read<VerificationCubit>().confirm(_code),
+                    onPressed:
+                        state is VerificationSubmitting ||
+                            state is VerificationResending
+                        ? null
+                        : () => context.read<VerificationCubit>().confirm(
+                            mobile: widget.phoneNumber,
+                            code: _code,
+                          ),
                     style: FilledButton.styleFrom(
                       backgroundColor: AppColors.onboardingPrimary,
                       foregroundColor: Colors.white,
@@ -110,14 +131,23 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         borderRadius: BorderRadius.circular(9.r),
                       ),
                     ),
-                    child: Text(
-                      context.tr('verification.confirm'),
-                      style: TextStyle(
-                        fontFamily: 'IBMPlexSansArabic',
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                    child: state is VerificationSubmitting
+                        ? SizedBox(
+                            width: 22.w,
+                            height: 22.w,
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 2.4,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Text(
+                            context.tr('verification.confirm'),
+                            style: TextStyle(
+                              fontFamily: 'IBMPlexSansArabic',
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                   ),
                 ),
               ],
@@ -135,6 +165,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
     final start = phone.substring(0, phone.length - 7);
     return '$start $middle $lastFour';
   }
+
+  String _message(BuildContext context, String message) =>
+      message.startsWith('auth_errors.') ? context.tr(message) : message;
 }
 
 class _SecurityMark extends StatelessWidget {
@@ -159,9 +192,15 @@ class _SecurityMark extends StatelessWidget {
 }
 
 class _ResendRow extends StatelessWidget {
-  const _ResendRow({required this.secondsRemaining});
+  const _ResendRow({
+    required this.mobile,
+    required this.secondsRemaining,
+    required this.busy,
+  });
 
+  final String mobile;
   final int secondsRemaining;
+  final bool busy;
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +232,9 @@ class _ResendRow extends StatelessWidget {
         else
           TextButton(
             key: const ValueKey('verification-resend'),
-            onPressed: () => context.read<VerificationCubit>().startTimer(),
+            onPressed: busy
+                ? null
+                : () => context.read<VerificationCubit>().resend(mobile),
             child: Text(context.tr('verification.resend_action')),
           ),
       ],

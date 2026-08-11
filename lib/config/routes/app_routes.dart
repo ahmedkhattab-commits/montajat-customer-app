@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:montajat_customer_app/config/routes/routes.dart';
 import 'package:montajat_customer_app/core/services/cache_helper.dart';
+import 'package:montajat_customer_app/core/services/services_locator.dart';
 import 'package:montajat_customer_app/core/utils/constant_keys.dart';
 import 'package:montajat_customer_app/features/categories/logic/categories_cubit.dart';
 import 'package:montajat_customer_app/features/categories/ui/categories_screen.dart';
@@ -9,8 +10,10 @@ import 'package:montajat_customer_app/features/language_selection/data/repositor
 import 'package:montajat_customer_app/features/language_selection/logic/language_selection_cubit.dart';
 import 'package:montajat_customer_app/features/language_selection/ui/language_selection_screen.dart';
 import 'package:montajat_customer_app/features/home/logic/home_cubit.dart';
+import 'package:montajat_customer_app/features/home/data/repositories/home_repository.dart';
 import 'package:montajat_customer_app/features/home/ui/home_screen.dart';
 import 'package:montajat_customer_app/features/login/logic/login_cubit.dart';
+import 'package:montajat_customer_app/features/login/data/repositories/auth_repository.dart';
 import 'package:montajat_customer_app/features/login/ui/login_screen.dart';
 import 'package:montajat_customer_app/features/onboarding/data/repositories/onboarding_repository.dart';
 import 'package:montajat_customer_app/features/onboarding/logic/onboarding_cubit.dart';
@@ -51,7 +54,7 @@ abstract final class RouteGenerator {
         return MaterialPageRoute<void>(
           settings: settings,
           builder: (_) => BlocProvider(
-            create: (_) => LoginCubit(),
+            create: (_) => LoginCubit(getIt<AuthRepository>()),
             child: const LoginScreen(),
           ),
         );
@@ -60,7 +63,8 @@ abstract final class RouteGenerator {
         return MaterialPageRoute<void>(
           settings: settings,
           builder: (_) => BlocProvider(
-            create: (_) => VerificationCubit()..startTimer(),
+            create: (_) =>
+                VerificationCubit(getIt<AuthRepository>())..startTimer(),
             child: VerificationScreen(phoneNumber: phoneNumber),
           ),
         );
@@ -68,7 +72,7 @@ abstract final class RouteGenerator {
         return MaterialPageRoute<void>(
           settings: settings,
           builder: (_) => BlocProvider(
-            create: (_) => HomeCubit(),
+            create: (_) => HomeCubit(getIt<HomeRepository>())..loadHome(),
             child: const HomeScreen(),
           ),
         );
@@ -100,6 +104,7 @@ abstract final class RouteGenerator {
       shouldOpenLanguageSelection: !hasSelectedLanguage,
       shouldOpenOnboarding: hasSelectedLanguage && !hasCompletedOnboarding,
       shouldOpenLogin: hasSelectedLanguage && hasCompletedOnboarding,
+      hasActiveSession: getIt<AuthRepository>().hasActiveSession,
     );
   }
 }

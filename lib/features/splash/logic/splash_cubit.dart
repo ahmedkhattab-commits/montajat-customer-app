@@ -6,11 +6,13 @@ class SplashCubit extends Cubit<SplashState> {
     required this.shouldOpenLanguageSelection,
     required this.shouldOpenOnboarding,
     required this.shouldOpenLogin,
+    required this.hasActiveSession,
   }) : super(const SplashInitial());
 
   final bool shouldOpenLanguageSelection;
   final bool shouldOpenOnboarding;
   final bool shouldOpenLogin;
+  final Future<bool> Function() hasActiveSession;
 
   Future<void> start() async {
     await Future<void>.delayed(const Duration(milliseconds: 180));
@@ -18,11 +20,14 @@ class SplashCubit extends Cubit<SplashState> {
     emit(const SplashVisible());
     await Future<void>.delayed(const Duration(milliseconds: 1820));
     if (!isClosed) {
+      final shouldOpenHome = shouldOpenLogin && await hasActiveSession();
+      if (isClosed) return;
       emit(
         SplashCompleted(
           shouldOpenLanguageSelection: shouldOpenLanguageSelection,
           shouldOpenOnboarding: shouldOpenOnboarding,
-          shouldOpenLogin: shouldOpenLogin,
+          shouldOpenLogin: shouldOpenLogin && !shouldOpenHome,
+          shouldOpenHome: shouldOpenHome,
         ),
       );
     }

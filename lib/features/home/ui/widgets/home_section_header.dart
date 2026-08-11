@@ -3,9 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeSectionHeader extends StatelessWidget {
-  const HomeSectionHeader({required this.titleKey, this.onShowAll, super.key});
+  const HomeSectionHeader({
+    this.titleKey,
+    this.title,
+    this.actionKey,
+    this.onShowAll,
+    super.key,
+  }) : assert(titleKey != null || title != null);
 
-  final String titleKey;
+  final String? titleKey;
+  final String? title;
+  final String? actionKey;
   final VoidCallback? onShowAll;
 
   @override
@@ -17,7 +25,7 @@ class HomeSectionHeader extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              context.tr(titleKey),
+              title ?? context.tr(titleKey!),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -30,7 +38,9 @@ class HomeSectionHeader extends StatelessWidget {
           SizedBox(width: 12.w),
           Flexible(
             child: InkWell(
-              key: onShowAll == null ? null : ValueKey('show-all-$titleKey'),
+              key: onShowAll == null
+                  ? null
+                  : ValueKey('show-all-${actionKey ?? titleKey ?? title}'),
               onTap: onShowAll,
               borderRadius: BorderRadius.circular(6.r),
               child: Padding(

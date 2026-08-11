@@ -1,0 +1,1563 @@
+{
+  "success": true,
+  "data": {
+    "sections": [
+      {
+        "key": "hero_banners",
+        "type": "banners",
+        "title": null,
+        "title_en": null,
+        "items": [
+          {
+            "id": 1,
+            "title": "أهلاً بك في منتجات",
+            "image_url": "https://ppte.sa/imghd/banners/placeholder.png",
+            "target": {
+              "type": "none",
+              "value": null,
+              "filter": null
+            }
+          }
+        ]
+      },
+      {
+        "key": "shop_by_category",
+        "type": "categories",
+        "title": "تسوق حسب التصنيف",
+        "title_en": "Shop by Category",
+        "items": [
+          {
+            "value": "Life Style",
+            "product_count": 2220,
+            "filter": {
+              "department": "Life Style"
+            }
+          },
+          {
+            "value": "Health & Wellness",
+            "product_count": 2114,
+            "filter": {
+              "department": "Health & Wellness"
+            }
+          },
+          {
+            "value": "DEPT002",
+            "product_count": 485,
+            "filter": {
+              "department": "DEPT002"
+            }
+          },
+          {
+            "value": "Beauty",
+            "product_count": 226,
+            "filter": {
+              "department": "Beauty"
+            }
+          },
+          {
+            "value": "DEPT001",
+            "product_count": 136,
+            "filter": {
+              "department": "DEPT001"
+            }
+          },
+          {
+            "value": "Services",
+            "product_count": 22,
+            "filter": {
+              "department": "Services"
+            }
+          },
+          {
+            "value": "DEPT004",
+            "product_count": 7,
+            "filter": {
+              "department": "DEPT004"
+            }
+          },
+          {
+            "value": "Supplements & Treats",
+            "product_count": 6,
+            "filter": {
+              "department": "Supplements & Treats"
+            }
+          }
+        ]
+      },
+      {
+        "key": "new_brands",
+        "type": "brands",
+        "title": "وصل حديثاً",
+        "title_en": "Newly Arrived",
+        "items": [
+          {
+            "code": "271",
+            "name": "Felyn Go Raw",
+            "image_url": "https://ppte.sa/imghd/brands/P183.png",
+            "product_count": 6,
+            "filter": {
+              "brand_code": "271"
+            }
+          },
+          {
+            "code": "272",
+            "name": "Natural Code",
+            "image_url": "https://ppte.sa/imghd/brands/P184.png",
+            "product_count": 47,
+            "filter": {
+              "brand_code": "272"
+            }
+          },
+          {
+            "code": "273",
+            "name": "Instinct",
+            "image_url": "https://ppte.sa/imghd/brands/P185.png",
+            "product_count": 11,
+            "filter": {
+              "brand_code": "273"
+            }
+          },
+          {
+            "code": "265",
+            "name": "Arya",
+            "image_url": "https://ppte.sa/imghd/brands/P181.png",
+            "product_count": 11,
+            "filter": {
+              "brand_code": "265"
+            }
+          },
+          {
+            "code": "266",
+            "name": "Coockoo",
+            "image_url": "https://ppte.sa/imghd/brands/P182.png",
+            "product_count": 31,
+            "filter": {
+              "brand_code": "266"
+            }
+          },
+          {
+            "code": "263",
+            "name": "Acana",
+            "image_url": "https://ppte.sa/imghd/brands/P179.png",
+            "product_count": 49,
+            "filter": {
+              "brand_code": "263"
+            }
+          },
+          {
+            "code": "264",
+            "name": "Orijen",
+            "image_url": "https://ppte.sa/imghd/brands/P180.png",
+            "product_count": 29,
+            "filter": {
+              "brand_code": "264"
+            }
+          },
+          {
+            "code": "261",
+            "name": "Core",
+            "image_url": "https://ppte.sa/imghd/brands/P177.png",
+            "product_count": 75,
+            "filter": {
+              "brand_code": "261"
+            }
+          },
+          {
+            "code": "262",
+            "name": "Bio PetActive",
+            "image_url": "https://ppte.sa/imghd/brands/P178.png",
+            "product_count": 75,
+            "filter": {
+              "brand_code": "262"
+            }
+          },
+          {
+            "code": "258",
+            "name": "I love Happy Cats",
+            "image_url": "https://ppte.sa/imghd/brands/P175.png",
+            "product_count": 41,
+            "filter": {
+              "brand_code": "258"
+            }
+          },
+          {
+            "code": "260",
+            "name": "Zesty Paws",
+            "image_url": "https://ppte.sa/imghd/brands/P176.png",
+            "product_count": 8,
+            "filter": {
+              "brand_code": "260"
+            }
+          },
+          {
+            "code": "256",
+            "name": "Forza10",
+            "image_url": "https://ppte.sa/imghd/brands/P173.png",
+            "product_count": 20,
+            "filter": {
+              "brand_code": "256"
+            }
+          }
+        ]
+      },
+      {
+        "key": "new_products",
+        "type": "new_products",
+        "title": "المنتجات المضافة حديثاً",
+        "title_en": "Recently Added",
+        "items": [
+          {
+            "item_code": "P18500011",
+            "name": "tesssss foreign",
+            "name_en": "testtttttt45",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT00XX2",
+              "category": "MAIN00XX2",
+              "product_type": "SUB0XX2",
+              "animal": "PETXX2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 6.65,
+              "unit_price_with_vat": 7.65,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18500010",
+            "name": "Morsi new solution test Froeign",
+            "name_en": "Morsi new solution test",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT00XX",
+              "category": "MAIN00XX",
+              "product_type": "SUB0XX",
+              "animal": "PETXX",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 6.65,
+              "unit_price_with_vat": 7.65,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18500009",
+            "name": "إنستينكت أورجينال باتيه معلبات دجاج للقطط الصغيرة 85غ",
+            "name_en": "Instinct Original Pate Cans Chicken for Kittens 85g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 6.65,
+              "unit_price_with_vat": 7.65,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18500008",
+            "name": "إنستينكت أورجينال باتيه معلبات دجاج للقطط الصغيرة 156غ",
+            "name_en": "Instinct Original Pate Cans Chicken for Kittens 156g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 9.25,
+              "unit_price_with_vat": 10.64,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18500007",
+            "name": "إنستينكت أورجينال باتيه معلبات بط للقطط 85غ",
+            "name_en": "Instinct Original Pate Cans Duck for Cats 85g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 7,
+              "unit_price_with_vat": 8.05,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "limited",
+              "label": "كمية محدودة",
+              "label_en": "Limited stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18500006",
+            "name": "إنستينكت أورجينال باتيه معلبات بط للقطط 156غ",
+            "name_en": "Instinct Original Pate Cans Duck for Cats 156g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 11,
+              "unit_price_with_vat": 12.65,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18500005",
+            "name": "إنستينكت أورجينال باتيه معلبات دجاج للقطط 85غ",
+            "name_en": "Instinct Original Pate Cans Chicken for Cats 85g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 6.65,
+              "unit_price_with_vat": 7.65,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "out_of_stock",
+              "label": "غير متوفر",
+              "label_en": "Out of stock",
+              "can_order": false
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18500004",
+            "name": "إنستينكت أورجينال باتيه معلبات دجاج للقطط 156غ",
+            "name_en": "Instinct Original Pate Cans Chicken for Cats 156g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": null,
+              "category": null,
+              "product_type": "Wet Food",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 9.25,
+              "unit_price_with_vat": 10.64,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18500003",
+            "name": "إنستينكت ألتيميت بروتين باتيه معلبات دجاج للقطط 156غ",
+            "name_en": "Instinct Ultimate Protein Pate Cans Chicken for Cats 156g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 10,
+              "unit_price_with_vat": 11.5,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18500002",
+            "name": "إنستينكت ليميتد إنجريدينت دايت باتيه معلبات ديك رومي للقطط 85غ",
+            "name_en": "Instinct Limited Ingredient Diet Pate Cans Turkey for Cats 85g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 6.65,
+              "unit_price_with_vat": 7.65,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18500001",
+            "name": "إنستينكت ليميتد إنجريدينت دايت باتيه معلبات ديك رومي للقطط 156غ",
+            "name_en": "Instinct Limited Ingredient Diet Pate Cans Turkey for Cats 156g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 273,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 8.5,
+              "unit_price_with_vat": 9.78,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18400047",
+            "name": "ناتشرال كود 04 معلبات الدجاج, اللحم البقري والخضراوات للكلاب 90غ",
+            "name_en": "Natural Code 04 Cans Chicken, Beef & Vegetables for Dogs 90g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 272,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET1",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 4.65,
+              "unit_price_with_vat": 5.35,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18400046",
+            "name": "ناتشرال كود 03 معلبات ديك رومي وبطاطا للكلاب 90غ",
+            "name_en": "Natural Code 03 Cans Turkey & Potatos for Dogs 90g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 272,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET1",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 4.65,
+              "unit_price_with_vat": 5.35,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18400045",
+            "name": "ناتشرال كود 02 معلبات لحم بقري وخضراوات للكلاب 90غ",
+            "name_en": "Natural Code 02 Cans Beef & Vegetables for Dogs 90g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 272,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET1",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 4.65,
+              "unit_price_with_vat": 5.35,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18400044",
+            "name": "ناتشرال كود 01 معلبات لحم ضأن وبطاطا للكلاب 90غ",
+            "name_en": "Natural Code 01 Cans Lamb & Potato for Dogs 90g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 272,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET1",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 4.65,
+              "unit_price_with_vat": 5.35,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "limited",
+              "label": "كمية محدودة",
+              "label_en": "Limited stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18400043",
+            "name": "ناتشرال كود اظرف تونا للقطط الصغيرة 70غ",
+            "name_en": "Natural Code Pouch Tuna for Kittens 70g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 272,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 4.65,
+              "unit_price_with_vat": 5.35,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18400042",
+            "name": "ناتشرال كود اس تي 04 اظرف تونا ويقطين للقطط 70غ",
+            "name_en": "Natural Code ST04 Pouch Tuna & Pumpkin for Cats 70g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 272,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 4.65,
+              "unit_price_with_vat": 5.35,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "out_of_stock",
+              "label": "غير متوفر",
+              "label_en": "Out of stock",
+              "can_order": false
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18400041",
+            "name": "ناتشرال كود اس تي 03 اظرف تونا والكينوا للقطط 70غ",
+            "name_en": "Natural Code ST03 Pouch Tuna & Quinoa for Cats 70g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 272,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 4.65,
+              "unit_price_with_vat": 5.35,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18400040",
+            "name": "ناتشرال كود اس تي 02 اظرف تونا وتوت ازرق للقطط 70غ",
+            "name_en": "Natural Code ST02 Pouch Tuna & Blueberries for Cats 70g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 272,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 4.65,
+              "unit_price_with_vat": 5.35,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P18400039",
+            "name": "ناتشرال كود اس تي 01 اظرف تونا وبذور الكتان للقطط 70غ",
+            "name_en": "Natural Code ST01 Pouch Tuna & Flaxseed for Cats 70g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 272,
+            "image_url": null,
+            "classification": {
+              "department": "DEPT002",
+              "category": "MAIN007",
+              "product_type": "SUB065",
+              "animal": "PET2",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 4.65,
+              "unit_price_with_vat": 5.35,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          }
+        ]
+      },
+      {
+        "key": "featured_products",
+        "type": "curated_products",
+        "title": "المنتجات المميزة",
+        "title_en": "Featured Products",
+        "items": [
+          {
+            "item_code": "P10000001",
+            "name": "ابسولوت هوليستيك هريسة الكافيار والدجاج 5×12غ",
+            "name_en": "Absolute Holistic Bisque Chicken & Caviar 5x12g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Supplements & Treats",
+              "product_type": "Puree",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 7,
+              "unit_price_with_vat": 8.05,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "out_of_stock",
+              "label": "غير متوفر",
+              "label_en": "Out of stock",
+              "can_order": false
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000002",
+            "name": "ابسولوت هوليستيك هريسة الكركند والدجاج 5×12غ",
+            "name_en": "Absolute Holistic Bisque Chicken & Lobster 5x12g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Supplements & Treats",
+              "product_type": "Puree",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 7,
+              "unit_price_with_vat": 8.05,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000003",
+            "name": "ابسولوت هوليستيك هريسة الدجاج والسلمون 5×12غ",
+            "name_en": "Absolute Holistic Bisque Chicken & Salmon 5x12g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Supplements & Treats",
+              "product_type": "Puree",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 7,
+              "unit_price_with_vat": 8.05,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "limited",
+              "label": "كمية محدودة",
+              "label_en": "Limited stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000004",
+            "name": "ابسولوت هوليستيك هريسة التونا والكافيار 5×12غ",
+            "name_en": "Absolute Holistic Bisque Tuna & Caviar 5x12g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Supplements & Treats",
+              "product_type": "Puree",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 7,
+              "unit_price_with_vat": 8.05,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000005",
+            "name": "ابسولوت هوليستيك هريسة الكركند والتونا 5×12غ",
+            "name_en": "Absolute Holistic Bisque Tuna & Lobster 5x12g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Supplements & Treats",
+              "product_type": "Puree",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 7,
+              "unit_price_with_vat": 8.05,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000006",
+            "name": "ابسولوت هوليستيك هريسة التونا والسالمون 5×12غ",
+            "name_en": "Absolute Holistic Bisque Tuna & Salmon 5x12g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Supplements & Treats",
+              "product_type": "Puree",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 7,
+              "unit_price_with_vat": 8.05,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000007",
+            "name": "ابسولوت هوليستيك مضغ صحي توت البري للكلاب 25غ",
+            "name_en": "Absolute Holistic Dental Chews Cranberry 25g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Supplements & Treats",
+              "product_type": "Wet Treats",
+              "animal": "Dogs",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 3,
+              "unit_price_with_vat": 3.45,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000008",
+            "name": "ابسولوت هوليستيك مضغ صحي حليب للكلاب 25غ",
+            "name_en": "Absolute Holistic Dental Chews Milk 25g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Supplements & Treats",
+              "product_type": "Wet Treats",
+              "animal": "Dogs",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 3,
+              "unit_price_with_vat": 3.45,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          }
+        ]
+      },
+      {
+        "key": "offers_for_you",
+        "type": "banners",
+        "title": "عروض لك",
+        "title_en": "Offers for You",
+        "items": [
+          {
+            "id": 2,
+            "title": "عروض الجملة",
+            "image_url": "https://ppte.sa/imghd/banners/placeholder.png",
+            "target": {
+              "type": "none",
+              "value": null,
+              "filter": null
+            }
+          }
+        ]
+      },
+      {
+        "key": "discounts",
+        "type": "curated_products",
+        "title": "خصومات",
+        "title_en": "Discounts",
+        "items": [
+          {
+            "item_code": "P10000009",
+            "name": "ابسولوت هوليستيك مضغ صحي نعناع للكلاب 25غ",
+            "name_en": "Absolute Holistic Dental Chews Mint 25g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Supplements & Treats",
+              "product_type": "Wet Treats",
+              "animal": "Dogs",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 3,
+              "unit_price_with_vat": 3.45,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000010",
+            "name": "ابسولوت هوليستيك مضغ صحي زبدة الفستق للكلاب 25غ",
+            "name_en": "Absolute Holistic Dental Chews Peanut Butter 25g",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Supplements & Treats",
+              "product_type": "Wet Treats",
+              "animal": "Dogs",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 3,
+              "unit_price_with_vat": 3.45,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000011",
+            "name": "ابسولوت طعام خالي من الحبوب للعناية بالفرو بالسالمون والسمك 1.36كغ",
+            "name_en": "AH GrainFree Cat Food Coat Care Salmon & Fish 1.36kg",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Food",
+              "product_type": "Dry Food",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 32,
+              "unit_price_with_vat": 36.8,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "out_of_stock",
+              "label": "غير متوفر",
+              "label_en": "Out of stock",
+              "can_order": false
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000012",
+            "name": "ابسولوت طعام خالي من الحبوب للعناية بالفرو بالسالمون والسمك 4.54كغ",
+            "name_en": "AH GrainFree Cat Food Coat Care Salmon & Fish 4.54kg",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Food",
+              "product_type": "Dry Food",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 88,
+              "unit_price_with_vat": 101.2,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000013",
+            "name": "ابسولوت طعام خالي من الحبوب كرات الشعر بالدجاج والبط والديك الرومي 1.36 كغ",
+            "name_en": "AH GrainFree Cat Food Hairball Chicken duck & Turkey 1.36kg",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Food",
+              "product_type": "Dry Food",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 32,
+              "unit_price_with_vat": 36.8,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "limited",
+              "label": "كمية محدودة",
+              "label_en": "Limited stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          },
+          {
+            "item_code": "P10000014",
+            "name": "ابسولوت طعام خالي من الحبوب كرات الشعر بالدجاج والبط والديك الرومي 4.54 كغ",
+            "name_en": "AH GrainFree Cat Food Hairball Chicken duck & Turkey 4.54kg",
+            "barcode": null,
+            "uom": "PC",
+            "units_per_carton": null,
+            "brand_code": 173,
+            "image_url": null,
+            "classification": {
+              "department": "Health & Wellness",
+              "category": "Food",
+              "product_type": "Dry Food",
+              "animal": "Cats",
+              "variant": null
+            },
+            "price": {
+              "unit_price": 88,
+              "unit_price_with_vat": 101.2,
+              "vat_rate": 0.15,
+              "currency": "SAR",
+              "price_list": 1
+            },
+            "availability": {
+              "status": "in_stock",
+              "label": "متوفر",
+              "label_en": "In stock",
+              "can_order": true
+            },
+            "updated_at": null,
+            "is_discontinued": false
+          }
+        ]
+      },
+      {
+        "key": "all_brands",
+        "type": "brands",
+        "title": "العلامات التجارية",
+        "title_en": "Brands",
+        "items": [
+          {
+            "code": "173",
+            "name": "Absolute Holistic",
+            "image_url": "https://ppte.sa/imghd/brands/P100.png",
+            "product_count": 20,
+            "filter": {
+              "brand_code": "173"
+            }
+          },
+          {
+            "code": "263",
+            "name": "Acana",
+            "image_url": "https://ppte.sa/imghd/brands/P179.png",
+            "product_count": 49,
+            "filter": {
+              "brand_code": "263"
+            }
+          },
+          {
+            "code": "174",
+            "name": "Alfie's Diner",
+            "image_url": "https://ppte.sa/imghd/brands/P101.png",
+            "product_count": 3,
+            "filter": {
+              "brand_code": "174"
+            }
+          },
+          {
+            "code": "175",
+            "name": "Altimate Pet",
+            "image_url": "https://ppte.sa/imghd/brands/P102.png",
+            "product_count": 25,
+            "filter": {
+              "brand_code": "175"
+            }
+          },
+          {
+            "code": "176",
+            "name": "Applaws",
+            "image_url": "https://ppte.sa/imghd/brands/P103.png",
+            "product_count": 109,
+            "filter": {
+              "brand_code": "176"
+            }
+          },
+          {
+            "code": "265",
+            "name": "Arya",
+            "image_url": "https://ppte.sa/imghd/brands/P181.png",
+            "product_count": 11,
+            "filter": {
+              "brand_code": "265"
+            }
+          },
+          {
+            "code": "255",
+            "name": "Babin",
+            "image_url": "https://ppte.sa/imghd/brands/P172.png",
+            "product_count": 57,
+            "filter": {
+              "brand_code": "255"
+            }
+          },
+          {
+            "code": "180",
+            "name": "Bags On Board",
+            "image_url": "https://ppte.sa/imghd/brands/P165.png",
+            "product_count": 10,
+            "filter": {
+              "brand_code": "180"
+            }
+          },
+          {
+            "code": "177",
+            "name": "Bavaro",
+            "image_url": "https://ppte.sa/imghd/brands/P104.png",
+            "product_count": 5,
+            "filter": {
+              "brand_code": "177"
+            }
+          },
+          {
+            "code": "178",
+            "name": "Beaphar",
+            "image_url": "https://ppte.sa/imghd/brands/P105.png",
+            "product_count": 185,
+            "filter": {
+              "brand_code": "178"
+            }
+          },
+          {
+            "code": "262",
+            "name": "Bio PetActive",
+            "image_url": "https://ppte.sa/imghd/brands/P178.png",
+            "product_count": 75,
+            "filter": {
+              "brand_code": "262"
+            }
+          },
+          {
+            "code": "179",
+            "name": "BioSand",
+            "image_url": "https://ppte.sa/imghd/brands/P106.png",
+            "product_count": 7,
+            "filter": {
+              "brand_code": "179"
+            }
+          },
+          {
+            "code": "181",
+            "name": "Buddy Biscuits",
+            "image_url": "https://ppte.sa/imghd/brands/P107.png",
+            "product_count": 19,
+            "filter": {
+              "brand_code": "181"
+            }
+          },
+          {
+            "code": "182",
+            "name": "Buddy Wash",
+            "image_url": "https://ppte.sa/imghd/brands/P108.png",
+            "product_count": 7,
+            "filter": {
+              "brand_code": "182"
+            }
+          },
+          {
+            "code": "183",
+            "name": "Butcher’s",
+            "image_url": "https://ppte.sa/imghd/brands/P109.png",
+            "product_count": 26,
+            "filter": {
+              "brand_code": "183"
+            }
+          },
+          {
+            "code": "184",
+            "name": "Cat H2O & Dog",
+            "image_url": "https://ppte.sa/imghd/brands/P110.png",
+            "product_count": 22,
+            "filter": {
+              "brand_code": "184"
+            }
+          },
+          {
+            "code": "185",
+            "name": "CATIDEA",
+            "image_url": "https://ppte.sa/imghd/brands/P111.png",
+            "product_count": 58,
+            "filter": {
+              "brand_code": "185"
+            }
+          },
+          {
+            "code": "102",
+            "name": "CEDE",
+            "image_url": "https://ppte.sa/imghd/brands/P163.png",
+            "product_count": 25,
+            "filter": {
+              "brand_code": "102"
+            }
+          },
+          {
+            "code": "266",
+            "name": "Coockoo",
+            "image_url": "https://ppte.sa/imghd/brands/P182.png",
+            "product_count": 31,
+            "filter": {
+              "brand_code": "266"
+            }
+          },
+          {
+            "code": "261",
+            "name": "Core",
+            "image_url": "https://ppte.sa/imghd/brands/P177.png",
+            "product_count": 75,
+            "filter": {
+              "brand_code": "261"
+            }
+          },
+          {
+            "code": "103",
+            "name": "Country",
+            "image_url": "https://ppte.sa/imghd/brands/P164.png",
+            "product_count": 33,
+            "filter": {
+              "brand_code": "103"
+            }
+          },
+          {
+            "code": "187",
+            "name": "Crazy Dog",
+            "image_url": "https://ppte.sa/imghd/brands/P112.png",
+            "product_count": 2,
+            "filter": {
+              "brand_code": "187"
+            }
+          },
+          {
+            "code": "252",
+            "name": "Dr.Clauder's",
+            "image_url": "https://ppte.sa/imghd/brands/P171.png",
+            "product_count": 93,
+            "filter": {
+              "brand_code": "252"
+            }
+          },
+          {
+            "code": "188",
+            "name": "Earth's Goodies",
+            "image_url": "https://ppte.sa/imghd/brands/P113.png",
+            "product_count": 9,
+            "filter": {
+              "brand_code": "188"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "meta": {
+    "request_id": "f26327a5-26ec-49e7-a13c-5b69c0040a2a",
+    "timestamp": "2026-08-11T14:48:19+00:00"
+  }
+}

@@ -39,6 +39,7 @@
     "change_phone": "Change mobile number",
     "resend_prefix": "You can resend the code within",
     "resend_action": "Resend",
+    "resend_success": "A new code has been sent",
     "confirm": "Confirm",
     "code_error": "Enter the complete 4-digit code"
   },
@@ -79,6 +80,14 @@
       "six_units": "Carton of 6 units",
       "twelve_units": "Carton of 12 units"
     }
+  },
+  "auth_errors": {
+    "network": "Unable to connect. Check your internet and try again.",
+    "timeout": "The connection took too long. Please try again.",
+    "too_many_requests": "Too many attempts. Please wait and try again.",
+    "server": "A server error occurred. Please try again later.",
+    "request_failed": "Unable to complete the request. Please try again.",
+    "invalid_response": "The server returned an invalid response. Please try again."
   },
   "categories": {
     "title": "Categories",

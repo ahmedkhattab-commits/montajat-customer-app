@@ -81,7 +81,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: OnboardingActions(
                     enabled: state is! OnboardingSaving,
                     onLogin: context.read<OnboardingCubit>().complete,
-                    onCreateAccount: context.read<OnboardingCubit>().complete,
                   ),
                 ),
                 SizedBox(height: 16.h),

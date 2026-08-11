@@ -7,6 +7,8 @@ import 'package:montajat_customer_app/core/api/api_consumer.dart';
 import 'package:montajat_customer_app/core/api/app_interceptor.dart';
 import 'package:montajat_customer_app/core/api/http_consumer.dart';
 import 'package:montajat_customer_app/core/utils/app_constant.dart';
+import 'package:montajat_customer_app/features/home/data/repositories/home_repository.dart';
+import 'package:montajat_customer_app/features/login/data/repositories/auth_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -19,7 +21,17 @@ abstract final class ServicesLocator {
       ..registerLazySingleton<AppInterceptor>(AppInterceptor.new)
       ..registerLazySingleton<http.Client>(http.Client.new)
       ..registerLazySingleton<ApiConsumer>(() => HttpConsumer(getIt()))
-      ..registerLazySingleton<FlutterSecureStorage>(FlutterSecureStorage.new)
+      ..registerLazySingleton<AuthRepository>(
+        () => RemoteAuthRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<HomeRepository>(
+        () => RemoteHomeRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<FlutterSecureStorage>(
+        () => const FlutterSecureStorage(
+          aOptions: AndroidOptions(encryptedSharedPreferences: true),
+        ),
+      )
       ..registerLazySingleton<LocalAuthentication>(LocalAuthentication.new)
       ..registerLazySingleton<DeviceInfoPlugin>(DeviceInfoPlugin.new);
   }

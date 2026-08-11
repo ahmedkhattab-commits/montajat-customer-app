@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:montajat_customer_app/core/utils/app_colors_white_theme.dart';
+import 'package:montajat_customer_app/core/utils/app_constant.dart';
 import 'package:montajat_customer_app/config/routes/routes.dart';
 import 'package:montajat_customer_app/features/login/logic/login_cubit.dart';
 import 'package:montajat_customer_app/features/login/logic/login_state.dart';
-import 'package:montajat_customer_app/features/login/ui/widgets/login_footer.dart';
 import 'package:montajat_customer_app/features/login/ui/widgets/login_header.dart';
 import 'package:montajat_customer_app/features/login/ui/widgets/phone_number_field.dart';
 
@@ -31,10 +31,12 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {
-        if (state is LoginReady) {
+        if (state is LoginOtpRequested) {
           Navigator.of(
             context,
           ).pushNamed(Routes.verification, arguments: state.phoneNumber);
+        } else if (state is LoginRequestFailure) {
+          AppConstant.toast(_message(context, state.message), false, context);
         }
       },
       builder: (context, state) {
@@ -76,10 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 60.h,
                           child: FilledButton(
                             key: const ValueKey('login-submit'),
-                            onPressed: () => context.read<LoginCubit>().submit(
-                              dialCode: _dialCode,
-                              phoneNumber: _phoneController.text,
-                            ),
+                            onPressed: state is LoginLoading
+                                ? null
+                                : () => context.read<LoginCubit>().submit(
+                                    dialCode: _dialCode,
+                                    phoneNumber: _phoneController.text,
+                                  ),
                             style: FilledButton.styleFrom(
                               backgroundColor: AppColors.onboardingPrimary,
                               foregroundColor: Colors.white,
@@ -87,18 +91,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(9.r),
                               ),
                             ),
-                            child: Text(
-                              context.tr('login.submit'),
-                              style: TextStyle(
-                                fontFamily: 'IBMPlexSansArabic',
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
+                            child: state is LoginLoading
+                                ? SizedBox(
+                                    width: 22.w,
+                                    height: 22.w,
+                                    child: const CircularProgressIndicator(
+                                      strokeWidth: 2.4,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : Text(
+                                    context.tr('login.submit'),
+                                    style: TextStyle(
+                                      fontFamily: 'IBMPlexSansArabic',
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
                           ),
                         ),
-                        SizedBox(height: 18.h),
-                        LoginFooter(onCreateAccount: () {}),
                         const Spacer(),
                       ],
                     ),
@@ -111,4 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
   }
+
+  String _message(BuildContext context, String message) =>
+      message.startsWith('auth_errors.') ? context.tr(message) : message;
 }

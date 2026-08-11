@@ -42,6 +42,8 @@ class _SplashScreenState extends State<SplashScreen> {
             Navigator.of(context).pushReplacementNamed(Routes.onboarding);
           } else if (state case SplashCompleted(shouldOpenLogin: true)) {
             Navigator.of(context).pushReplacementNamed(Routes.login);
+          } else if (state case SplashCompleted(shouldOpenHome: true)) {
+            Navigator.of(context).pushReplacementNamed(Routes.home);
           }
         },
         child: BlocBuilder<SplashCubit, SplashState>(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http_interceptor/http_interceptor.dart';
+import 'package:montajat_customer_app/core/services/cache_helper.dart';
 import 'package:montajat_customer_app/core/utils/constant_keys.dart';
 import 'package:montajat_customer_app/my_app.dart';
 
@@ -13,6 +14,14 @@ class AppInterceptor extends InterceptorContract {
     request.headers[ConstantKeys.acceptLanguage] = context != null
         ? Localizations.localeOf(context).languageCode
         : 'ar';
+
+    final accessToken = await CacheHelper.getSecuredString(
+      ConstantKeys.accessToken,
+    );
+    if (accessToken.isNotEmpty) {
+      request.headers[ConstantKeys.appAuthorization] =
+          '${ConstantKeys.appBearer} $accessToken';
+    }
 
     debugPrint(request.toString());
 
