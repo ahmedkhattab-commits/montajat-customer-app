@@ -7,6 +7,8 @@ import 'package:montajat_customer_app/config/routes/app_routes.dart';
 import 'package:montajat_customer_app/core/services/cache_helper.dart';
 import 'package:montajat_customer_app/core/services/services_locator.dart';
 import 'package:montajat_customer_app/core/utils/constant_keys.dart';
+import 'package:montajat_customer_app/features/categories/data/models/category_model.dart';
+import 'package:montajat_customer_app/features/categories/data/repositories/categories_repository.dart';
 import 'package:montajat_customer_app/features/language_selection/data/repositories/language_repository.dart';
 import 'package:montajat_customer_app/features/login/data/models/auth_session_model.dart';
 import 'package:montajat_customer_app/features/login/data/repositories/auth_repository.dart';
@@ -21,6 +23,11 @@ import 'package:montajat_customer_app/features/login/logic/login_state.dart';
 import 'package:montajat_customer_app/features/login/ui/login_screen.dart';
 import 'package:montajat_customer_app/features/onboarding/data/repositories/onboarding_repository.dart';
 import 'package:montajat_customer_app/features/onboarding/logic/onboarding_cubit.dart';
+import 'package:montajat_customer_app/features/products/data/models/product_listing_item.dart';
+import 'package:montajat_customer_app/features/products/data/models/product_details_model.dart';
+import 'package:montajat_customer_app/features/products/data/models/products_screen_arguments.dart';
+import 'package:montajat_customer_app/features/products/data/repositories/product_details_repository.dart';
+import 'package:montajat_customer_app/features/products/data/repositories/products_repository.dart';
 import 'package:montajat_customer_app/features/splash/logic/splash_cubit.dart';
 import 'package:montajat_customer_app/features/splash/logic/splash_state.dart';
 import 'package:montajat_customer_app/features/splash/ui/splash_screen.dart';
@@ -36,6 +43,24 @@ void main() {
     await EasyLocalization.ensureInitialized();
     await ServicesLocator.init();
     await CacheHelper.init();
+    if (getIt.isRegistered<CategoriesRepository>()) {
+      await getIt.unregister<CategoriesRepository>();
+    }
+    getIt.registerLazySingleton<CategoriesRepository>(
+      _FakeCategoriesRepository.new,
+    );
+    if (getIt.isRegistered<ProductsRepository>()) {
+      await getIt.unregister<ProductsRepository>();
+    }
+    getIt.registerLazySingleton<ProductsRepository>(
+      _FakeProductsRepository.new,
+    );
+    if (getIt.isRegistered<ProductDetailsRepository>()) {
+      await getIt.unregister<ProductDetailsRepository>();
+    }
+    getIt.registerLazySingleton<ProductDetailsRepository>(
+      _FakeProductDetailsRepository.new,
+    );
   });
 
   testWidgets('shows the Stitch splash design', (tester) async {
@@ -143,6 +168,21 @@ void main() {
             .dy,
       ),
     );
+    await tester.ensureVisible(find.byKey(const ValueKey('home-product-P1-0')));
+    await tester.tap(find.byKey(const ValueKey('home-product-P1-0')));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const ValueKey('product-details-screen')),
+      findsOneWidget,
+    );
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    await tester.fling(
+      find.byKey(const ValueKey('home-scroll')),
+      const Offset(0, 6000),
+      3000,
+    );
+    await tester.pumpAndSettle();
     final initialHeaderTop = tester
         .getTopLeft(find.byKey(const ValueKey('home-top-header')))
         .dy;
@@ -227,6 +267,23 @@ void main() {
     expect(
       tester.getTopLeft(find.byKey(const ValueKey('home-search'))).dy,
       categoriesSearchTop,
+    );
+
+    await tester.ensureVisible(
+      find.byKey(const ValueKey('category-products-Food')),
+    );
+    await tester.tap(find.byKey(const ValueKey('category-products-Food')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('products-screen')), findsOneWidget);
+    expect(find.byKey(const ValueKey('products-grid')), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('products-list-view')));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('products-list')), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('product-card-P1')));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const ValueKey('product-details-screen')),
+      findsOneWidget,
     );
 
     await cubit.close();
@@ -358,8 +415,100 @@ class _FakeHomeRepository implements HomeRepository {
           ),
         ],
       ),
+      HomeSectionModel(
+        key: 'featured_products',
+        type: HomeSectionType.products,
+        title: 'Products',
+        titleEn: 'Products',
+        items: [
+          HomeApiProductModel(
+            itemCode: 'P1',
+            name: 'منتج',
+            nameEn: 'Product',
+            uom: 'EA',
+            unitsPerCarton: 6,
+            imageUrl: null,
+            unitPriceWithVat: 150,
+            currency: 'SAR',
+            availabilityLabel: 'متوفر',
+            availabilityLabelEn: 'Available',
+            canOrder: true,
+          ),
+        ],
+      ),
     ],
   );
+}
+
+class _FakeCategoriesRepository implements CategoriesRepository {
+  @override
+  Future<List<CategoryModel>> getCategories() async => const [
+    CategoryModel(
+      value: 'Food',
+      labelKey: 'categories.food',
+      icon: Icons.restaurant_outlined,
+      productCount: 1,
+    ),
+  ];
+}
+
+class _FakeProductsRepository implements ProductsRepository {
+  @override
+  Future<ProductsPageModel> getProducts({
+    required ProductsScreenArguments filter,
+    required int page,
+    int perPage = 20,
+    String? query,
+    String? sort,
+  }) async => const ProductsPageModel(
+    items: [
+      ProductListingItem(
+        itemCode: 'P1',
+        name: 'منتج',
+        nameEn: 'Product',
+        uom: 'EA',
+        unitsPerCarton: 6,
+        imageUrl: null,
+        price: 150,
+        currency: 'SAR',
+        availabilityLabel: 'متوفر',
+        availabilityLabelEn: 'Available',
+        isAvailable: true,
+      ),
+    ],
+    currentPage: 1,
+    hasMore: false,
+  );
+}
+
+class _FakeProductDetailsRepository implements ProductDetailsRepository {
+  @override
+  Future<ProductDetailsModel> getProductDetails(String itemCode) async =>
+      ProductDetailsModel(
+        product: const ProductListingItem(
+          itemCode: 'P1',
+          name: 'منتج',
+          nameEn: 'Product',
+          uom: 'EA',
+          unitsPerCarton: 6,
+          imageUrl: null,
+          price: 150,
+          currency: 'SAR',
+          availabilityLabel: 'متوفر',
+          availabilityLabelEn: 'Available',
+          isAvailable: true,
+        ),
+        barcode: '123456',
+        brandCode: '173',
+        department: 'Health',
+        category: 'Food',
+        productType: 'Puree',
+        animal: 'Cats',
+        variant: null,
+        unitPrice: 130,
+        vatRate: 0.15,
+        isDiscontinued: false,
+      );
 }
 
 class _FakeAuthRepository implements AuthRepository {
@@ -368,6 +517,9 @@ class _FakeAuthRepository implements AuthRepository {
 
   @override
   Future<bool> hasActiveSession() async => false;
+
+  @override
+  Future<void> logout() async {}
 
   @override
   Future<void> requestOtp(String mobile) async {

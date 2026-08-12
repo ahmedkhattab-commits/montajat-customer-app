@@ -1,7 +1,11 @@
 class HomeResponseModel {
-  const HomeResponseModel({required this.sections});
+  const HomeResponseModel({
+    required this.sections,
+    this.expiryOffers = const [],
+  });
 
   final List<HomeSectionModel> sections;
+  final List<HomeExpiryOfferModel> expiryOffers;
 
   int get sectionCount => sections.length;
 
@@ -20,6 +24,100 @@ class HomeResponseModel {
             ),
           )
           .toList(growable: false),
+    );
+  }
+
+  HomeResponseModel withExpiryOffers(List<HomeExpiryOfferModel> offers) =>
+      HomeResponseModel(sections: sections, expiryOffers: offers);
+
+  static List<HomeExpiryOfferModel> expiryOffersFromJson(
+    Map<String, dynamic> json,
+  ) {
+    if (json['success'] != true) {
+      throw const FormatException('Unsuccessful expiry offers response');
+    }
+    final rawOffers = _requiredList(json['data'], 'data');
+    return rawOffers
+        .map(
+          (value) =>
+              HomeExpiryOfferModel.fromJson(_requiredMap(value, 'data[]')),
+        )
+        .toList(growable: false);
+  }
+}
+
+class HomeExpiryOfferModel {
+  const HomeExpiryOfferModel({
+    required this.offerId,
+    required this.itemCode,
+    required this.name,
+    required this.imageUrl,
+    required this.expiryDate,
+    required this.daysLeft,
+    required this.basePrice,
+    required this.offerPrice,
+    required this.discountPercent,
+    required this.currency,
+    required this.availableQuantity,
+    required this.suggestedQuantity,
+    required this.message,
+  });
+
+  final int offerId;
+  final String itemCode;
+  final String name;
+  final String? imageUrl;
+  final DateTime expiryDate;
+  final int daysLeft;
+  final num basePrice;
+  final num offerPrice;
+  final num discountPercent;
+  final String currency;
+  final num availableQuantity;
+  final num suggestedQuantity;
+  final String message;
+
+  factory HomeExpiryOfferModel.fromJson(Map<String, dynamic> json) {
+    final expiry = _requiredMap(json['expiry'], 'offer.expiry');
+    final pricing = _requiredMap(json['pricing'], 'offer.pricing');
+    final quantity = _requiredMap(json['quantity'], 'offer.quantity');
+    final why = _requiredMap(json['why'], 'offer.why');
+    final expiryDate = DateTime.tryParse(
+      _requiredString(expiry['date'], 'offer.expiry.date'),
+    );
+    if (expiryDate == null) {
+      throw const FormatException('offer.expiry.date must be an ISO date');
+    }
+
+    return HomeExpiryOfferModel(
+      offerId: _requiredInt(json['offer_id'], 'offer.offer_id'),
+      itemCode: _requiredString(json['item_code'], 'offer.item_code'),
+      name: _requiredString(json['name'], 'offer.name'),
+      imageUrl: _optionalString(json['image_url'], 'offer.image_url'),
+      expiryDate: expiryDate,
+      daysLeft: _requiredInt(expiry['days_left'], 'offer.expiry.days_left'),
+      basePrice: _requiredNum(
+        pricing['base_price'],
+        'offer.pricing.base_price',
+      ),
+      offerPrice: _requiredNum(
+        pricing['offer_price'],
+        'offer.pricing.offer_price',
+      ),
+      discountPercent: _requiredNum(
+        pricing['discount_pct'],
+        'offer.pricing.discount_pct',
+      ),
+      currency: _requiredString(pricing['currency'], 'offer.pricing.currency'),
+      availableQuantity: _requiredNum(
+        quantity['available'],
+        'offer.quantity.available',
+      ),
+      suggestedQuantity: _requiredNum(
+        quantity['suggested'],
+        'offer.quantity.suggested',
+      ),
+      message: _requiredString(why['message'], 'offer.why.message'),
     );
   }
 }
@@ -45,6 +143,15 @@ class HomeSectionModel {
     if (languageCode == 'en' && titleEn?.isNotEmpty == true) return titleEn!;
     return title ?? titleEn ?? '';
   }
+
+  HomeSectionModel copyWithItems(List<HomeSectionItemModel> newItems) =>
+      HomeSectionModel(
+        key: key,
+        type: type,
+        title: title,
+        titleEn: titleEn,
+        items: newItems,
+      );
 
   factory HomeSectionModel.fromJson(Map<String, dynamic> json) {
     final key = _requiredString(json['key'], 'section.key');

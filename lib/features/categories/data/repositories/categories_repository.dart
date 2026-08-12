@@ -1,57 +1,70 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:montajat_customer_app/core/api/api_consumer.dart';
+import 'package:montajat_customer_app/core/api/end_points.dart';
 import 'package:montajat_customer_app/features/categories/data/models/category_model.dart';
 
-abstract final class CategoriesRepository {
-  static const items = [
-    CategoryModel(labelKey: 'categories.food', icon: Icons.restaurant_outlined),
-    CategoryModel(
-      labelKey: 'categories.supplements',
-      icon: Icons.shopping_bag_outlined,
-    ),
-    CategoryModel(labelKey: 'categories.furniture', icon: Icons.chair_outlined),
-    CategoryModel(labelKey: 'categories.toys', icon: Icons.toys_outlined),
-    CategoryModel(
-      labelKey: 'categories.nutrition',
-      icon: Icons.inventory_2_outlined,
-    ),
-    CategoryModel(
-      labelKey: 'categories.medical',
-      icon: Icons.medical_services_outlined,
-    ),
-    CategoryModel(
-      labelKey: 'categories.health',
-      icon: Icons.health_and_safety_outlined,
-    ),
-    CategoryModel(
-      labelKey: 'categories.entertainment',
-      icon: Icons.sports_tennis_outlined,
-    ),
-    CategoryModel(
-      labelKey: 'categories.cages',
-      icon: Icons.card_giftcard_outlined,
-    ),
-    CategoryModel(
-      labelKey: 'categories.transport',
-      icon: Icons.luggage_outlined,
-    ),
-    CategoryModel(
-      labelKey: 'categories.grooming',
-      icon: Icons.cleaning_services_outlined,
-    ),
-    CategoryModel(
-      labelKey: 'categories.training',
-      icon: Icons.content_cut_outlined,
-    ),
-    CategoryModel(
-      labelKey: 'categories.clothes',
-      icon: Icons.checkroom_outlined,
-    ),
-    CategoryModel(labelKey: 'categories.aquariums', icon: Icons.pets_outlined),
-    CategoryModel(
-      labelKey: 'categories.devices',
-      icon: Icons.devices_other_outlined,
-    ),
-  ];
+abstract interface class CategoriesRepository {
+  Future<List<CategoryModel>> getCategories();
+}
 
-  static final homeItems = items.take(5).toList(growable: false);
+class RemoteCategoriesRepository implements CategoriesRepository {
+  const RemoteCategoriesRepository(this._apiConsumer);
+
+  final ApiConsumer _apiConsumer;
+
+  @override
+  Future<List<CategoryModel>> getCategories() async {
+    try {
+      final response = await _apiConsumer
+          .get(EndPoints.categories, null)
+          .timeout(const Duration(seconds: 20));
+      final json = _decode(response.body);
+      if (response.statusCode < 200 ||
+          response.statusCode >= 300 ||
+          json['success'] != true) {
+        throw CategoriesException(_errorKey(response.statusCode));
+      }
+
+      final data = json['data'];
+      if (data is! Map<String, dynamic> || data['category'] is! List) {
+        throw const FormatException('Invalid categories response');
+      }
+
+      return (data['category'] as List)
+          .map((item) {
+            if (item is! Map<String, dynamic>) {
+              throw const FormatException('Invalid category item');
+            }
+            return CategoryModel.fromJson(item);
+          })
+          .toList(growable: false);
+    } on TimeoutException {
+      throw const CategoriesException('auth_errors.timeout');
+    } on http.ClientException {
+      throw const CategoriesException('auth_errors.network');
+    } on FormatException {
+      throw const CategoriesException('auth_errors.invalid_response');
+    }
+  }
+
+  Map<String, dynamic> _decode(String body) {
+    final value = jsonDecode(body);
+    if (value is Map<String, dynamic>) return value;
+    throw const FormatException('Invalid categories response');
+  }
+
+  String _errorKey(int statusCode) => switch (statusCode) {
+    429 => 'auth_errors.too_many_requests',
+    >= 500 => 'auth_errors.server',
+    _ => 'auth_errors.request_failed',
+  };
+}
+
+class CategoriesException implements Exception {
+  const CategoriesException(this.messageKey);
+
+  final String messageKey;
 }

@@ -8,19 +8,30 @@ import 'package:montajat_customer_app/features/home/data/repositories/home_repos
 void main() {
   test('loads home sections from the authenticated B2B endpoint', () async {
     final consumer = _FakeApiConsumer(
-      http.Response('{"success":true,"data":{"sections":[]}}', 200),
+      homeResponse: http.Response(
+        '{"success":true,"data":{"sections":[]}}',
+        200,
+      ),
+      offersResponse: http.Response('{"success":true,"data":[]}', 200),
     );
     final repository = RemoteHomeRepository(consumer);
 
     final result = await repository.getHome();
 
-    expect(consumer.lastPath, EndPoints.home);
+    expect(
+      consumer.paths,
+      containsAll([EndPoints.home, EndPoints.expiryOffers]),
+    );
     expect(result.sectionCount, 0);
+    expect(result.expiryOffers, isEmpty);
   });
 
   test('rejects a malformed home response', () async {
     final repository = RemoteHomeRepository(
-      _FakeApiConsumer(http.Response('{"success":true,"data":{}}', 200)),
+      _FakeApiConsumer(
+        homeResponse: http.Response('{"success":true,"data":{}}', 200),
+        offersResponse: http.Response('{"success":true,"data":[]}', 200),
+      ),
     );
 
     expect(
@@ -32,6 +43,38 @@ void main() {
           'auth_errors.invalid_response',
         ),
       ),
+    );
+  });
+
+  test('loads expiry offers for the offers section', () async {
+    final repository = RemoteHomeRepository(
+      _FakeApiConsumer(
+        homeResponse: http.Response(
+          '{"success":true,"data":{"sections":[]}}',
+          200,
+        ),
+        offersResponse: http.Response(
+          '{"success":true,"data":[{"offer_id":7,'
+          '"item_code":"P10000001","name":"Offer",'
+          '"image_url":"https://example.com/offers/7.png",'
+          '"expiry":{"date":"2026-09-01","days_left":20},'
+          '"pricing":{"base_price":7,"offer_price":6.3,'
+          '"discount_pct":10,"currency":"SAR"},'
+          '"quantity":{"available":40,"suggested":3.35},'
+          '"why":{"message":"Offer reason"}}]}',
+          200,
+        ),
+      ),
+    );
+
+    final result = await repository.getHome();
+
+    expect(result.expiryOffers.single.offerId, 7);
+    expect(result.expiryOffers.single.offerPrice, 6.3);
+    expect(result.expiryOffers.single.daysLeft, 20);
+    expect(
+      result.expiryOffers.single.imageUrl,
+      'https://example.com/offers/7.png',
     );
   });
 
@@ -76,15 +119,16 @@ void main() {
 }
 
 class _FakeApiConsumer implements ApiConsumer {
-  _FakeApiConsumer(this.response);
+  _FakeApiConsumer({required this.homeResponse, required this.offersResponse});
 
-  final http.Response response;
-  String? lastPath;
+  final http.Response homeResponse;
+  final http.Response offersResponse;
+  final List<String> paths = [];
 
   @override
   Future<http.Response> get(String path, Map<String, String>? headers) async {
-    lastPath = path;
-    return response;
+    paths.add(path);
+    return path == EndPoints.expiryOffers ? offersResponse : homeResponse;
   }
 
   @override

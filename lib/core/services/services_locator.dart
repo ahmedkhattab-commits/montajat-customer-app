@@ -7,8 +7,13 @@ import 'package:montajat_customer_app/core/api/api_consumer.dart';
 import 'package:montajat_customer_app/core/api/app_interceptor.dart';
 import 'package:montajat_customer_app/core/api/http_consumer.dart';
 import 'package:montajat_customer_app/core/utils/app_constant.dart';
+import 'package:montajat_customer_app/features/categories/data/repositories/categories_repository.dart';
 import 'package:montajat_customer_app/features/home/data/repositories/home_repository.dart';
 import 'package:montajat_customer_app/features/login/data/repositories/auth_repository.dart';
+import 'package:montajat_customer_app/features/products/data/repositories/products_repository.dart';
+import 'package:montajat_customer_app/features/products/data/repositories/product_details_repository.dart';
+import 'package:montajat_customer_app/features/profile/data/repositories/profile_repository.dart';
+import 'package:montajat_customer_app/features/addresses/data/repositories/addresses_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -26,6 +31,21 @@ abstract final class ServicesLocator {
       )
       ..registerLazySingleton<HomeRepository>(
         () => RemoteHomeRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<CategoriesRepository>(
+        () => RemoteCategoriesRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<ProductsRepository>(
+        () => RemoteProductsRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<ProductDetailsRepository>(
+        () => RemoteProductDetailsRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<ProfileRepository>(
+        () => RemoteProfileRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<AddressesRepository>(
+        () => RemoteAddressesRepository(getIt<ApiConsumer>()),
       )
       ..registerLazySingleton<FlutterSecureStorage>(
         () => const FlutterSecureStorage(

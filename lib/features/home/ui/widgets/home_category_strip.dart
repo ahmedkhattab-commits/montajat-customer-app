@@ -42,7 +42,9 @@ class HomeCategoryStrip extends StatelessWidget {
                 ),
                 SizedBox(height: 5.h),
                 Text(
-                  context.tr(category.labelKey),
+                  category.labelKey == null
+                      ? category.value
+                      : context.tr(category.labelKey!),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,

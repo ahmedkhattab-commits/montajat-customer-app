@@ -17,6 +17,8 @@ abstract interface class AuthRepository {
   });
 
   Future<bool> hasActiveSession();
+
+  Future<void> logout();
 }
 
 class RemoteAuthRepository implements AuthRepository {
@@ -56,6 +58,25 @@ class RemoteAuthRepository implements AuthRepository {
       )).isNotEmpty;
     } on Object {
       return false;
+    }
+  }
+
+  @override
+  Future<void> logout() async {
+    try {
+      final response = await _apiConsumer
+          .post(EndPoints.logout, const {}, null)
+          .timeout(const Duration(seconds: 20));
+      _ensureSuccessful(response);
+    } on TimeoutException {
+      // Local sign-out must still complete when the server is unavailable.
+    } on http.ClientException {
+      // Local sign-out must still complete when the server is unavailable.
+    } on AuthException {
+      // The server session may already be invalid; clear the local session.
+    } finally {
+      await CacheHelper.clearAllSecuredData();
+      await CacheHelper.removeData(ConstantKeys.savePhoneToShared);
     }
   }
 

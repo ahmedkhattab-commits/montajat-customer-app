@@ -88,6 +88,26 @@ void main() {
     expect(CacheHelper.getString(ConstantKeys.accessToken), isNull);
     expect(await repository.hasActiveSession(), isTrue);
   });
+
+  test('calls logout endpoint and clears the local session', () async {
+    await CacheHelper.setSecuredString(
+      ConstantKeys.accessToken,
+      'secure-token',
+    );
+    await CacheHelper.setData(ConstantKeys.savePhoneToShared, '0500000000');
+    final consumer = _FakeApiConsumer(
+      response: http.Response('{"success":true,"data":{}}', 200),
+    );
+
+    await RemoteAuthRepository(consumer).logout();
+
+    expect(consumer.lastPath, EndPoints.logout);
+    expect(
+      await CacheHelper.getSecuredString(ConstantKeys.accessToken),
+      isEmpty,
+    );
+    expect(CacheHelper.getString(ConstantKeys.savePhoneToShared), isNull);
+  });
 }
 
 class _FakeApiConsumer implements ApiConsumer {

@@ -69,8 +69,20 @@ class HomeScreen extends StatelessWidget {
               else ...[
                 SliverToBoxAdapter(child: SizedBox(height: 8.h)),
                 for (final section in state.home!.sections) ...[
-                  SliverToBoxAdapter(child: HomeApiSection(section: section)),
-                  SliverToBoxAdapter(child: SizedBox(height: 18.h)),
+                  if (section.key == 'offers_for_you') ...[
+                    if (state.home!.expiryOffers.isNotEmpty) ...[
+                      SliverToBoxAdapter(
+                        child: HomeExpiryOffersSection(
+                          section: section,
+                          offers: state.home!.expiryOffers,
+                        ),
+                      ),
+                      SliverToBoxAdapter(child: SizedBox(height: 18.h)),
+                    ],
+                  ] else ...[
+                    SliverToBoxAdapter(child: HomeApiSection(section: section)),
+                    SliverToBoxAdapter(child: SizedBox(height: 18.h)),
+                  ],
                 ],
                 SliverToBoxAdapter(child: SizedBox(height: 17.h)),
               ],
