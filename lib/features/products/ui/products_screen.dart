@@ -8,6 +8,7 @@ import 'package:montajat_customer_app/features/products/data/models/products_scr
 import 'package:montajat_customer_app/features/products/logic/products_cubit.dart';
 import 'package:montajat_customer_app/features/products/logic/products_state.dart';
 import 'package:montajat_customer_app/features/products/ui/widgets/product_listing_card.dart';
+import 'package:montajat_customer_app/config/routes/routes.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({required this.arguments, super.key});
@@ -297,7 +298,7 @@ class _OrderSummary extends StatelessWidget {
               width: 170.w,
               height: 48.h,
               child: FilledButton(
-                onPressed: () {},
+                onPressed: () => Navigator.pushNamed(context, Routes.cart),
                 style: FilledButton.styleFrom(
                   backgroundColor: AppColors.onboardingPrimary,
                   shape: RoundedRectangleBorder(

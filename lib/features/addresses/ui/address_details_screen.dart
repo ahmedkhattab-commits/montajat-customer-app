@@ -81,8 +81,10 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
         return Form(
           key: _formKey,
           child: ListView(
-            padding: EdgeInsets.all(20.w),
+            padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 34.h),
             children: [
+              _AddressSummary(address: state.address!),
+              SizedBox(height: 18.h),
               _Field(controller: _label, labelKey: 'addresses.label'),
               if (state.cities.isNotEmpty) ...[
                 SizedBox(height: 12.h),
@@ -101,6 +103,7 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
                       .toList(growable: false),
                   onChanged: (value) => _cityCode = value,
                 ),
+                SizedBox(height: 12.h),
               ],
               _Field(controller: _district, labelKey: 'addresses.district'),
               _Field(controller: _street, labelKey: 'addresses.street'),
@@ -172,12 +175,66 @@ class _AddressDetailsScreenState extends State<AddressDetailsScreen> {
       phone: _nullable(_phone.text),
       notes: _nullable(_notes.text),
       isPreferred: current.isPreferred,
+      code: current.code,
+      typeLabel: current.typeLabel,
+      state: current.state,
+      country: current.country,
+      formatted: current.formatted,
+      isSapDefault: current.isSapDefault,
+      isHidden: current.isHidden,
     );
     final saved = await context.read<AddressDetailsCubit>().save(updated);
     if (saved && mounted) Navigator.of(context).pop(true);
   }
 
   String? _nullable(String value) => value.trim().isEmpty ? null : value.trim();
+}
+
+class _AddressSummary extends StatelessWidget {
+  const _AddressSummary({required this.address});
+  final AddressModel address;
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: EdgeInsets.all(16.w),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      border: Border.all(color: const Color(0xFFE8E8E8)),
+      borderRadius: BorderRadius.circular(10.r),
+    ),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CircleAvatar(
+          backgroundColor: const Color(0xFFFFF5DC),
+          child: const Icon(
+            Icons.location_on_outlined,
+            color: Color(0xFFF5B335),
+          ),
+        ),
+        SizedBox(width: 12.w),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                address.code ?? address.label,
+                style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700),
+              ),
+              SizedBox(height: 5.h),
+              Text(
+                address.formatted ?? '-',
+                style: TextStyle(
+                  color: const Color(0xFF777777),
+                  fontSize: 12.sp,
+                  height: 1.5,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }
 
 class _Field extends StatelessWidget {

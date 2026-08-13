@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:montajat_customer_app/config/routes/routes.dart';
@@ -12,6 +11,7 @@ import 'package:montajat_customer_app/features/home/ui/widgets/expiry_offer_bann
 import 'package:montajat_customer_app/features/home/ui/widgets/home_section_header.dart';
 import 'package:montajat_customer_app/features/products/data/models/products_screen_arguments.dart';
 import 'package:montajat_customer_app/features/products/data/models/product_details_arguments.dart';
+import 'package:montajat_customer_app/features/cart/ui/widgets/add_to_cart_button.dart';
 
 class HomeApiSection extends StatelessWidget {
   const HomeApiSection({required this.section, super.key});
@@ -398,29 +398,9 @@ class _ProductCard extends StatelessWidget {
                 SizedBox(height: 7.h),
                 SizedBox(
                   height: 40.h,
-                  child: FilledButton(
-                    onPressed: product.canOrder ? () {} : null,
-                    style: FilledButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      backgroundColor: AppColors.onboardingPrimary,
-                      disabledBackgroundColor: const Color(0xFFFFF1C8),
-                      disabledForegroundColor: const Color(0xFFE3B332),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.r),
-                      ),
-                    ),
-                    child: Text(
-                      context.tr(
-                        product.canOrder
-                            ? 'home.add_to_cart'
-                            : 'home.unavailable',
-                      ),
-                      style: TextStyle(
-                        fontFamily: 'IBMPlexSansArabic',
-                        fontSize: 11.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                  child: AddToCartButton(
+                    itemCode: product.itemCode,
+                    enabled: product.canOrder,
                   ),
                 ),
               ],

@@ -12,6 +12,16 @@ class EndPoints {
   static const String categories = '$baseUrl/api/b2b/v1/categories';
   static const String expiryOffers = '$baseUrl/api/b2b/v1/offers/expiry';
   static const String catalogProducts = '$baseUrl/api/b2b/v1/catalog/products';
+  static const String cart = '$baseUrl/api/b2b/v1/cart';
+  static const String cartItems = '$cart/items';
+  static const String orders = '$baseUrl/api/b2b/v1/orders';
+  static const String finance = '$baseUrl/api/b2b/v1/finance';
+  static const String financeSummary = '$finance/summary';
+  static const String financeAging = '$finance/aging';
+  static const String financeStatement = '$finance/statement';
+  static const String financePayments = '$finance/payments';
+  static const String financeCreditNotes = '$finance/credit-notes';
+  static const String financeInvoices = '$finance/invoices';
 
   static String productDetails(String itemCode) =>
       '$catalogProducts/${Uri.encodeComponent(itemCode)}';
@@ -20,6 +30,18 @@ class EndPoints {
 
   static String preferredAddress(Object id) =>
       '${addressDetails(id)}/preferred';
+
+  static String cartItem(String itemCode) =>
+      '$cartItems/${Uri.encodeComponent(itemCode)}';
+
+  static String orderDetails(String orderNumber) =>
+      '$orders/${Uri.encodeComponent(orderNumber)}';
+
+  static String cancelOrder(String orderNumber) =>
+      '${orderDetails(orderNumber)}/cancel';
+
+  static String financeInvoiceDetails(String docNum) =>
+      '$financeInvoices/${Uri.encodeComponent(docNum)}';
   // static const String baseUrl = "https://waqty.alemtayaz.shop/public";
   // static const String _imageBaseUrl = "storage/app/public/";
 

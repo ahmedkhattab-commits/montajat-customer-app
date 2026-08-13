@@ -13,18 +13,28 @@ class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   static const _menuItems = [
-    _ProfileMenuItem('profile.my_profile', Icons.person_outline_rounded),
+    _ProfileMenuItem(
+      'profile.my_profile',
+      Icons.person_outline_rounded,
+      null,
+      _ProfileMenuAction.profile,
+    ),
     _ProfileMenuItem('profile.points', Icons.stars_outlined),
     _ProfileMenuItem(
       'profile.addresses',
       Icons.location_on_outlined,
       Routes.addresses,
     ),
-    _ProfileMenuItem('profile.orders', Icons.inventory_2_outlined),
+    _ProfileMenuItem(
+      'profile.orders',
+      Icons.inventory_2_outlined,
+      Routes.orders,
+    ),
     _ProfileMenuItem('profile.reports', Icons.bar_chart_rounded),
     _ProfileMenuItem(
       'profile.financial',
       Icons.account_balance_wallet_outlined,
+      Routes.finance,
     ),
   ];
 
@@ -86,8 +96,10 @@ class _ProfileContent extends StatelessWidget {
               mainAxisSpacing: 10.h,
               childAspectRatio: 1.02,
             ),
-            itemBuilder: (_, index) =>
-                _MenuCard(item: ProfileScreen._menuItems[index]),
+            itemBuilder: (_, index) => _MenuCard(
+              item: ProfileScreen._menuItems[index],
+              profile: profile,
+            ),
           ),
         ),
         SliverToBoxAdapter(child: SizedBox(height: 14.h)),
@@ -272,8 +284,9 @@ class _SummaryCard extends StatelessWidget {
 }
 
 class _MenuCard extends StatelessWidget {
-  const _MenuCard({required this.item});
+  const _MenuCard({required this.item, required this.profile});
   final _ProfileMenuItem item;
+  final ProfileModel profile;
 
   @override
   Widget build(BuildContext context) => Material(
@@ -282,9 +295,22 @@ class _MenuCard extends StatelessWidget {
     elevation: .6,
     child: InkWell(
       key: ValueKey('profile-menu-${item.labelKey}'),
-      onTap: item.route == null
-          ? null
-          : () => Navigator.pushNamed(context, item.route!),
+      onTap: () {
+        if (item.route != null) {
+          Navigator.pushNamed(context, item.route!);
+          return;
+        }
+        switch (item.action) {
+          case _ProfileMenuAction.profile:
+            Navigator.pushNamed(
+              context,
+              Routes.profileDetails,
+              arguments: profile,
+            );
+          case null:
+            return;
+        }
+      },
       borderRadius: BorderRadius.circular(8.r),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -304,8 +330,11 @@ class _MenuCard extends StatelessWidget {
 }
 
 class _ProfileMenuItem {
-  const _ProfileMenuItem(this.labelKey, this.icon, [this.route]);
+  const _ProfileMenuItem(this.labelKey, this.icon, [this.route, this.action]);
   final String labelKey;
   final IconData icon;
   final String? route;
+  final _ProfileMenuAction? action;
 }
+
+enum _ProfileMenuAction { profile }

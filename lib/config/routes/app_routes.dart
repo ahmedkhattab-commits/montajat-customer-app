@@ -31,7 +31,9 @@ import 'package:montajat_customer_app/features/products/ui/product_details_scree
 import 'package:montajat_customer_app/features/products/data/repositories/products_repository.dart';
 import 'package:montajat_customer_app/features/products/ui/products_screen.dart';
 import 'package:montajat_customer_app/features/profile/ui/profile_screen.dart';
+import 'package:montajat_customer_app/features/profile/ui/profile_details_screen.dart';
 import 'package:montajat_customer_app/features/profile/data/repositories/profile_repository.dart';
+import 'package:montajat_customer_app/features/profile/data/models/profile_model.dart';
 import 'package:montajat_customer_app/features/profile/logic/profile_cubit.dart';
 import 'package:montajat_customer_app/features/addresses/data/repositories/addresses_repository.dart';
 import 'package:montajat_customer_app/features/addresses/logic/addresses_cubit.dart';
@@ -42,6 +44,18 @@ import 'package:montajat_customer_app/features/splash/logic/splash_cubit.dart';
 import 'package:montajat_customer_app/features/splash/ui/splash_screen.dart';
 import 'package:montajat_customer_app/features/verification/logic/verification_cubit.dart';
 import 'package:montajat_customer_app/features/verification/ui/verification_screen.dart';
+import 'package:montajat_customer_app/features/cart/data/repositories/cart_repository.dart';
+import 'package:montajat_customer_app/features/cart/logic/cart_cubit.dart';
+import 'package:montajat_customer_app/features/cart/ui/cart_screen.dart';
+import 'package:montajat_customer_app/features/orders/data/repositories/orders_repository.dart';
+import 'package:montajat_customer_app/features/orders/logic/order_details_cubit.dart';
+import 'package:montajat_customer_app/features/orders/logic/orders_cubit.dart';
+import 'package:montajat_customer_app/features/orders/ui/order_details_screen.dart';
+import 'package:montajat_customer_app/features/orders/ui/orders_screen.dart';
+import 'package:montajat_customer_app/features/finance/data/repositories/finance_repository.dart';
+import 'package:montajat_customer_app/features/finance/logic/finance_cubit.dart';
+import 'package:montajat_customer_app/features/finance/ui/finance_screen.dart';
+import 'package:montajat_customer_app/features/finance/ui/finance_invoice_details_screen.dart';
 
 abstract final class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -142,6 +156,7 @@ abstract final class RouteGenerator {
           builder: (_) => BlocProvider(
             create: (_) => ProductDetailsCubit(
               getIt<ProductDetailsRepository>(),
+              getIt<ProductsRepository>(),
               arguments.itemCode,
             )..loadDetails(),
             child: ProductDetailsScreen(arguments: arguments),
@@ -156,6 +171,37 @@ abstract final class RouteGenerator {
               getIt<AuthRepository>(),
             )..loadProfile(),
             child: const ProfileScreen(),
+          ),
+        );
+      case Routes.profileDetails:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) =>
+              ProfileDetailsScreen(profile: settings.arguments as ProfileModel),
+        );
+      case Routes.creditDetails:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => CreditDetailsScreen(
+            credit: (settings.arguments as ProfileModel).credit,
+          ),
+        );
+      case Routes.finance:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => FinanceCubit(getIt<FinanceRepository>())..load(),
+            child: const FinanceScreen(),
+          ),
+        );
+      case Routes.financeInvoiceDetails:
+        final docNum = settings.arguments as String;
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                InvoiceDetailsCubit(getIt<FinanceRepository>(), docNum)..load(),
+            child: FinanceInvoiceDetailsScreen(docNum: docNum),
           ),
         );
       case Routes.addresses:
@@ -176,6 +222,35 @@ abstract final class RouteGenerator {
                 AddressDetailsCubit(getIt<AddressesRepository>(), addressId)
                   ..load(),
             child: const AddressDetailsScreen(),
+          ),
+        );
+      case Routes.cart:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                CartCubit(getIt<CartRepository>(), getIt<OrdersRepository>())
+                  ..loadCart(),
+            child: const CartScreen(),
+          ),
+        );
+      case Routes.orders:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => OrdersCubit(getIt<OrdersRepository>())..loadOrders(),
+            child: const OrdersScreen(),
+          ),
+        );
+      case Routes.orderDetails:
+        final orderNumber = settings.arguments as String;
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                OrderDetailsCubit(getIt<OrdersRepository>(), orderNumber)
+                  ..loadOrder(),
+            child: OrderDetailsScreen(orderNumber: orderNumber),
           ),
         );
       default:

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:montajat_customer_app/core/utils/app_colors_white_theme.dart';
 import 'package:montajat_customer_app/features/home/data/models/home_response_model.dart';
+import 'package:montajat_customer_app/features/cart/ui/widgets/add_to_cart_button.dart';
 
 class OfferProductsArguments {
   const OfferProductsArguments({required this.offer, required this.imageAsset});
@@ -139,15 +140,9 @@ class OfferProductsScreen extends StatelessWidget {
                   SizedBox(height: 18.h),
                   SizedBox(
                     height: 48.h,
-                    child: FilledButton(
-                      onPressed: () {},
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.onboardingPrimary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.r),
-                        ),
-                      ),
-                      child: Text(context.tr('home.add_to_cart')),
+                    child: AddToCartButton(
+                      itemCode: offer.itemCode,
+                      quantity: offer.suggestedQuantity.toInt().clamp(1, 9999),
                     ),
                   ),
                 ],

@@ -8,11 +8,13 @@ class AddressesState {
     this.addresses = const [],
     this.cities = const [],
     this.errorMessageKey,
+    this.preferredAddressId,
   });
   final bool loading;
   final List<AddressModel> addresses;
   final List<CityModel> cities;
   final String? errorMessageKey;
+  final int? preferredAddressId;
 }
 
 class AddressesCubit extends Cubit<AddressesState> {
@@ -39,8 +41,28 @@ class AddressesCubit extends Cubit<AddressesState> {
   }
 
   Future<void> setPreferred(int id) async {
-    await _repository.setPreferred(id);
-    await loadAddresses();
+    if (state.preferredAddressId != null) return;
+    emit(
+      AddressesState(
+        addresses: state.addresses,
+        cities: state.cities,
+        preferredAddressId: id,
+      ),
+    );
+    try {
+      await _repository.setPreferred(id);
+      await loadAddresses();
+    } on AddressesException catch (error) {
+      if (!isClosed) {
+        emit(
+          AddressesState(
+            addresses: state.addresses,
+            cities: state.cities,
+            errorMessageKey: error.messageKey,
+          ),
+        );
+      }
+    }
   }
 
   Future<AddressModel> update(AddressModel address) async {

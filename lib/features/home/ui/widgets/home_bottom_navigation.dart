@@ -58,6 +58,8 @@ class HomeBottomNavigation extends StatelessWidget {
     final route = switch (index) {
       0 => Routes.home,
       1 => Routes.categories,
+      2 => Routes.cart,
+      3 => Routes.orders,
       4 => Routes.profile,
       _ => null,
     };

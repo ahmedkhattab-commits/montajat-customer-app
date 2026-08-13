@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:montajat_customer_app/core/utils/app_colors_white_theme.dart';
+import 'package:montajat_customer_app/config/routes/routes.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({required this.onSearchChanged, super.key});
@@ -197,42 +198,46 @@ class HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
 class _CartButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 42.w,
-      height: 42.h,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Icon(
-              Icons.shopping_cart_outlined,
-              size: 28.sp,
-              color: const Color(0xFFFFC13D),
-            ),
-          ),
-          Positioned(
-            right: 0,
-            top: -5.h,
-            child: Container(
-              width: 20.w,
-              height: 20.w,
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xFFFF4D56),
-                shape: BoxShape.circle,
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, Routes.cart),
+      borderRadius: BorderRadius.circular(21.r),
+      child: SizedBox(
+        width: 42.w,
+        height: 42.h,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Icon(
+                Icons.shopping_cart_outlined,
+                size: 28.sp,
+                color: const Color(0xFFFFC13D),
               ),
-              child: Text(
-                '2',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w700,
+            ),
+            Positioned(
+              right: 0,
+              top: -5.h,
+              child: Container(
+                width: 20.w,
+                height: 20.w,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFFF4D56),
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  '2',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

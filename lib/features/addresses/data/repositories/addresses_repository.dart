@@ -29,7 +29,7 @@ class RemoteAddressesRepository implements AddressesRepository {
 
   @override
   Future<List<CityModel>> getCities() async =>
-      _parseList(await _get(EndPoints.addressCities), CityModel.fromJson);
+      _parseValues(await _get(EndPoints.addressCities), CityModel.fromValue);
 
   @override
   Future<AddressModel> updateAddress(AddressModel address) async {
@@ -88,6 +88,15 @@ class RemoteAddressesRepository implements AddressesRepository {
           return parser(item);
         })
         .toList(growable: false);
+  }
+
+  List<T> _parseValues<T>(
+    Map<String, dynamic> json,
+    T Function(Object?) parser,
+  ) {
+    final data = json['data'];
+    if (data is! List) throw const FormatException('data must be an array');
+    return data.map(parser).toList(growable: false);
   }
 
   Map<String, dynamic> _dataMap(Map<String, dynamic> json) {

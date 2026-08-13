@@ -23,6 +23,46 @@ void main() {
       expect(consumer.postPath, EndPoints.preferredAddress(7));
     },
   );
+
+  test('maps the live SAP address and string cities contract', () async {
+    final repository = RemoteAddressesRepository(_LiveContractConsumer());
+
+    final address = (await repository.getAddresses()).single;
+    final city = (await repository.getCities()).single;
+
+    expect(address.code, '555.B1');
+    expect(address.district, 'حي العليا');
+    expect(address.buildingNumber, '2140');
+    expect(address.postalCode, '12211');
+    expect(address.formatted, contains('طريق الملك عبدالعزيز'));
+    expect(city.code, 'الرياض');
+    expect(city.name, 'الرياض');
+  });
+}
+
+class _LiveContractConsumer extends _FakeApiConsumer {
+  @override
+  Future<http.Response> get(String path, Map<String, String>? headers) async {
+    if (path == EndPoints.addressCities) {
+      return http.Response(
+        '{"success":true,"data":["الرياض"]}',
+        200,
+        headers: const {'content-type': 'application/json; charset=utf-8'},
+      );
+    }
+    return http.Response(
+      '{"success":true,"data":[{"id":1,"code":"555.B1",'
+      '"name":"555.B1","type_label":"عنوان التوصيل",'
+      '"street":"طريق الملك عبدالعزيز","building":"2140",'
+      '"city":"الرياض","county":"حي العليا",'
+      '"state":"منطقة الرياض","country":"SA",'
+      '"zip_code":"12211","formatted":'
+      '"2140، طريق الملك عبدالعزيز، الرياض، منطقة الرياض، SA",'
+      '"is_preferred":false}]}',
+      200,
+      headers: const {'content-type': 'application/json; charset=utf-8'},
+    );
+  }
 }
 
 class _FakeApiConsumer implements ApiConsumer {

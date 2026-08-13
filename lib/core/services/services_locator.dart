@@ -14,6 +14,9 @@ import 'package:montajat_customer_app/features/products/data/repositories/produc
 import 'package:montajat_customer_app/features/products/data/repositories/product_details_repository.dart';
 import 'package:montajat_customer_app/features/profile/data/repositories/profile_repository.dart';
 import 'package:montajat_customer_app/features/addresses/data/repositories/addresses_repository.dart';
+import 'package:montajat_customer_app/features/cart/data/repositories/cart_repository.dart';
+import 'package:montajat_customer_app/features/orders/data/repositories/orders_repository.dart';
+import 'package:montajat_customer_app/features/finance/data/repositories/finance_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -46,6 +49,15 @@ abstract final class ServicesLocator {
       )
       ..registerLazySingleton<AddressesRepository>(
         () => RemoteAddressesRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<CartRepository>(
+        () => RemoteCartRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<OrdersRepository>(
+        () => RemoteOrdersRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<FinanceRepository>(
+        () => RemoteFinanceRepository(getIt<ApiConsumer>()),
       )
       ..registerLazySingleton<FlutterSecureStorage>(
         () => const FlutterSecureStorage(

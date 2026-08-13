@@ -12,6 +12,13 @@ abstract final class Routes {
   static const String products = '/products';
   static const String productDetails = '/product-details';
   static const String profile = '/profile';
+  static const String profileDetails = '/profile-details';
+  static const String creditDetails = '/credit-details';
+  static const String finance = '/finance';
+  static const String financeInvoiceDetails = '/finance-invoice-details';
   static const String addresses = '/addresses';
   static const String addressDetails = '/address-details';
+  static const String cart = '/cart';
+  static const String orders = '/orders';
+  static const String orderDetails = '/order-details';
 }
