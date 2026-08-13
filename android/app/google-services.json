@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "534489298194",
+    "project_id": "montagat-b2b",
+    "storage_bucket": "montagat-b2b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534489298194:android:54e16c125518ddb5af6fcb",
+        "android_client_info": {
+          "package_name": "com.example.montajat_customer_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi11S9B2LFJkR198lASCXHqFxdAsfSDyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

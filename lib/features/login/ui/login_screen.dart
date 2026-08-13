@@ -110,6 +110,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                           ),
                         ),
+                        SizedBox(height: 10.h),
+                        TextButton(
+                          onPressed: () =>
+                              Navigator.pushNamed(context, Routes.registration),
+                          child: Text(
+                            context.tr('login.create_account'),
+                            style: TextStyle(
+                              color: const Color(0xFFF5A900),
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
                         const Spacer(),
                       ],
                     ),

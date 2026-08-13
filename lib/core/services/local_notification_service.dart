@@ -1,155 +1,80 @@
-// import 'package:awesome_notifications/awesome_notifications.dart';
-// import 'package:flutter/material.dart';
-//
-// class LocalNotificationService {
-//   static final awesomeNotifications = AwesomeNotifications();
-//
-//   static Future<void> initializedNotification() async {
-//     await awesomeNotifications.initialize(
-//         null,
-//         [
-//           NotificationChannel(
-//             channelGroupKey: 'basic_channel_group',
-//             channelKey: 'basic_channel',
-//             channelName: 'Basic notifications',
-//             channelDescription: 'Notification channel for basic tests',
-//             defaultColor: Color(0xFF9D50DD),
-//             ledColor: Colors.white,
-//             importance: NotificationImportance.Max,
-//             channelShowBadge: true,
-//             onlyAlertOnce: true,
-//             playSound: true,
-//             criticalAlerts: true,
-//           ),
-//         ],
-//         channelGroups: [
-//           NotificationChannelGroup(
-//               channelGroupKey: 'basic_channel_group',
-//               channelGroupName: 'Basic group')
-//         ],
-//         debug: true);
-//
-//     await awesomeNotifications.isNotificationAllowed().then((isAllowed) async {
-//       if (!isAllowed) {
-//         await awesomeNotifications.requestPermissionToSendNotifications();
-//       }
-//     });
-//
-//     await awesomeNotifications.setListeners(
-//       onActionReceivedMethod: onActionReceivedMethod,
-//       onNotificationCreatedMethod: onNotificationCreatedMethod,
-//       onNotificationDisplayedMethod: onNotificationDisplayedMethod,
-//       onDismissActionReceivedMethod: onDismissActionReceivedMethod,
-//     );
-//   }
-//
-//   static Future<void> onActionReceivedMethod(
-//       ReceivedAction receivedAction) async {
-//     print("onActionReceivedMethod");
-//     final payLoad = receivedAction.payload ?? {};
-//     // if (payLoad['navigate'] == "true") {
-//     //   if (payLoad['click_action'] == "send_chat") {
-//     //
-//     //     PusherService(NinjaApp.navigatorKey.currentContext!).initPusher();
-//     //
-//     //     ChatCubit.get(NinjaApp.navigatorKey.currentContext!).clearChatData();
-//     //     ChatCubit.get(NinjaApp.navigatorKey.currentContext!).getAllMessages(
-//     //         int.tryParse(payLoad['orderId'].toString()) ?? 0,
-//     //         int.tryParse(payLoad['receiveId'].toString()) ?? 0);
-//     //
-//     //     NinjaApp.navigatorKey.currentContext!
-//     //         .pushNamed(Routes.chatDetailsScreen, arguments: {
-//     //       'myId': AuthenticationCubit.get(NinjaApp.navigatorKey.currentContext!)
-//     //           .userInfo!
-//     //           .data
-//     //           .id,
-//     //       'receiveId': payLoad['receiveId'],
-//     //       'orderId': payLoad['orderId'],
-//     //       'name': payLoad['name'].toString(),
-//     //       'phone': payLoad['phone'].toString(),
-//     //       'image': EndPoints.getImageFromApi(payLoad['image'].toString()),
-//     //     });
-//     //   }
-//     //   else if (payLoad['click_action'] == "USER_CONFIRMED") {
-//     //     ButtonBarHomeCubit.get(NinjaApp.navigatorKey.currentContext)
-//     //         .changeIndex(0);
-//     //     NinjaApp.navigatorKey.currentContext!
-//     //         .pushNamed(Routes.buttonBarHomeScreen);
-//     //   }
-//     //   else if (payLoad['click_action'] == "NINJA_APPROVED") {
-//     //     ButtonBarHomeCubit.get(NinjaApp.navigatorKey.currentContext)
-//     //         .changeIndex(2);
-//     //     NinjaApp.navigatorKey.currentContext!
-//     //         .pushNamed(Routes.buttonBarHomeScreen);
-//     //   }
-//     //   else if (payLoad['click_action'] == "NINJA_ACCOUNT_APPROVED" ||
-//     //       payLoad['click_action'] == "NINJA_ACCOUNT_REJECTED" ||
-//     //       payLoad['click_action'] == "DATA_ERROR" ||
-//     //       payLoad['click_action'] == "NEW_ORDER_FOR_NINJA" ||
-//     //       payLoad['click_action'] == "user-canceled-order") {
-//     //     ButtonBarProviderCubit.get(NinjaApp.navigatorKey.currentContext)
-//     //         .changeIndex(0);
-//     //     NinjaApp.navigatorKey.currentContext!
-//     //         .pushNamed(Routes.buttonBarProviderScreen);
-//     //   }
-//     //   else if (payLoad['click_action'] == "NINJA_CONFIRMED" ||
-//     //       payLoad['click_action'] == "sendOrderHour") {
-//     //     ButtonBarProviderCubit.get(NinjaApp.navigatorKey.currentContext)
-//     //         .changeIndex(2);
-//     //     NinjaApp.navigatorKey.currentContext!
-//     //         .pushNamed(Routes.buttonBarProviderScreen);
-//     //   }
-//     // }
-//   }
-//
-//   static Future<void> onNotificationCreatedMethod(
-//       ReceivedNotification receivedAction) async {
-//     print("onNotificationCreatedMethod");
-//   }
-//
-//   static Future<void> onNotificationDisplayedMethod(
-//       ReceivedNotification receivedAction) async {
-//     print("onNotificationDisplayedMethod");
-//   }
-//
-//   static Future<void> onDismissActionReceivedMethod(
-//       ReceivedAction receivedAction) async {
-//     print("onDismissActionReceivedMethod");
-//   }
-//
-//   static Future<void> showNotification({
-//     required final String title,
-//     required final String body,
-//     final String? summary,
-//     final Map<String, String>? payload,
-//     final ActionType actionType = ActionType.Default,
-//     final NotificationLayout notificationLayout = NotificationLayout.Default,
-//     final NotificationCategory? category,
-//     final String? bigPicture,
-//     final List<NotificationActionButton>? actionButtons,
-//     final bool schedule = false,
-//     final int? interval,
-//   }) async {
-//     await awesomeNotifications.createNotification(
-//       content: NotificationContent(
-//         id: -1,
-//         channelKey: 'basic_channel',
-//         title: title,
-//         body: body,
-//         actionType: actionType,
-//         notificationLayout: notificationLayout,
-//         summary: summary,
-//         category: category,
-//         payload: payload,
-//         bigPicture: bigPicture,
-//       ),
-//       actionButtons: actionButtons,
-//       schedule: schedule
-//           ? NotificationInterval(
-//           interval: interval,
-//           timeZone: await awesomeNotifications.getLocalTimeZoneIdentifier(),
-//           preciseAlarm: true)
-//           : null,
-//     );
-//   }
-// }
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/material.dart';
+import 'package:montajat_customer_app/config/routes/routes.dart';
+import 'package:montajat_customer_app/my_app.dart';
+
+abstract final class LocalNotificationService {
+  static const channelKey = 'montajat_notifications';
+
+  static Future<void> init() async {
+    await AwesomeNotifications().initialize(null, [
+      NotificationChannel(
+        channelKey: channelKey,
+        channelName: 'Montajat notifications',
+        channelDescription: 'Order and account notifications',
+        defaultColor: const Color(0xFF4B7DB9),
+        ledColor: Colors.white,
+        importance: NotificationImportance.Max,
+        channelShowBadge: true,
+        playSound: true,
+      ),
+    ]);
+    if (!await AwesomeNotifications().isNotificationAllowed()) {
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+    await AwesomeNotifications().setListeners(
+      onActionReceivedMethod: onActionReceived,
+    );
+  }
+
+  @pragma('vm:entry-point')
+  static Future<void> onActionReceived(ReceivedAction action) async {
+    final payload = action.payload;
+    if (payload == null) return;
+    _navigate(payload.map((key, value) => MapEntry(key, value ?? '')));
+  }
+
+  static Future<void> show({
+    required String title,
+    required String body,
+    Map<String, String>? payload,
+  }) => AwesomeNotifications().createNotification(
+    content: NotificationContent(
+      id: DateTime.now().millisecondsSinceEpoch.remainder(1 << 31),
+      channelKey: channelKey,
+      title: title,
+      body: body,
+      payload: payload,
+      category: NotificationCategory.Message,
+      notificationLayout: NotificationLayout.Default,
+    ),
+  );
+
+  static void handlePayload(Map<String, dynamic> data) =>
+      _navigate(data.map((key, value) => MapEntry(key, value.toString())));
+
+  static void _navigate(Map<String, String> payload) {
+    final navigator = navigatorKey.currentState;
+    if (navigator == null) return;
+    switch (payload['type'] ?? payload['click_action']) {
+      case 'order':
+      case 'order_details':
+        final orderNumber = payload['order_number'];
+        if (orderNumber != null && orderNumber.isNotEmpty) {
+          navigator.pushNamed(Routes.orderDetails, arguments: orderNumber);
+        } else {
+          navigator.pushNamed(Routes.orders);
+        }
+      case 'return':
+      case 'return_details':
+        final reference = payload['reference'];
+        if (reference != null && reference.isNotEmpty) {
+          navigator.pushNamed(Routes.returnDetails, arguments: reference);
+        } else {
+          navigator.pushNamed(Routes.returns);
+        }
+      default:
+        navigator.pushNamed(Routes.home);
+    }
+  }
+}

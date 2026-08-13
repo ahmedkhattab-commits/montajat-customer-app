@@ -28,7 +28,10 @@ class HomeScreen extends StatelessWidget {
             slivers: [
               SliverPersistentHeader(
                 pinned: true,
-                delegate: HomeHeaderDelegate(
+                delegate: const HomeHeaderDelegate(),
+              ),
+              SliverToBoxAdapter(
+                child: HomeSearchBar(
                   onSearchChanged: context.read<HomeCubit>().searchChanged,
                 ),
               ),

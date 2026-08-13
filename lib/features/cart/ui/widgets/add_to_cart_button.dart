@@ -5,6 +5,7 @@ import 'package:montajat_customer_app/core/services/services_locator.dart';
 import 'package:montajat_customer_app/core/utils/app_colors_white_theme.dart';
 import 'package:montajat_customer_app/core/utils/app_constant.dart';
 import 'package:montajat_customer_app/features/cart/data/repositories/cart_repository.dart';
+import 'package:montajat_customer_app/features/cart/logic/cart_cubit.dart';
 
 class AddToCartButton extends StatefulWidget {
   const AddToCartButton({
@@ -64,6 +65,7 @@ class _AddToCartButtonState extends State<AddToCartButton> {
         itemCode: widget.itemCode,
         quantity: widget.quantity,
       );
+      await getIt<CartCubit>().loadCart(force: true);
       if (!mounted) return;
       AppConstant.toast(context.tr('cart.added_successfully'), true, context);
     } on CartException catch (error) {

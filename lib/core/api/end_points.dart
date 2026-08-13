@@ -3,6 +3,7 @@ class EndPoints {
   static const String requestOtp = '$baseUrl/api/b2b/v1/auth/otp/request';
   static const String verifyOtp = '$baseUrl/api/b2b/v1/auth/otp/verify';
   static const String logout = '$baseUrl/api/b2b/v1/auth/logout';
+  static const String registration = '$baseUrl/api/b2b/v1/registration';
   static const String profile = '$baseUrl/api/b2b/v1/profile';
   static const String profileCredit = '$profile/credit';
   static const String profileAddresses = '$profile/addresses';
@@ -22,6 +23,15 @@ class EndPoints {
   static const String financePayments = '$finance/payments';
   static const String financeCreditNotes = '$finance/credit-notes';
   static const String financeInvoices = '$finance/invoices';
+  static const String reports = '$baseUrl/api/b2b/v1/reports';
+  static const String savedReports = '$reports/saved';
+  static const String reportRuns = '$reports/runs';
+  static const String returns = '$baseUrl/api/b2b/v1/returns';
+  static const String returnReasons = '$returns/reasons';
+  static const String eligibleReturnOrders = '$returns/eligible-orders';
+  static const String reorder = '$baseUrl/api/b2b/v1/reorder';
+  static const String reorderMyProducts = '$reorder/my-products';
+  static const String reorderDue = '$reorder/due';
 
   static String productDetails(String itemCode) =>
       '$catalogProducts/${Uri.encodeComponent(itemCode)}';
@@ -42,6 +52,20 @@ class EndPoints {
 
   static String financeInvoiceDetails(String docNum) =>
       '$financeInvoices/${Uri.encodeComponent(docNum)}';
+
+  static String savedReport(Object id) => '$savedReports/$id';
+
+  static String report(String type) => '$reports/${Uri.encodeComponent(type)}';
+
+  static String exportReport(String type) => '${report(type)}/export';
+
+  static String downloadReportRun(Object id) => '$reportRuns/$id/download';
+
+  static String returnOrderLines(String orderNumber) =>
+      '$returns/orders/${Uri.encodeComponent(orderNumber)}/lines';
+
+  static String returnDetails(String reference) =>
+      '$returns/${Uri.encodeComponent(reference)}';
   // static const String baseUrl = "https://waqty.alemtayaz.shop/public";
   // static const String _imageBaseUrl = "storage/app/public/";
 

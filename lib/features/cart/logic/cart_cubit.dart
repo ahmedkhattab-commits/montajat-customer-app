@@ -9,8 +9,8 @@ class CartCubit extends Cubit<CartState> {
   final CartRepository _repository;
   final OrdersRepository _ordersRepository;
 
-  Future<void> loadCart() async {
-    if (state.loadStatus == CartLoadStatus.loading) return;
+  Future<void> loadCart({bool force = false}) async {
+    if (state.loadStatus == CartLoadStatus.loading && !force) return;
     emit(state.copyWith(loadStatus: CartLoadStatus.loading, clearError: true));
     try {
       final cart = await _repository.getCart();

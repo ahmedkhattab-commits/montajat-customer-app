@@ -3,6 +3,7 @@ abstract final class Routes {
   static const String languageSelection = '/language-selection';
   static const String onboarding = '/onboarding';
   static const String login = '/login';
+  static const String registration = '/registration';
   static const String verification = '/verification';
   static const String home = '/home';
   static const String categories = '/categories';
@@ -16,6 +17,11 @@ abstract final class Routes {
   static const String creditDetails = '/credit-details';
   static const String finance = '/finance';
   static const String financeInvoiceDetails = '/finance-invoice-details';
+  static const String reports = '/reports';
+  static const String returns = '/returns';
+  static const String createReturn = '/returns/create';
+  static const String returnDetails = '/returns/details';
+  static const String reorder = '/reorder';
   static const String addresses = '/addresses';
   static const String addressDetails = '/address-details';
   static const String cart = '/cart';

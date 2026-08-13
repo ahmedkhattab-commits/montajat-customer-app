@@ -44,7 +44,6 @@ import 'package:montajat_customer_app/features/splash/logic/splash_cubit.dart';
 import 'package:montajat_customer_app/features/splash/ui/splash_screen.dart';
 import 'package:montajat_customer_app/features/verification/logic/verification_cubit.dart';
 import 'package:montajat_customer_app/features/verification/ui/verification_screen.dart';
-import 'package:montajat_customer_app/features/cart/data/repositories/cart_repository.dart';
 import 'package:montajat_customer_app/features/cart/logic/cart_cubit.dart';
 import 'package:montajat_customer_app/features/cart/ui/cart_screen.dart';
 import 'package:montajat_customer_app/features/orders/data/repositories/orders_repository.dart';
@@ -56,6 +55,20 @@ import 'package:montajat_customer_app/features/finance/data/repositories/finance
 import 'package:montajat_customer_app/features/finance/logic/finance_cubit.dart';
 import 'package:montajat_customer_app/features/finance/ui/finance_screen.dart';
 import 'package:montajat_customer_app/features/finance/ui/finance_invoice_details_screen.dart';
+import 'package:montajat_customer_app/features/reports/data/repositories/reports_repository.dart';
+import 'package:montajat_customer_app/features/reports/logic/reports_cubit.dart';
+import 'package:montajat_customer_app/features/reports/ui/reports_screen.dart';
+import 'package:montajat_customer_app/features/returns/data/repositories/returns_repository.dart';
+import 'package:montajat_customer_app/features/returns/logic/returns_cubit.dart';
+import 'package:montajat_customer_app/features/returns/ui/create_return_screen.dart';
+import 'package:montajat_customer_app/features/returns/ui/return_details_screen.dart';
+import 'package:montajat_customer_app/features/returns/ui/returns_screen.dart';
+import 'package:montajat_customer_app/features/reorder/data/repositories/reorder_repository.dart';
+import 'package:montajat_customer_app/features/reorder/logic/reorder_cubit.dart';
+import 'package:montajat_customer_app/features/reorder/ui/reorder_screen.dart';
+import 'package:montajat_customer_app/features/registration/data/repositories/registration_repository.dart';
+import 'package:montajat_customer_app/features/registration/logic/registration_cubit.dart';
+import 'package:montajat_customer_app/features/registration/ui/registration_screen.dart';
 
 abstract final class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -90,6 +103,14 @@ abstract final class RouteGenerator {
           builder: (_) => BlocProvider(
             create: (_) => LoginCubit(getIt<AuthRepository>()),
             child: const LoginScreen(),
+          ),
+        );
+      case Routes.registration:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => RegistrationCubit(getIt<RegistrationRepository>()),
+            child: const RegistrationScreen(),
           ),
         );
       case Routes.verification:
@@ -204,6 +225,49 @@ abstract final class RouteGenerator {
             child: FinanceInvoiceDetailsScreen(docNum: docNum),
           ),
         );
+      case Routes.reports:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => ReportsCubit(getIt<ReportsRepository>())..load(),
+            child: const ReportsScreen(),
+          ),
+        );
+      case Routes.returns:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => ReturnsCubit(getIt<ReturnsRepository>())..load(),
+            child: const ReturnsScreen(),
+          ),
+        );
+      case Routes.createReturn:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => ReturnsCubit(getIt<ReturnsRepository>())..load(),
+            child: const CreateReturnScreen(),
+          ),
+        );
+      case Routes.returnDetails:
+        final reference = settings.arguments as String;
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                ReturnsCubit(getIt<ReturnsRepository>())
+                  ..loadDetails(reference),
+            child: ReturnDetailsScreen(reference: reference),
+          ),
+        );
+      case Routes.reorder:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => ReorderCubit(getIt<ReorderRepository>())..load(),
+            child: const ReorderScreen(),
+          ),
+        );
       case Routes.addresses:
         return MaterialPageRoute<void>(
           settings: settings,
@@ -227,10 +291,8 @@ abstract final class RouteGenerator {
       case Routes.cart:
         return MaterialPageRoute<void>(
           settings: settings,
-          builder: (_) => BlocProvider(
-            create: (_) =>
-                CartCubit(getIt<CartRepository>(), getIt<OrdersRepository>())
-                  ..loadCart(),
+          builder: (_) => BlocProvider.value(
+            value: getIt<CartCubit>()..loadCart(),
             child: const CartScreen(),
           ),
         );
