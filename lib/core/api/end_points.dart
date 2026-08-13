@@ -11,6 +11,7 @@ class EndPoints {
   static const String addressCities = '$addresses/cities';
   static const String home = '$baseUrl/api/b2b/v1/home';
   static const String categories = '$baseUrl/api/b2b/v1/categories';
+  static const String brands = '$baseUrl/api/b2b/v1/brands';
   static const String expiryOffers = '$baseUrl/api/b2b/v1/offers/expiry';
   static const String catalogProducts = '$baseUrl/api/b2b/v1/catalog/products';
   static const String cart = '$baseUrl/api/b2b/v1/cart';
@@ -32,6 +33,9 @@ class EndPoints {
   static const String reorder = '$baseUrl/api/b2b/v1/reorder';
   static const String reorderMyProducts = '$reorder/my-products';
   static const String reorderDue = '$reorder/due';
+  static const String notifications = '$baseUrl/api/b2b/v1/notifications';
+  static const String notificationsUnreadCount = '$notifications/unread-count';
+  static const String notificationsReadAll = '$notifications/read-all';
 
   static String productDetails(String itemCode) =>
       '$catalogProducts/${Uri.encodeComponent(itemCode)}';
@@ -66,6 +70,12 @@ class EndPoints {
 
   static String returnDetails(String reference) =>
       '$returns/${Uri.encodeComponent(reference)}';
+
+  static String notificationRead(Object id) =>
+      '$notifications/${Uri.encodeComponent(id.toString())}/read';
+
+  static String notification(Object id) =>
+      '$notifications/${Uri.encodeComponent(id.toString())}';
   // static const String baseUrl = "https://waqty.alemtayaz.shop/public";
   // static const String _imageBaseUrl = "storage/app/public/";
 

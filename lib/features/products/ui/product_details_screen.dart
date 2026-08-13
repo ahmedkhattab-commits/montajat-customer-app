@@ -196,6 +196,10 @@ class _InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = details.product;
     final rows = <(String, String?)>[
+      (
+        context.tr('product_details.available_quantity'),
+        product.availableQuantity?.toString() ?? '--',
+      ),
       (context.tr('product_details.barcode'), details.barcode),
       (context.tr('product_details.brand'), details.brandCode),
       (context.tr('product_details.department'), details.department),

@@ -16,6 +16,7 @@ void main() {
     expect(consumer.lastPath, EndPoints.cart);
     expect(cart.items.single.itemCode, 'P10000001');
     expect(cart.items.single.quantity, 2);
+    expect(cart.itemsCount, 2);
     expect(cart.shipToCode, '7');
     expect(cart.total, 40);
   });
@@ -58,9 +59,75 @@ void main() {
       });
     },
   );
+
+  test('cart count is the sum of quantities, not API line count', () async {
+    final consumer = _FakeApiConsumer(
+      cartBodyOverride: jsonEncode({
+        'success': true,
+        'data': {
+          'lines': [
+            {
+              'item_code': 'P10000001',
+              'name': 'Product',
+              'quantity': 3,
+              'unit_price': 20,
+            },
+            {
+              'item_code': 'P10000002',
+              'name': 'Product 2',
+              'quantity': 2,
+              'unit_price': 10,
+            },
+          ],
+          'meta': {},
+          'totals': {'item_count': 2, 'grand_total': 80},
+        },
+      }),
+    );
+
+    final cart = await RemoteCartRepository(consumer).getCart();
+
+    expect(cart.itemsCount, 5);
+  });
+
+  test('uses item code when the backend returns a null product name', () async {
+    final consumer = _FakeApiConsumer(
+      cartBodyOverride: jsonEncode({
+        'success': true,
+        'data': {
+          'lines': [
+            {
+              'item_code': 'P16100035',
+              'name': null,
+              'quantity': 1,
+              'unit_price': 0,
+              'line_total': 0,
+              'uom': '',
+            },
+          ],
+          'meta': {},
+          'totals': {
+            'item_count': 1,
+            'subtotal': 0,
+            'vat': 0,
+            'grand_total': 0,
+            'currency': 'SAR',
+          },
+        },
+      }),
+    );
+
+    final cart = await RemoteCartRepository(consumer).getCart();
+
+    expect(cart.items.single.name, 'P16100035');
+    expect(cart.itemsCount, 1);
+  });
 }
 
 class _FakeApiConsumer implements ApiConsumer {
+  _FakeApiConsumer({this.cartBodyOverride});
+
+  final String? cartBodyOverride;
   String? lastMethod;
   String? lastPath;
   Map<String, dynamic>? lastBody;
@@ -101,7 +168,7 @@ class _FakeApiConsumer implements ApiConsumer {
   Future<http.Response> get(String path, Map<String, String>? headers) async {
     lastMethod = 'GET';
     lastPath = path;
-    return http.Response(cartBody, 200);
+    return http.Response(cartBodyOverride ?? cartBody, 200);
   }
 
   @override

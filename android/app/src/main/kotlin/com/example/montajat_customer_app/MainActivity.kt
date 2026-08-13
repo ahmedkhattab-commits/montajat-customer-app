@@ -1,4 +1,4 @@
-package com.example.montajat_customer_app
+package com.beetleware.petscustomer
 
 import io.flutter.embedding.android.FlutterActivity
 

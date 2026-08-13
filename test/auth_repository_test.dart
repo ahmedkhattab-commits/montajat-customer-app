@@ -70,6 +70,7 @@ void main() {
   });
 
   test('stores verified session token only in secure storage', () async {
+    await CacheHelper.setSecuredString(ConstantKeys.fcmToken, 'device-token');
     final consumer = _FakeApiConsumer(
       response: http.Response(
         '{"success":true,"data":{"token":"secure-token",'
@@ -81,6 +82,11 @@ void main() {
 
     await repository.verifyOtp(mobile: '+966501234567', code: '1234');
 
+    expect(consumer.lastBody, {
+      'mobile': '+966501234567',
+      'code': '1234',
+      'token': 'device-token',
+    });
     expect(
       await CacheHelper.getSecuredString(ConstantKeys.accessToken),
       'secure-token',
@@ -94,6 +100,7 @@ void main() {
       ConstantKeys.accessToken,
       'secure-token',
     );
+    await CacheHelper.setSecuredString(ConstantKeys.fcmToken, 'device-token');
     await CacheHelper.setData(ConstantKeys.savePhoneToShared, '0500000000');
     final consumer = _FakeApiConsumer(
       response: http.Response('{"success":true,"data":{}}', 200),
@@ -102,11 +109,16 @@ void main() {
     await RemoteAuthRepository(consumer).logout();
 
     expect(consumer.lastPath, EndPoints.logout);
+    expect(consumer.lastBody, {'token': 'device-token'});
     expect(
       await CacheHelper.getSecuredString(ConstantKeys.accessToken),
       isEmpty,
     );
     expect(CacheHelper.getString(ConstantKeys.savePhoneToShared), isNull);
+    expect(
+      await CacheHelper.getSecuredString(ConstantKeys.fcmToken),
+      'device-token',
+    );
   });
 }
 

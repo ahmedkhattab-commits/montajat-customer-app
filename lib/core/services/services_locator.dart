@@ -9,6 +9,7 @@ import 'package:montajat_customer_app/core/api/http_consumer.dart';
 import 'package:montajat_customer_app/core/utils/app_constant.dart';
 import 'package:montajat_customer_app/features/categories/data/repositories/categories_repository.dart';
 import 'package:montajat_customer_app/features/home/data/repositories/home_repository.dart';
+import 'package:montajat_customer_app/features/home/data/repositories/brands_repository.dart';
 import 'package:montajat_customer_app/features/login/data/repositories/auth_repository.dart';
 import 'package:montajat_customer_app/features/products/data/repositories/products_repository.dart';
 import 'package:montajat_customer_app/features/products/data/repositories/product_details_repository.dart';
@@ -22,6 +23,7 @@ import 'package:montajat_customer_app/features/reports/data/repositories/reports
 import 'package:montajat_customer_app/features/returns/data/repositories/returns_repository.dart';
 import 'package:montajat_customer_app/features/reorder/data/repositories/reorder_repository.dart';
 import 'package:montajat_customer_app/features/registration/data/repositories/registration_repository.dart';
+import 'package:montajat_customer_app/features/notifications/data/repositories/notifications_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -39,6 +41,9 @@ abstract final class ServicesLocator {
       )
       ..registerLazySingleton<HomeRepository>(
         () => RemoteHomeRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<BrandsRepository>(
+        () => RemoteBrandsRepository(getIt<ApiConsumer>()),
       )
       ..registerLazySingleton<CategoriesRepository>(
         () => RemoteCategoriesRepository(getIt<ApiConsumer>()),
@@ -78,6 +83,9 @@ abstract final class ServicesLocator {
       )
       ..registerLazySingleton<RegistrationRepository>(
         () => RemoteRegistrationRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<NotificationsRepository>(
+        () => RemoteNotificationsRepository(getIt<ApiConsumer>()),
       )
       ..registerLazySingleton<FlutterSecureStorage>(
         () => const FlutterSecureStorage(

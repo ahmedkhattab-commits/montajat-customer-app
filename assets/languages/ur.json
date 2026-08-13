@@ -89,6 +89,9 @@
     "request_failed": "درخواست مکمل نہیں ہو سکی۔ دوبارہ کوشش کریں۔",
     "invalid_response": "سرور کا جواب درست نہیں ہے۔ دوبارہ کوشش کریں۔"
   },
+  "brands": {
+    "empty": "کوئی برانڈ دستیاب نہیں"
+  },
   "categories": {
     "title": "اقسام",
     "search_hint": "کوئی قسم تلاش کریں",
@@ -111,6 +114,12 @@
   },
   "products_listing": {
     "title": "مصنوعات",
+    "search_results": "تلاش کے نتائج",
+    "search_hint": "مصنوعات کے نام یا کوڈ سے تلاش کریں",
+    "scan_barcode": "پروڈکٹ بارکوڈ اسکین کریں",
+    "scan_title": "پروڈکٹ کوڈ اسکین کریں",
+    "scan_hint": "خودکار تلاش کے لیے کیمرہ بارکوڈ کی طرف کریں",
+    "toggle_flash": "فلیش آن یا آف کریں",
     "all": "سب",
     "filter_name": "فلٹر کا نام",
     "sort": "ترتیب",
@@ -124,7 +133,8 @@
     "complete_order": "آرڈر مکمل کریں ({count} مصنوعات)",
     "empty": "کوئی مماثل مصنوعات نہیں",
     "price_unavailable": "قیمت دستیاب نہیں",
-    "units_per_carton": "{count} یونٹس کا کارٹن"
+    "units_per_carton": "{count} یونٹس کا کارٹن",
+    "available_quantity": "دستیاب مقدار: {count}"
   },
   "product_details": {
     "title": "مصنوعات کی تفصیلات",
@@ -147,7 +157,8 @@
     "units": "{count} یونٹس فی کارٹن",
     "you_may_also_like": "آپ کو یہ بھی پسند آ سکتا ہے",
     "recommended_for_you": "آپ کے لیے تجویز کردہ",
-    "not_found": "مصنوعات نہیں ملی"
+    "not_found": "مصنوعات نہیں ملی",
+    "available_quantity": "دستیاب مقدار"
   },
   "profile": {
     "welcome": "خوش آمدید",
@@ -341,6 +352,12 @@
     "overdue": "دوبارہ آرڈر واجب ہے",
     "due_soon": "دوبارہ آرڈر جلد واجب ہے"
   },
+  "notifications": {
+    "title": "اطلاعات",
+    "read_all": "سب کو پڑھا ہوا نشان زد کریں",
+    "empty": "ابھی تک کوئی اطلاع نہیں",
+    "not_found": "اطلاع نہیں ملی"
+  },
   "returns": {
     "title": "Returns",
     "create": "New return request",
@@ -354,6 +371,11 @@
     "notes": "Notes",
     "notes_hint": "Add notes about this return",
     "select_order": "Select order",
+    "select_order_hint": "Select an eligible order",
+    "loading_orders": "Loading orders...",
+    "no_eligible_orders": "No orders are eligible for return",
+    "no_eligible_orders_hint": "Delivered orders within the return window appear here.",
+    "refresh": "Refresh",
     "choose_order_hint": "Select an order to view eligible products",
     "no_eligible_lines": "No products are eligible for return",
     "submit": "Submit return request",

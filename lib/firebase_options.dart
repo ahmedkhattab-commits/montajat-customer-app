@@ -50,18 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBi11S9B2LFJkR198lASCXHqFxdAsfSDyY',
-    appId: '1:534489298194:android:54e16c125518ddb5af6fcb',
-    messagingSenderId: '534489298194',
-    projectId: 'montagat-b2b',
-    storageBucket: 'montagat-b2b.firebasestorage.app',
+    apiKey: 'AIzaSyA9QOr9dFythERHBQzNdkuv1n9xZ6btaSk',
+    appId: '1:477019789720:android:6f23b69093e2c56046f3ed',
+    messagingSenderId: '477019789720',
+    projectId: 'muntajat-b2b-app',
+    storageBucket: 'muntajat-b2b-app.firebasestorage.app',
   );
+
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBHgby20SeUf_bLN85rwkUoN_Bf-cFaSbU',
-    appId: '1:534489298194:ios:504d573e38d3d134af6fcb',
-    messagingSenderId: '534489298194',
-    projectId: 'montagat-b2b',
-    storageBucket: 'montagat-b2b.firebasestorage.app',
-    iosBundleId: 'com.example.montajatCustomerApp',
+    apiKey: 'AIzaSyAMob1JxyaQYeiU4ltuVr0a5P7XA9oSOMA',
+    appId: '1:477019789720:ios:5d3f1c95f687b00646f3ed',
+    messagingSenderId: '477019789720',
+    projectId: 'muntajat-b2b-app',
+    storageBucket: 'muntajat-b2b-app.firebasestorage.app',
+    iosBundleId: 'com.beetleware.petscustomer',
   );
 }

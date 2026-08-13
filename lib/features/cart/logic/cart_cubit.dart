@@ -35,6 +35,42 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
+  Future<bool> addItem(String itemCode, {int quantity = 1}) async {
+    if (state.mutatingItemCode != null || quantity < 1) return false;
+    emit(state.copyWith(mutatingItemCode: itemCode, clearError: true));
+    try {
+      await _repository.addItem(itemCode: itemCode, quantity: quantity);
+      final cart = await _repository.getCart();
+      if (isClosed) return false;
+      emit(
+        state.copyWith(
+          cart: cart,
+          clearMutatingItem: true,
+          loadStatus: CartLoadStatus.success,
+        ),
+      );
+      return true;
+    } on CartException catch (error) {
+      if (isClosed) return false;
+      emit(
+        state.copyWith(
+          clearMutatingItem: true,
+          errorMessageKey: error.messageKey,
+        ),
+      );
+      return false;
+    } on FormatException {
+      if (isClosed) return false;
+      emit(
+        state.copyWith(
+          clearMutatingItem: true,
+          errorMessageKey: 'auth_errors.invalid_response',
+        ),
+      );
+      return false;
+    }
+  }
+
   Future<void> changeQuantity(String itemCode, int quantity) async {
     if (state.mutatingItemCode != null || quantity < 1) return;
     emit(state.copyWith(mutatingItemCode: itemCode, clearError: true));

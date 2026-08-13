@@ -10,13 +10,46 @@ class OffersScreenArguments {
   final List<HomeExpiryOfferModel> offers;
 }
 
-class OffersScreen extends StatelessWidget {
+class OffersScreen extends StatefulWidget {
   const OffersScreen({required this.arguments, super.key});
 
   final OffersScreenArguments arguments;
 
   @override
+  State<OffersScreen> createState() => _OffersScreenState();
+}
+
+class _OffersScreenState extends State<OffersScreen> {
+  static const _pageSize = 3;
+  final ScrollController _controller = ScrollController();
+  int _visibleCount = _pageSize;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(_loadNextPage);
+  }
+
+  @override
+  void dispose() {
+    _controller
+      ..removeListener(_loadNextPage)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _loadNextPage() {
+    if (!_controller.hasClients || _controller.position.extentAfter > 280) {
+      return;
+    }
+    final total = widget.arguments.offers.length;
+    if (_visibleCount >= total) return;
+    setState(() => _visibleCount = (_visibleCount + _pageSize).clamp(0, total));
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final visibleCount = _visibleCount.clamp(0, widget.arguments.offers.length);
     return Scaffold(
       key: const ValueKey('offers-screen'),
       backgroundColor: Colors.white,
@@ -38,13 +71,14 @@ class OffersScreen extends StatelessWidget {
         ),
       ),
       body: ListView.separated(
+        controller: _controller,
         key: const ValueKey('all-offers-list'),
         physics: const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 30.h),
-        itemCount: arguments.offers.length,
+        itemCount: visibleCount,
         separatorBuilder: (_, _) => SizedBox(height: 12.h),
         itemBuilder: (_, index) => ExpiryOfferBannerCard(
-          offer: arguments.offers[index],
+          offer: widget.arguments.offers[index],
           index: index,
           keyPrefix: 'all-expiry-offer',
         ),

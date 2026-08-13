@@ -11,6 +11,7 @@ class ProductListingItem {
     required this.availabilityLabel,
     required this.availabilityLabelEn,
     required this.isAvailable,
+    this.availableQuantity,
   });
 
   final String itemCode;
@@ -24,6 +25,7 @@ class ProductListingItem {
   final String availabilityLabel;
   final String availabilityLabelEn;
   final bool isAvailable;
+  final num? availableQuantity;
 
   String localizedName(String languageCode) {
     final preferred = languageCode == 'en' ? nameEn : name;
@@ -75,6 +77,16 @@ class ProductListingItem {
       isAvailable: _requiredBool(
         availability['can_order'],
         'product.availability.can_order',
+      ),
+      availableQuantity: _nullableFlexibleNum(
+        availability['available_quantity'] ??
+            availability['available_qty'] ??
+            availability['quantity'] ??
+            availability['available'] ??
+            json['available_quantity'] ??
+            json['available_qty'] ??
+            json['stock_quantity'],
+        'product.availability.available_quantity',
       ),
     );
   }
@@ -142,6 +154,16 @@ String? _nullableString(Object? value, String field) {
 num? _nullableNum(Object? value, String field) {
   if (value == null) return null;
   if (value is num) return value;
+  throw FormatException('$field must be a number or null');
+}
+
+num? _nullableFlexibleNum(Object? value, String field) {
+  if (value == null) return null;
+  if (value is num) return value;
+  if (value is String) {
+    final parsed = num.tryParse(value);
+    if (parsed != null) return parsed;
+  }
   throw FormatException('$field must be a number or null');
 }
 

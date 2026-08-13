@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "534489298194",
-    "project_id": "montagat-b2b",
-    "storage_bucket": "montagat-b2b.firebasestorage.app"
+    "project_number": "477019789720",
+    "project_id": "muntajat-b2b-app",
+    "storage_bucket": "muntajat-b2b-app.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:534489298194:android:54e16c125518ddb5af6fcb",
+        "mobilesdk_app_id": "1:477019789720:android:6f23b69093e2c56046f3ed",
         "android_client_info": {
-          "package_name": "com.example.montajat_customer_app"
+          "package_name": "com.beetleware.petscustomer"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBi11S9B2LFJkR198lASCXHqFxdAsfSDyY"
+          "current_key": "AIzaSyA9QOr9dFythERHBQzNdkuv1n9xZ6btaSk"
         }
       ],
       "services": {

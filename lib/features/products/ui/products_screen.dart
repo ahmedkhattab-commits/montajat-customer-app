@@ -14,6 +14,7 @@ import 'package:montajat_customer_app/features/profile/data/repositories/profile
 import 'package:montajat_customer_app/features/profile/data/models/profile_model.dart';
 import 'package:montajat_customer_app/features/cart/logic/cart_cubit.dart';
 import 'package:montajat_customer_app/features/cart/logic/cart_state.dart';
+import 'package:montajat_customer_app/features/products/ui/barcode_scanner_screen.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({required this.arguments, super.key});
@@ -48,6 +49,7 @@ class ProductsScreen extends StatelessWidget {
       body: BlocBuilder<ProductsCubit, ProductsState>(
         builder: (context, state) => Column(
           children: [
+            _ProductsSearchField(initialQuery: arguments.initialQuery),
             _ViewToolbar(layout: state.layout),
             Expanded(child: _ProductsContent(state: state)),
           ],
@@ -55,6 +57,81 @@ class ProductsScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class _ProductsSearchField extends StatefulWidget {
+  const _ProductsSearchField({this.initialQuery});
+
+  final String? initialQuery;
+
+  @override
+  State<_ProductsSearchField> createState() => _ProductsSearchFieldState();
+}
+
+class _ProductsSearchFieldState extends State<_ProductsSearchField> {
+  late final TextEditingController _controller = TextEditingController(
+    text: widget.initialQuery,
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _scanBarcode() async {
+    FocusScope.of(context).unfocus();
+    final code = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(builder: (_) => const BarcodeScannerScreen()),
+    );
+    if (!mounted || code == null || code.isEmpty) return;
+    _controller.text = code;
+    _controller.selection = TextSelection.collapsed(offset: code.length);
+    setState(() {});
+    await context.read<ProductsCubit>().search(code);
+  }
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.fromLTRB(20.w, 4.h, 20.w, 4.h),
+    child: TextField(
+      key: const ValueKey('products-search'),
+      controller: _controller,
+      autofocus: widget.initialQuery != null,
+      textInputAction: TextInputAction.search,
+      onSubmitted: context.read<ProductsCubit>().search,
+      decoration: InputDecoration(
+        hintText: context.tr('products_listing.search_hint'),
+        prefixIcon: IconButton(
+          tooltip: context.tr('products_listing.scan_barcode'),
+          onPressed: _scanBarcode,
+          icon: Icon(
+            Icons.qr_code_scanner_rounded,
+            color: AppColors.onboardingPrimary,
+            size: 24.sp,
+          ),
+        ),
+        suffixIcon: _controller.text.isEmpty
+            ? null
+            : IconButton(
+                onPressed: () {
+                  _controller.clear();
+                  setState(() {});
+                  context.read<ProductsCubit>().search('');
+                },
+                icon: const Icon(Icons.close_rounded),
+              ),
+        filled: true,
+        fillColor: const Color(0xFFF7F7F7),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      onChanged: (_) => setState(() {}),
+    ),
+  );
 }
 
 class _ViewToolbar extends StatelessWidget {

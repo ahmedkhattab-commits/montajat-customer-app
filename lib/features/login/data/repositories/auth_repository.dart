@@ -40,9 +40,14 @@ class RemoteAuthRepository implements AuthRepository {
     required String mobile,
     required String code,
   }) async {
+    final fcmToken = await CacheHelper.getSecuredString(ConstantKeys.fcmToken);
     final response = await _post(
       EndPoints.verifyOtp,
-      body: {'mobile': mobile, 'code': code},
+      body: {
+        'mobile': mobile,
+        'code': code,
+        if (fcmToken.isNotEmpty) 'token': fcmToken,
+      },
     );
     final json = _ensureSuccessful(response);
     final session = AuthSessionModel.fromJson(json, mobile: mobile);
@@ -63,9 +68,12 @@ class RemoteAuthRepository implements AuthRepository {
 
   @override
   Future<void> logout() async {
+    final fcmToken = await CacheHelper.getSecuredString(ConstantKeys.fcmToken);
     try {
       final response = await _apiConsumer
-          .post(EndPoints.logout, const {}, null)
+          .post(EndPoints.logout, {
+            if (fcmToken.isNotEmpty) 'token': fcmToken,
+          }, null)
           .timeout(const Duration(seconds: 20));
       _ensureSuccessful(response);
     } on TimeoutException {
@@ -76,6 +84,9 @@ class RemoteAuthRepository implements AuthRepository {
       // The server session may already be invalid; clear the local session.
     } finally {
       await CacheHelper.clearAllSecuredData();
+      if (fcmToken.isNotEmpty) {
+        await CacheHelper.setSecuredString(ConstantKeys.fcmToken, fcmToken);
+      }
       await CacheHelper.removeData(ConstantKeys.savePhoneToShared);
     }
   }

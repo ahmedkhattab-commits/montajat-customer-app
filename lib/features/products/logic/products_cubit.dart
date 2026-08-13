@@ -4,10 +4,13 @@ import 'package:montajat_customer_app/features/products/data/repositories/produc
 import 'package:montajat_customer_app/features/products/logic/products_state.dart';
 
 class ProductsCubit extends Cubit<ProductsState> {
-  ProductsCubit(this._repository, this._filter) : super(const ProductsState());
+  ProductsCubit(this._repository, this._filter)
+    : _query = _filter.initialQuery?.trim() ?? '',
+      super(const ProductsState());
 
   final ProductsRepository _repository;
   final ProductsScreenArguments _filter;
+  String _query;
 
   Future<void> loadProducts() async {
     if (state.loadStatus == ProductsLoadStatus.loading) return;
@@ -22,6 +25,7 @@ class ProductsCubit extends Cubit<ProductsState> {
       final page = await _repository.getProducts(
         filter: _filter,
         page: 1,
+        query: _query,
         sort: state.sort,
       );
       if (isClosed) return;
@@ -58,6 +62,7 @@ class ProductsCubit extends Cubit<ProductsState> {
       final page = await _repository.getProducts(
         filter: _filter,
         page: state.currentPage + 1,
+        query: _query,
         sort: state.sort,
       );
       if (isClosed) return;
@@ -80,6 +85,15 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   Future<void> sortByName() async {
     emit(state.copyWith(sort: 'name'));
+    await loadProducts();
+  }
+
+  Future<void> search(String query) async {
+    final value = query.trim();
+    if (_query == value && state.loadStatus == ProductsLoadStatus.success) {
+      return;
+    }
+    _query = value;
     await loadProducts();
   }
 

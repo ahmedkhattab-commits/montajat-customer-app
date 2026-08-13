@@ -39,7 +39,9 @@ class LanguageSelectionScreen extends StatelessWidget {
         if (state case LanguageSelectionSaved(:final selectedLanguageCode?)) {
           await context.setLocale(Locale(selectedLanguageCode));
           if (context.mounted) {
-            Navigator.of(context).pushReplacementNamed(Routes.onboarding);
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(Routes.onboarding, (_) => false);
           }
         } else if (state case LanguageSelectionFailure(:final messageKey)) {
           ScaffoldMessenger.of(

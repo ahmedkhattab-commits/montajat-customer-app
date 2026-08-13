@@ -89,6 +89,9 @@
     "request_failed": "Unable to complete the request. Please try again.",
     "invalid_response": "The server returned an invalid response. Please try again."
   },
+  "brands": {
+    "empty": "No brands available"
+  },
   "categories": {
     "title": "Categories",
     "search_hint": "Search for a category",
@@ -111,6 +114,12 @@
   },
   "products_listing": {
     "title": "Products",
+    "search_results": "Search results",
+    "search_hint": "Search by product name or code",
+    "scan_barcode": "Scan product barcode",
+    "scan_title": "Scan product code",
+    "scan_hint": "Point the camera at the barcode to search automatically",
+    "toggle_flash": "Toggle flash",
     "all": "All",
     "filter_name": "Filter name",
     "sort": "Sort",
@@ -124,7 +133,8 @@
     "complete_order": "Complete order ({count} products)",
     "empty": "No matching products",
     "price_unavailable": "Price unavailable",
-    "units_per_carton": "Carton of {count} units"
+    "units_per_carton": "Carton of {count} units",
+    "available_quantity": "Available quantity: {count}"
   },
   "product_details": {
     "title": "Product details",
@@ -147,7 +157,8 @@
     "units": "{count} units/carton",
     "you_may_also_like": "You may also like",
     "recommended_for_you": "Recommended for you",
-    "not_found": "Product not found"
+    "not_found": "Product not found",
+    "available_quantity": "Available quantity"
   },
   "profile": {
     "welcome": "Welcome",
@@ -341,6 +352,12 @@
     "overdue": "Reorder is due",
     "due_soon": "Reorder is due soon"
   },
+  "notifications": {
+    "title": "Notifications",
+    "read_all": "Mark all as read",
+    "empty": "No notifications yet",
+    "not_found": "Notification not found"
+  },
   "returns": {
     "title": "Returns",
     "create": "New return request",
@@ -354,6 +371,11 @@
     "notes": "Notes",
     "notes_hint": "Add notes about this return",
     "select_order": "Select order",
+    "select_order_hint": "Select an eligible order",
+    "loading_orders": "Loading orders...",
+    "no_eligible_orders": "No orders are eligible for return",
+    "no_eligible_orders_hint": "Delivered orders within the return window appear here.",
+    "refresh": "Refresh",
     "choose_order_hint": "Select an order to view eligible products",
     "no_eligible_lines": "No products are eligible for return",
     "submit": "Submit return request",

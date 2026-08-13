@@ -49,7 +49,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return BlocConsumer<OnboardingCubit, OnboardingState>(
       listener: (context, state) {
         if (state is OnboardingCompleted) {
-          Navigator.of(context).pushReplacementNamed(Routes.login);
+          Navigator.of(
+            context,
+          ).pushNamedAndRemoveUntil(Routes.login, (_) => false);
         } else if (state case OnboardingFailure(:final messageKey)) {
           ScaffoldMessenger.of(
             context,

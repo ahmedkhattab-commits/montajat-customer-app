@@ -45,6 +45,11 @@ class ProfileScreen extends StatelessWidget {
       Routes.returns,
     ),
     _ProfileMenuItem('reorder.title', Icons.replay_rounded, Routes.reorder),
+    _ProfileMenuItem(
+      'notifications.title',
+      Icons.notifications_outlined,
+      Routes.notifications,
+    ),
   ];
 
   @override

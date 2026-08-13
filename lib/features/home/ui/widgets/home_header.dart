@@ -110,9 +110,16 @@ class HomeHeader extends StatelessWidget {
 }
 
 class HomeSearchBar extends StatelessWidget {
-  const HomeSearchBar({required this.onSearchChanged, super.key});
+  const HomeSearchBar({
+    required this.onSearchChanged,
+    this.onSearchSubmitted,
+    this.onTap,
+    super.key,
+  });
 
   final ValueChanged<String> onSearchChanged;
+  final ValueChanged<String>? onSearchSubmitted;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -148,7 +155,12 @@ class HomeSearchBar extends StatelessWidget {
             child: TextField(
               key: const ValueKey('home-search'),
               textAlign: TextAlign.right,
+              readOnly: onTap != null,
+              showCursor: onTap == null,
+              onTap: onTap,
               onChanged: onSearchChanged,
+              onSubmitted: onSearchSubmitted,
+              textInputAction: TextInputAction.search,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: context.tr('home.search_hint'),
@@ -160,12 +172,16 @@ class HomeSearchBar extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsetsDirectional.only(end: 14.w),
-            child: Icon(
-              Icons.search_rounded,
-              color: const Color(0xFF9B9B9B),
-              size: 27.sp,
+          InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(24.r),
+            child: Padding(
+              padding: EdgeInsetsDirectional.only(end: 14.w),
+              child: Icon(
+                Icons.search_rounded,
+                color: const Color(0xFF9B9B9B),
+                size: 27.sp,
+              ),
             ),
           ),
         ],

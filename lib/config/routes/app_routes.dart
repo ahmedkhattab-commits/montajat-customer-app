@@ -14,6 +14,8 @@ import 'package:montajat_customer_app/features/home/logic/home_cubit.dart';
 import 'package:montajat_customer_app/features/home/data/repositories/home_repository.dart';
 import 'package:montajat_customer_app/features/home/ui/home_screen.dart';
 import 'package:montajat_customer_app/features/home/ui/brands_screen.dart';
+import 'package:montajat_customer_app/features/home/data/repositories/brands_repository.dart';
+import 'package:montajat_customer_app/features/home/logic/brands_cubit.dart';
 import 'package:montajat_customer_app/features/home/ui/offer_products_screen.dart';
 import 'package:montajat_customer_app/features/home/ui/offers_screen.dart';
 import 'package:montajat_customer_app/features/login/logic/login_cubit.dart';
@@ -69,6 +71,9 @@ import 'package:montajat_customer_app/features/reorder/ui/reorder_screen.dart';
 import 'package:montajat_customer_app/features/registration/data/repositories/registration_repository.dart';
 import 'package:montajat_customer_app/features/registration/logic/registration_cubit.dart';
 import 'package:montajat_customer_app/features/registration/ui/registration_screen.dart';
+import 'package:montajat_customer_app/features/notifications/data/repositories/notifications_repository.dart';
+import 'package:montajat_customer_app/features/notifications/logic/notifications_cubit.dart';
+import 'package:montajat_customer_app/features/notifications/ui/notifications_screen.dart';
 
 abstract final class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -157,7 +162,10 @@ abstract final class RouteGenerator {
         final arguments = settings.arguments as BrandsScreenArguments;
         return MaterialPageRoute<void>(
           settings: settings,
-          builder: (_) => BrandsScreen(arguments: arguments),
+          builder: (_) => BlocProvider(
+            create: (_) => BrandsCubit(getIt<BrandsRepository>())..loadBrands(),
+            child: BrandsScreen(arguments: arguments),
+          ),
         );
       case Routes.products:
         final arguments = settings.arguments as ProductsScreenArguments;
@@ -313,6 +321,15 @@ abstract final class RouteGenerator {
                 OrderDetailsCubit(getIt<OrdersRepository>(), orderNumber)
                   ..loadOrder(),
             child: OrderDetailsScreen(orderNumber: orderNumber),
+          ),
+        );
+      case Routes.notifications:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                NotificationsCubit(getIt<NotificationsRepository>())..load(),
+            child: const NotificationsScreen(),
           ),
         );
       default:

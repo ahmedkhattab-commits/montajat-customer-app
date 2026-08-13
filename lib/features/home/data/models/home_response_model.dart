@@ -263,6 +263,7 @@ class HomeApiProductModel extends HomeSectionItemModel {
     required this.availabilityLabel,
     required this.availabilityLabelEn,
     required this.canOrder,
+    this.availableQuantity,
   });
 
   final String itemCode;
@@ -276,6 +277,7 @@ class HomeApiProductModel extends HomeSectionItemModel {
   final String availabilityLabel;
   final String availabilityLabelEn;
   final bool canOrder;
+  final num? availableQuantity;
 
   String localizedName(String languageCode) =>
       languageCode == 'en' && nameEn.isNotEmpty ? nameEn : name;
@@ -318,8 +320,28 @@ class HomeApiProductModel extends HomeSectionItemModel {
         availability['can_order'],
         'product.availability.can_order',
       ),
+      availableQuantity: _optionalFlexibleNum(
+        availability['available_quantity'] ??
+            availability['available_qty'] ??
+            availability['quantity'] ??
+            availability['available'] ??
+            json['available_quantity'] ??
+            json['available_qty'] ??
+            json['stock_quantity'],
+        'product.availability.available_quantity',
+      ),
     );
   }
+}
+
+num? _optionalFlexibleNum(Object? value, String field) {
+  if (value == null) return null;
+  if (value is num) return value;
+  if (value is String) {
+    final parsed = num.tryParse(value);
+    if (parsed != null) return parsed;
+  }
+  throw FormatException('$field must be a number or null');
 }
 
 Map<String, dynamic> _requiredMap(Object? value, String field) {

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:montajat_customer_app/config/routes/routes.dart';
@@ -253,10 +254,7 @@ class _BrandSection extends StatelessWidget {
           actionKey: section.key,
           onShowAll: () => Navigator.of(context).pushNamed(
             Routes.brands,
-            arguments: BrandsScreenArguments(
-              title: _title(context, section),
-              brands: allBrands,
-            ),
+            arguments: BrandsScreenArguments(title: _title(context, section)),
           ),
         ),
         SizedBox(height: 12.h),
@@ -382,6 +380,23 @@ class _ProductCard extends StatelessWidget {
                     fontFamily: 'IBMPlexSansArabic',
                     fontSize: 10.sp,
                     color: const Color(0xFF8D8D8D),
+                  ),
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  context.tr(
+                    'products_listing.available_quantity',
+                    namedArgs: {
+                      'count': product.availableQuantity?.toString() ?? '--',
+                    },
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: 'IBMPlexSansArabic',
+                    fontSize: 10.sp,
+                    color: const Color(0xFF259B62),
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 SizedBox(height: 3.h),

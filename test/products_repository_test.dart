@@ -25,6 +25,7 @@ void main() {
     expect(result.items.single.itemCode, 'P16100035');
     expect(result.items.single.name, isNull);
     expect(result.items.single.price, isNull);
+    expect(result.items.single.availableQuantity, 25);
   });
 
   test('loads brand products using brand_code', () async {
@@ -60,6 +61,21 @@ void main() {
     expect(uri.queryParameters['category'], isNull);
     expect(uri.queryParameters['brand_code'], isNull);
   });
+
+  test('sends product name or item code in q', () async {
+    final consumer = _FakeApiConsumer(_response);
+    await RemoteProductsRepository(consumer).getProducts(
+      filter: const ProductsScreenArguments(
+        source: ProductsFilterSource.all,
+        filterValue: '',
+        title: 'Search results',
+      ),
+      page: 1,
+      query: 'P16100035',
+    );
+
+    expect(Uri.parse(consumer.lastPath!).queryParameters['q'], 'P16100035');
+  });
 }
 
 final _response = http.Response(
@@ -70,7 +86,7 @@ final _response = http.Response(
   '"price":{"unit_price":null,"unit_price_with_vat":null,'
   '"vat_rate":0.15,"currency":"SAR","price_list":1},'
   '"availability":{"status":"in_stock","label":"Available",'
-  '"label_en":"In stock","can_order":true}}],'
+  '"label_en":"In stock","can_order":true,"available_quantity":25}}],'
   '"meta":{"pagination":{"current_page":2,"per_page":20,'
   '"total":7957,"last_page":398,"has_more":true}}}',
   200,

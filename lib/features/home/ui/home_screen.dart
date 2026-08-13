@@ -8,6 +8,8 @@ import 'package:montajat_customer_app/features/home/ui/widgets/home_api_sections
 import 'package:montajat_customer_app/features/home/ui/widgets/home_bottom_navigation.dart';
 import 'package:montajat_customer_app/features/home/ui/widgets/home_header.dart';
 import 'package:montajat_customer_app/features/home/ui/widgets/home_shimmer.dart';
+import 'package:montajat_customer_app/config/routes/routes.dart';
+import 'package:montajat_customer_app/features/products/data/models/products_screen_arguments.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -32,7 +34,19 @@ class HomeScreen extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: HomeSearchBar(
-                  onSearchChanged: context.read<HomeCubit>().searchChanged,
+                  onSearchChanged: (_) {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      Routes.products,
+                      arguments: ProductsScreenArguments(
+                        source: ProductsFilterSource.all,
+                        filterValue: '',
+                        title: context.tr('products_listing.search_results'),
+                        initialQuery: '',
+                      ),
+                    );
+                  },
                 ),
               ),
               if (state.loadStatus == HomeLoadStatus.initial ||

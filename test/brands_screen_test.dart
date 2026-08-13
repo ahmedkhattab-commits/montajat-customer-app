@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:montajat_customer_app/config/routes/app_routes.dart';
 import 'package:montajat_customer_app/features/home/data/models/home_response_model.dart';
+import 'package:montajat_customer_app/features/home/data/repositories/brands_repository.dart';
+import 'package:montajat_customer_app/features/home/logic/brands_cubit.dart';
 import 'package:montajat_customer_app/features/home/ui/widgets/home_api_sections.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,13 +73,35 @@ void main() {
     }
     expect(find.byKey(const ValueKey('brand-products-7')), findsNothing);
 
-    await tester.tap(find.byKey(const ValueKey('show-all-new_brands')));
-    await tester.pumpAndSettle();
-
-    expect(find.byKey(const ValueKey('brands-screen')), findsOneWidget);
-    expect(find.byKey(const ValueKey('all-brands-grid')), findsOneWidget);
-    for (var code = 1; code <= 7; code++) {
-      expect(find.byKey(ValueKey('all-brand-products-$code')), findsOneWidget);
-    }
+    expect(find.byKey(const ValueKey('show-all-new_brands')), findsOneWidget);
   });
+
+  test('brands cubit exposes the next local page', () async {
+    final brands = List<HomeBrandModel>.generate(
+      24,
+      (index) => HomeBrandModel(
+        code: '${index + 1}',
+        name: 'Brand ${index + 1}',
+        imageUrl: 'https://example.com/${index + 1}.png',
+        productCount: index + 1,
+      ),
+    );
+
+    final cubit = BrandsCubit(_FakeBrandsRepository(brands));
+    await cubit.loadBrands();
+    addTearDown(cubit.close);
+
+    expect(cubit.state.visibleCount, 18);
+    cubit.loadNextPage();
+    expect(cubit.state.visibleCount, 24);
+  });
+}
+
+class _FakeBrandsRepository implements BrandsRepository {
+  const _FakeBrandsRepository(this.brands);
+
+  final List<HomeBrandModel> brands;
+
+  @override
+  Future<List<HomeBrandModel>> getBrands() async => brands;
 }

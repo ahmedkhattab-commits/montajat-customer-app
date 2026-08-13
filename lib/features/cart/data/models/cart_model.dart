@@ -38,9 +38,7 @@ class CartModel {
     final delivery = _map(data['meta'], 'cart.data.meta');
     return CartModel(
       items: items,
-      itemsCount:
-          _optionalInt(summary['item_count']) ??
-          items.fold(0, (total, item) => total + item.quantity),
+      itemsCount: items.fold(0, (total, item) => total + item.quantity),
       subtotal:
           _optionalNum(summary['subtotal']) ??
           items.fold<num>(0, (total, item) => total + item.lineTotal),
@@ -99,11 +97,11 @@ class CartItemModel {
     final itemCode = _optionalString(
       json['item_code'] ?? product['item_code'] ?? product['sku'],
     );
-    final name = _optionalString(json['name'] ?? product['name']);
     final quantity = _optionalInt(json['quantity']);
-    if (itemCode == null || name == null || quantity == null) {
+    if (itemCode == null || quantity == null) {
       throw const FormatException('Invalid cart item identity');
     }
+    final name = _optionalString(json['name'] ?? product['name']) ?? itemCode;
     final unitPrice =
         _optionalNum(
           json['unit_price'] ??

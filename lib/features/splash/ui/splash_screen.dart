@@ -37,13 +37,19 @@ class _SplashScreenState extends State<SplashScreen> {
           if (state case SplashCompleted(shouldOpenLanguageSelection: true)) {
             Navigator.of(
               context,
-            ).pushReplacementNamed(Routes.languageSelection);
+            ).pushNamedAndRemoveUntil(Routes.languageSelection, (_) => false);
           } else if (state case SplashCompleted(shouldOpenOnboarding: true)) {
-            Navigator.of(context).pushReplacementNamed(Routes.onboarding);
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(Routes.onboarding, (_) => false);
           } else if (state case SplashCompleted(shouldOpenLogin: true)) {
-            Navigator.of(context).pushReplacementNamed(Routes.login);
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(Routes.login, (_) => false);
           } else if (state case SplashCompleted(shouldOpenHome: true)) {
-            Navigator.of(context).pushReplacementNamed(Routes.home);
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(Routes.home, (_) => false);
           }
         },
         child: BlocBuilder<SplashCubit, SplashState>(

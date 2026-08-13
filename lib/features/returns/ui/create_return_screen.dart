@@ -45,6 +45,20 @@ class _CreateReturnScreenState extends State<CreateReturnScreen> {
                 DropdownButtonFormField<String>(
                   initialValue: state.selectedOrder,
                   decoration: _decoration(),
+                  hint: Text(
+                    context.tr(
+                      state.loading
+                          ? 'returns.loading_orders'
+                          : 'returns.select_order_hint',
+                    ),
+                  ),
+                  disabledHint: Text(
+                    context.tr(
+                      state.loading
+                          ? 'returns.loading_orders'
+                          : 'returns.no_eligible_orders',
+                    ),
+                  ),
                   items: state.orders
                       .map(
                         (e) => DropdownMenuItem(
@@ -53,12 +67,36 @@ class _CreateReturnScreenState extends State<CreateReturnScreen> {
                         ),
                       )
                       .toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      context.read<ReturnsCubit>().selectOrder(value);
-                    }
-                  },
+                  onChanged: state.loading || state.orders.isEmpty
+                      ? null
+                      : (value) {
+                          if (value != null) {
+                            context.read<ReturnsCubit>().selectOrder(value);
+                          }
+                        },
                 ),
+                if (!state.loading && state.orders.isEmpty)
+                  Padding(
+                    padding: EdgeInsets.only(top: 8.h),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            context.tr('returns.no_eligible_orders_hint'),
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 11.sp,
+                            ),
+                          ),
+                        ),
+                        TextButton.icon(
+                          onPressed: context.read<ReturnsCubit>().load,
+                          icon: const Icon(Icons.refresh_rounded, size: 18),
+                          label: Text(context.tr('returns.refresh')),
+                        ),
+                      ],
+                    ),
+                  ),
                 SizedBox(height: 18.h),
                 _Label('returns.reason'),
                 DropdownButtonFormField<Object>(

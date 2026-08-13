@@ -89,6 +89,9 @@
     "request_failed": "تعذر إكمال الطلب. حاول مرة أخرى.",
     "invalid_response": "استجابة الخادم غير صالحة. حاول مرة أخرى."
   },
+  "brands": {
+    "empty": "لا توجد علامات تجارية"
+  },
   "categories": {
     "title": "التصنيفات",
     "search_hint": "ابحث عن تصنيف معين",
@@ -111,6 +114,12 @@
   },
   "products_listing": {
     "title": "المنتجات",
+    "search_results": "نتائج البحث",
+    "search_hint": "ابحث باسم المنتج أو كوده",
+    "scan_barcode": "مسح باركود المنتج",
+    "scan_title": "مسح كود المنتج",
+    "scan_hint": "وجّه الكاميرا نحو الباركود ليتم البحث تلقائيًا",
+    "toggle_flash": "تشغيل أو إيقاف الفلاش",
     "all": "الكل",
     "filter_name": "اسم التصنيف",
     "sort": "ترتيب",
@@ -124,7 +133,8 @@
     "complete_order": "({count} منتجات) إتمام الطلب",
     "empty": "لا توجد منتجات مطابقة",
     "price_unavailable": "السعر غير متوفر",
-    "units_per_carton": "كرتون {count} حبة"
+    "units_per_carton": "كرتون {count} حبة",
+    "available_quantity": "الكمية المتاحة: {count}"
   },
   "product_details": {
     "title": "تفاصيل المنتج",
@@ -147,7 +157,8 @@
     "units": "كرتون/{count} حبة",
     "you_may_also_like": "قد يعجبك أيضاً",
     "recommended_for_you": "منتجات مقترحة لك",
-    "not_found": "المنتج غير موجود"
+    "not_found": "المنتج غير موجود",
+    "available_quantity": "الكمية المتاحة"
   },
   "profile": {
     "welcome": "مرحباً بك",
@@ -341,6 +352,12 @@
     "overdue": "موعد إعادة الطلب مستحق",
     "due_soon": "موعد إعادة الطلب قريب"
   },
+  "notifications": {
+    "title": "الإشعارات",
+    "read_all": "تحديد الكل كمقروء",
+    "empty": "لا توجد إشعارات حتى الآن",
+    "not_found": "الإشعار غير موجود"
+  },
   "returns": {
     "title": "المرتجعات",
     "create": "طلب مرتجع جديد",
@@ -354,6 +371,11 @@
     "notes": "ملاحظات",
     "notes_hint": "أضف أي ملاحظات خاصة بالمرتجع",
     "select_order": "اختر الطلب",
+    "select_order_hint": "اختر طلبًا مؤهلًا للإرجاع",
+    "loading_orders": "جاري تحميل الطلبات...",
+    "no_eligible_orders": "لا توجد طلبات مؤهلة للإرجاع",
+    "no_eligible_orders_hint": "تظهر هنا الطلبات المسلّمة والمؤهلة خلال فترة الإرجاع.",
+    "refresh": "تحديث",
     "choose_order_hint": "اختر طلبًا لعرض المنتجات المؤهلة للإرجاع",
     "no_eligible_lines": "لا توجد منتجات مؤهلة للإرجاع في هذا الطلب",
     "submit": "إرسال طلب المرتجع",
