@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:montajat_customer_app/features/home/data/repositories/brands_repository.dart';
 import 'package:montajat_customer_app/features/home/logic/brands_state.dart';
@@ -7,7 +5,8 @@ import 'package:montajat_customer_app/features/home/logic/brands_state.dart';
 class BrandsCubit extends Cubit<BrandsState> {
   BrandsCubit(this._repository) : super(const BrandsState());
 
-  static const pageSize = 18;
+  static const pageSize = 50;
+  static const maxLimit = 100;
   final BrandsRepository _repository;
 
   Future<void> loadBrands() => _fetch(isRefresh: false);
@@ -29,12 +28,13 @@ class BrandsCubit extends Cubit<BrandsState> {
       ),
     );
     try {
-      final brands = await _repository.getBrands();
+      final brands = await _repository.getBrands(limit: pageSize);
       if (isClosed) return;
       emit(
         state.copyWith(
           brands: brands,
-          visibleCount: math.min(pageSize, brands.length),
+          hasMore: brands.length >= pageSize && brands.length < maxLimit,
+          isLoadingMore: false,
           loadStatus: BrandsLoadStatus.success,
           clearError: true,
         ),
@@ -59,14 +59,30 @@ class BrandsCubit extends Cubit<BrandsState> {
   }
 
   void loadNextPage() {
-    if (isClosed || !state.hasMore) return;
-    emit(
-      state.copyWith(
-        visibleCount: math.min(
-          state.visibleCount + pageSize,
-          state.brands.length,
+    if (isClosed || !state.hasMore || state.isLoadingMore) return;
+    _loadMore();
+  }
+
+  Future<void> _loadMore() async {
+    emit(state.copyWith(isLoadingMore: true, clearError: true));
+    try {
+      final nextLimit = (state.brands.length + pageSize).clamp(
+        pageSize,
+        maxLimit,
+      );
+      final brands = await _repository.getBrands(limit: nextLimit);
+      if (isClosed) return;
+      emit(
+        state.copyWith(
+          brands: brands,
+          hasMore: brands.length >= nextLimit && nextLimit < maxLimit,
+          isLoadingMore: false,
+          clearError: true,
         ),
-      ),
-    );
+      );
+    } on Object {
+      if (isClosed) return;
+      emit(state.copyWith(isLoadingMore: false));
+    }
   }
 }

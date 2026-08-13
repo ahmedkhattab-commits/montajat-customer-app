@@ -76,9 +76,9 @@ void main() {
     expect(find.byKey(const ValueKey('show-all-new_brands')), findsOneWidget);
   });
 
-  test('brands cubit exposes the next local page', () async {
+  test('brands cubit requests the next API limit', () async {
     final brands = List<HomeBrandModel>.generate(
-      24,
+      86,
       (index) => HomeBrandModel(
         code: '${index + 1}',
         name: 'Brand ${index + 1}',
@@ -87,21 +87,30 @@ void main() {
       ),
     );
 
-    final cubit = BrandsCubit(_FakeBrandsRepository(brands));
+    final repository = _FakeBrandsRepository(brands);
+    final cubit = BrandsCubit(repository);
     await cubit.loadBrands();
     addTearDown(cubit.close);
 
-    expect(cubit.state.visibleCount, 18);
+    expect(cubit.state.brands.length, 50);
     cubit.loadNextPage();
-    expect(cubit.state.visibleCount, 24);
+    await Future<void>.delayed(Duration.zero);
+    expect(cubit.state.brands.length, 86);
+    expect(cubit.state.hasMore, isFalse);
+    expect(cubit.state.isLoadingMore, isFalse);
+    expect(repository.requestedLimits, [50, 100]);
   });
 }
 
 class _FakeBrandsRepository implements BrandsRepository {
-  const _FakeBrandsRepository(this.brands);
+  _FakeBrandsRepository(this.brands);
 
   final List<HomeBrandModel> brands;
+  final List<int> requestedLimits = [];
 
   @override
-  Future<List<HomeBrandModel>> getBrands() async => brands;
+  Future<List<HomeBrandModel>> getBrands({required int limit}) async {
+    requestedLimits.add(limit);
+    return brands.take(limit).toList(growable: false);
+  }
 }

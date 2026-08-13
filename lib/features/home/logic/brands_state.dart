@@ -5,30 +5,29 @@ enum BrandsLoadStatus { initial, loading, refreshing, success, failure }
 class BrandsState {
   const BrandsState({
     this.brands = const [],
-    this.visibleCount = 0,
+    this.hasMore = true,
+    this.isLoadingMore = false,
     this.loadStatus = BrandsLoadStatus.initial,
     this.errorMessageKey,
   });
 
   final List<HomeBrandModel> brands;
-  final int visibleCount;
+  final bool hasMore;
+  final bool isLoadingMore;
   final BrandsLoadStatus loadStatus;
   final String? errorMessageKey;
 
-  List<HomeBrandModel> get visibleBrands =>
-      brands.take(visibleCount).toList(growable: false);
-
-  bool get hasMore => visibleCount < brands.length;
-
   BrandsState copyWith({
     List<HomeBrandModel>? brands,
-    int? visibleCount,
+    bool? hasMore,
+    bool? isLoadingMore,
     BrandsLoadStatus? loadStatus,
     String? errorMessageKey,
     bool clearError = false,
   }) => BrandsState(
     brands: brands ?? this.brands,
-    visibleCount: visibleCount ?? this.visibleCount,
+    hasMore: hasMore ?? this.hasMore,
+    isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     loadStatus: loadStatus ?? this.loadStatus,
     errorMessageKey: clearError
         ? null

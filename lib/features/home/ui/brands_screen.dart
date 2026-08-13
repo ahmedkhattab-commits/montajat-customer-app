@@ -120,17 +120,22 @@ class _BrandsScreenState extends State<BrandsScreen> {
       key: const ValueKey('all-brands-grid'),
       physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.fromLTRB(24.w, 14.h, 24.w, 30.h),
-      itemCount: state.visibleBrands.length,
+      itemCount: state.brands.length + (state.isLoadingMore ? 1 : 0),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         crossAxisSpacing: 10.w,
         mainAxisSpacing: 10.h,
         childAspectRatio: 120 / 90,
       ),
-      itemBuilder: (_, index) => BrandCard(
-        brand: state.visibleBrands[index],
-        keyPrefix: 'all-brand-products',
-      ),
+      itemBuilder: (_, index) {
+        if (index == state.brands.length) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return BrandCard(
+          brand: state.brands[index],
+          keyPrefix: 'all-brand-products',
+        );
+      },
     );
   }
 }

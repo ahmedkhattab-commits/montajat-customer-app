@@ -265,22 +265,34 @@ class _ProductsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
+    return CustomScrollView(
       key: const ValueKey('products-grid'),
-      padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 18.h),
-      itemCount: products.length + (isLoadingMore ? 2 : 0),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12.w,
-        mainAxisSpacing: 10.h,
-        childAspectRatio: 0.58,
-      ),
-      itemBuilder: (_, index) {
-        if (index >= products.length) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        return ProductListingCard(product: products[index], isGrid: true);
-      },
+      slivers: [
+        SliverPadding(
+          padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 18.h),
+          sliver: SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12.w,
+              mainAxisSpacing: 10.h,
+              childAspectRatio: 0.58,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (_, index) =>
+                  ProductListingCard(product: products[index], isGrid: true),
+              childCount: products.length,
+            ),
+          ),
+        ),
+        if (isLoadingMore)
+          SliverToBoxAdapter(
+            child: SizedBox(
+              key: const ValueKey('products-pagination-loader'),
+              height: 64.h,
+              child: const Center(child: CircularProgressIndicator()),
+            ),
+          ),
+      ],
     );
   }
 }

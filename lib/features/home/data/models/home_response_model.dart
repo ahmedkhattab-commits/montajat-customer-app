@@ -27,8 +27,66 @@ class HomeResponseModel {
     );
   }
 
-  HomeResponseModel withExpiryOffers(List<HomeExpiryOfferModel> offers) =>
-      HomeResponseModel(sections: sections, expiryOffers: offers);
+  HomeResponseModel withExpiryOffers(List<HomeExpiryOfferModel> offers) {
+    if (offers.isEmpty ||
+        sections.any((item) => item.key == 'offers_for_you')) {
+      return HomeResponseModel(sections: sections, expiryOffers: offers);
+    }
+
+    final offersSection = HomeSectionModel(
+      key: 'offers_for_you',
+      type: HomeSectionType.banners,
+      title: 'عروض لك',
+      titleEn: 'Offers for you',
+      items: const [],
+    );
+    final updatedSections = List<HomeSectionModel>.of(sections);
+    final discountsIndex = updatedSections.indexWhere(
+      (item) => item.key == 'discounts',
+    );
+    updatedSections.insert(
+      discountsIndex == -1 ? updatedSections.length : discountsIndex,
+      offersSection,
+    );
+    return HomeResponseModel(sections: updatedSections, expiryOffers: offers);
+  }
+
+  HomeResponseModel withBanners(List<HomeBannerModel> banners) {
+    final bannerSection = HomeSectionModel(
+      key: 'hero_banners',
+      type: HomeSectionType.banners,
+      title: null,
+      titleEn: null,
+      items: banners,
+    );
+    final updatedSections = <HomeSectionModel>[];
+    var inserted = false;
+    for (final section in sections) {
+      if (section.key == 'hero_banners') {
+        if (!inserted) {
+          updatedSections.add(bannerSection);
+          inserted = true;
+        }
+        continue;
+      }
+      updatedSections.add(section);
+    }
+    if (!inserted) updatedSections.insert(0, bannerSection);
+    return HomeResponseModel(
+      sections: updatedSections,
+      expiryOffers: expiryOffers,
+    );
+  }
+
+  static List<HomeBannerModel> bannersFromJson(Map<String, dynamic> json) {
+    if (json['success'] != true) {
+      throw const FormatException('Unsuccessful banners response');
+    }
+    final rawBanners = _requiredList(json['data'], 'data');
+    return rawBanners
+        .map((value) => HomeBannerModel.fromJson(_requiredMap(value, 'data[]')))
+        .toList(growable: false);
+  }
 
   static List<HomeExpiryOfferModel> expiryOffersFromJson(
     Map<String, dynamic> json,

@@ -9,9 +9,19 @@ import 'package:montajat_customer_app/core/utils/app_colors_white_theme.dart';
 import 'package:montajat_customer_app/config/routes/routes.dart';
 import 'package:montajat_customer_app/features/cart/logic/cart_cubit.dart';
 import 'package:montajat_customer_app/features/cart/logic/cart_state.dart';
+import 'package:montajat_customer_app/core/services/services_locator.dart';
+import 'package:montajat_customer_app/features/home/data/repositories/home_header_repository.dart';
 
-class HomeHeader extends StatelessWidget {
+class HomeHeader extends StatefulWidget {
   const HomeHeader({super.key});
+
+  @override
+  State<HomeHeader> createState() => _HomeHeaderState();
+}
+
+class _HomeHeaderState extends State<HomeHeader> {
+  late final Future<HomeHeaderModel> _header = getIt<HomeHeaderRepository>()
+      .getHeader();
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +53,22 @@ class HomeHeader extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        context.tr('home.store_name'),
-                        textDirection: ui.TextDirection.rtl,
-                        textAlign: TextAlign.right,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'IBMPlexSansArabic',
-                          fontSize: 17.sp,
-                          fontWeight: FontWeight.w700,
+                      FutureBuilder<HomeHeaderModel>(
+                        future: _header,
+                        builder: (context, snapshot) => Text(
+                          snapshot.data?.storeName ??
+                              context.tr('home.store_name'),
+                          key: const ValueKey('home-store-name'),
+                          textDirection: ui.TextDirection.rtl,
+                          textAlign: TextAlign.right,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: 'IBMPlexSansArabic',
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                       SizedBox(height: 2.h),
@@ -68,16 +83,22 @@ class HomeHeader extends StatelessWidget {
                           ),
                           SizedBox(width: 5.w),
                           Flexible(
-                            child: Text(
-                              context.tr('home.address'),
-                              textDirection: ui.TextDirection.rtl,
-                              textAlign: TextAlign.right,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.9),
-                                fontFamily: 'IBMPlexSansArabic',
-                                fontSize: 12.sp,
+                            child: FutureBuilder<HomeHeaderModel>(
+                              future: _header,
+                              builder: (context, snapshot) => Text(
+                                snapshot.data?.address.isNotEmpty == true
+                                    ? snapshot.data!.address
+                                    : context.tr('home.address'),
+                                key: const ValueKey('home-store-address'),
+                                textDirection: ui.TextDirection.rtl,
+                                textAlign: TextAlign.right,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.9),
+                                  fontFamily: 'IBMPlexSansArabic',
+                                  fontSize: 12.sp,
+                                ),
                               ),
                             ),
                           ),

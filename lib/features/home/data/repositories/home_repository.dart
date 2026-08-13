@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:montajat_customer_app/core/api/api_consumer.dart';
 import 'package:montajat_customer_app/core/api/end_points.dart';
@@ -22,11 +21,14 @@ class RemoteHomeRepository implements HomeRepository {
       final responses = await Future.wait([
         _apiConsumer.get(EndPoints.home, null),
         _apiConsumer.get(EndPoints.expiryOffers, null),
+        _apiConsumer.get(EndPoints.banners, null),
       ]).timeout(const Duration(seconds: 20));
       final homeResponse = responses[0];
       final offersResponse = responses[1];
+      final bannersResponse = responses[2];
       final homeJson = _decode(homeResponse.body);
       final offersJson = _decode(offersResponse.body);
+      final bannersJson = _decode(bannersResponse.body);
 
       if (!_isSuccessful(homeResponse, homeJson)) {
         throw HomeException(_errorKey(homeResponse.statusCode));
@@ -34,25 +36,14 @@ class RemoteHomeRepository implements HomeRepository {
       if (!_isSuccessful(offersResponse, offersJson)) {
         throw HomeException(_errorKey(offersResponse.statusCode));
       }
-
-      if (kDebugMode) {
-        final data = homeJson['data'];
-        final sections = data is Map<String, dynamic> ? data['sections'] : null;
-        final banners = sections is List
-            ? sections
-                  .where(
-                    (section) =>
-                        section is Map<String, dynamic> &&
-                        section['type'] == 'banners',
-                  )
-                  .toList(growable: false)
-            : const [];
-        debugPrint('Banners response: ${jsonEncode(banners)}');
+      if (!_isSuccessful(bannersResponse, bannersJson)) {
+        throw HomeException(_errorKey(bannersResponse.statusCode));
       }
 
       final home = HomeResponseModel.fromJson(homeJson);
       final offers = HomeResponseModel.expiryOffersFromJson(offersJson);
-      return home.withExpiryOffers(offers);
+      final banners = HomeResponseModel.bannersFromJson(bannersJson);
+      return home.withBanners(banners).withExpiryOffers(offers);
     } on TimeoutException {
       throw const HomeException('auth_errors.timeout');
     } on http.ClientException {

@@ -34,6 +34,7 @@ class ProfileScreen extends StatelessWidget {
       Icons.bar_chart_rounded,
       Routes.reports,
     ),
+    _ProfileMenuItem('insights.title', Icons.insights_rounded, Routes.insights),
     _ProfileMenuItem(
       'profile.financial',
       Icons.account_balance_wallet_outlined,

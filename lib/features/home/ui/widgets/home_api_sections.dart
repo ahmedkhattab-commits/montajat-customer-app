@@ -6,7 +6,6 @@ import 'package:montajat_customer_app/config/routes/routes.dart';
 import 'package:montajat_customer_app/core/utils/app_colors_white_theme.dart';
 import 'package:montajat_customer_app/features/home/data/models/home_response_model.dart';
 import 'package:montajat_customer_app/features/home/ui/brands_screen.dart';
-import 'package:montajat_customer_app/features/home/ui/offers_screen.dart';
 import 'package:montajat_customer_app/features/home/ui/widgets/brand_card.dart';
 import 'package:montajat_customer_app/features/home/ui/widgets/expiry_offer_banner_card.dart';
 import 'package:montajat_customer_app/features/home/ui/widgets/home_section_header.dart';
@@ -53,10 +52,7 @@ class HomeExpiryOffersSection extends StatelessWidget {
         HomeSectionHeader(
           title: _title(context, section),
           actionKey: 'home.offers_for_you',
-          onShowAll: () => Navigator.of(context).pushNamed(
-            Routes.offers,
-            arguments: OffersScreenArguments(offers: offers),
-          ),
+          onShowAll: () => Navigator.of(context).pushNamed(Routes.offers),
         ),
         SizedBox(height: 10.h),
         ...List.generate(visibleOffers.length, (index) {
@@ -64,7 +60,6 @@ class HomeExpiryOffersSection extends StatelessWidget {
             padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 10.h),
             child: ExpiryOfferBannerCard(
               offer: visibleOffers[index],
-              index: index,
               keyPrefix: 'home-expiry-offer',
             ),
           );

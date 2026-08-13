@@ -16,6 +16,8 @@ import 'package:montajat_customer_app/features/home/ui/home_screen.dart';
 import 'package:montajat_customer_app/features/home/ui/brands_screen.dart';
 import 'package:montajat_customer_app/features/home/data/repositories/brands_repository.dart';
 import 'package:montajat_customer_app/features/home/logic/brands_cubit.dart';
+import 'package:montajat_customer_app/features/home/data/repositories/offers_repository.dart';
+import 'package:montajat_customer_app/features/home/logic/offers_cubit.dart';
 import 'package:montajat_customer_app/features/home/ui/offer_products_screen.dart';
 import 'package:montajat_customer_app/features/home/ui/offers_screen.dart';
 import 'package:montajat_customer_app/features/login/logic/login_cubit.dart';
@@ -74,6 +76,9 @@ import 'package:montajat_customer_app/features/registration/ui/registration_scre
 import 'package:montajat_customer_app/features/notifications/data/repositories/notifications_repository.dart';
 import 'package:montajat_customer_app/features/notifications/logic/notifications_cubit.dart';
 import 'package:montajat_customer_app/features/notifications/ui/notifications_screen.dart';
+import 'package:montajat_customer_app/features/insights/data/repositories/insights_repository.dart';
+import 'package:montajat_customer_app/features/insights/logic/insights_cubit.dart';
+import 'package:montajat_customer_app/features/insights/ui/insights_screen.dart';
 
 abstract final class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -153,10 +158,12 @@ abstract final class RouteGenerator {
           builder: (_) => OfferProductsScreen(arguments: arguments),
         );
       case Routes.offers:
-        final arguments = settings.arguments as OffersScreenArguments;
         return MaterialPageRoute<void>(
           settings: settings,
-          builder: (_) => OffersScreen(arguments: arguments),
+          builder: (_) => BlocProvider(
+            create: (_) => OffersCubit(getIt<OffersRepository>())..loadOffers(),
+            child: const OffersScreen(),
+          ),
         );
       case Routes.brands:
         final arguments = settings.arguments as BrandsScreenArguments;
@@ -330,6 +337,14 @@ abstract final class RouteGenerator {
             create: (_) =>
                 NotificationsCubit(getIt<NotificationsRepository>())..load(),
             child: const NotificationsScreen(),
+          ),
+        );
+      case Routes.insights:
+        return MaterialPageRoute<void>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => InsightsCubit(getIt<InsightsRepository>())..load(),
+            child: const InsightsScreen(),
           ),
         );
       default:

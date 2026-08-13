@@ -1,86 +1,115 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:montajat_customer_app/features/home/data/models/home_response_model.dart';
+import 'package:montajat_customer_app/features/home/logic/offers_cubit.dart';
+import 'package:montajat_customer_app/features/home/logic/offers_state.dart';
 import 'package:montajat_customer_app/features/home/ui/widgets/expiry_offer_banner_card.dart';
 
-class OffersScreenArguments {
-  const OffersScreenArguments({required this.offers});
+class OffersScreen extends StatelessWidget {
+  const OffersScreen({super.key});
 
-  final List<HomeExpiryOfferModel> offers;
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    key: const ValueKey('offers-screen'),
+    backgroundColor: Colors.white,
+    appBar: AppBar(
+      toolbarHeight: 74.h,
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.black,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      centerTitle: true,
+      leading: const BackButton(),
+      title: Text(
+        context.tr('home.offers_for_you'),
+        style: TextStyle(
+          fontFamily: 'IBMPlexSansArabic',
+          fontSize: 20.sp,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    ),
+    body: BlocBuilder<OffersCubit, OffersState>(
+      builder: (context, state) => _OffersContent(state: state),
+    ),
+  );
 }
 
-class OffersScreen extends StatefulWidget {
-  const OffersScreen({required this.arguments, super.key});
+class _OffersContent extends StatelessWidget {
+  const _OffersContent({required this.state});
 
-  final OffersScreenArguments arguments;
-
-  @override
-  State<OffersScreen> createState() => _OffersScreenState();
-}
-
-class _OffersScreenState extends State<OffersScreen> {
-  static const _pageSize = 3;
-  final ScrollController _controller = ScrollController();
-  int _visibleCount = _pageSize;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(_loadNextPage);
-  }
-
-  @override
-  void dispose() {
-    _controller
-      ..removeListener(_loadNextPage)
-      ..dispose();
-    super.dispose();
-  }
-
-  void _loadNextPage() {
-    if (!_controller.hasClients || _controller.position.extentAfter > 280) {
-      return;
-    }
-    final total = widget.arguments.offers.length;
-    if (_visibleCount >= total) return;
-    setState(() => _visibleCount = (_visibleCount + _pageSize).clamp(0, total));
-  }
+  final OffersState state;
 
   @override
   Widget build(BuildContext context) {
-    final visibleCount = _visibleCount.clamp(0, widget.arguments.offers.length);
-    return Scaffold(
-      key: const ValueKey('offers-screen'),
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        toolbarHeight: 74.h,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        centerTitle: true,
-        leading: const BackButton(),
-        title: Text(
-          context.tr('home.offers_for_you'),
-          style: TextStyle(
-            fontFamily: 'IBMPlexSansArabic',
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-      body: ListView.separated(
-        controller: _controller,
-        key: const ValueKey('all-offers-list'),
+    if (state.loadStatus == OffersLoadStatus.initial ||
+        state.loadStatus == OffersLoadStatus.loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (state.loadStatus == OffersLoadStatus.failure) {
+      return ListView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 30.h),
-        itemCount: visibleCount,
-        separatorBuilder: (_, _) => SizedBox(height: 12.h),
-        itemBuilder: (_, index) => ExpiryOfferBannerCard(
-          offer: widget.arguments.offers[index],
-          index: index,
-          keyPrefix: 'all-expiry-offer',
+        children: [
+          SizedBox(height: 260.h),
+          Center(
+            child: Column(
+              children: [
+                Text(
+                  context.tr(
+                    state.errorMessageKey ?? 'auth_errors.request_failed',
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                IconButton(
+                  onPressed: context.read<OffersCubit>().loadOffers,
+                  icon: const Icon(Icons.refresh_rounded),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    }
+    if (state.items.isEmpty) {
+      return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          SizedBox(height: 260.h),
+          Center(child: Text(context.tr('offers.empty'))),
+        ],
+      );
+    }
+
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.extentAfter < 240) {
+          context.read<OffersCubit>().loadMore();
+        }
+        return false;
+      },
+      child: RefreshIndicator(
+        color: const Color(0xFF4F86C6),
+        onRefresh: context.read<OffersCubit>().refreshOffers,
+        child: ListView.separated(
+          key: const ValueKey('all-offers-list'),
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 30.h),
+          itemCount: state.items.length + (state.isLoadingMore ? 1 : 0),
+          separatorBuilder: (_, _) => SizedBox(height: 12.h),
+          itemBuilder: (_, index) {
+            if (index == state.items.length) {
+              return SizedBox(
+                key: const ValueKey('offers-pagination-loader'),
+                height: 56.h,
+                child: const Center(child: CircularProgressIndicator()),
+              );
+            }
+            return ExpiryOfferBannerCard(
+              offer: state.items[index],
+              keyPrefix: 'all-expiry-offer',
+            );
+          },
         ),
       ),
     );

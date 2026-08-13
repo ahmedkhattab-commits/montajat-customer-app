@@ -89,6 +89,9 @@
     "request_failed": "درخواست مکمل نہیں ہو سکی۔ دوبارہ کوشش کریں۔",
     "invalid_response": "سرور کا جواب درست نہیں ہے۔ دوبارہ کوشش کریں۔"
   },
+  "offers": {
+    "empty": "کوئی پیشکش دستیاب نہیں"
+  },
   "brands": {
     "empty": "کوئی برانڈ دستیاب نہیں"
   },
@@ -299,6 +302,31 @@
     "aging_61_90": "61 سے 90 دن",
     "aging_over_90": "90 دن سے زیادہ",
     "aging_90_plus": "90 دن سے زیادہ"
+  },
+  "insights": {
+    "title": "اعداد و شمار ڈیش بورڈ",
+    "period": "رپورٹنگ کی مدت",
+    "filter_by_date": "تاریخ کے لحاظ سے فلٹر کریں",
+    "select_period": "تاریخ کی حد منتخب کریں",
+    "apply": "لاگو کریں",
+    "cancel": "منسوخ کریں",
+    "total_spend": "کل خریداری",
+    "outstanding": "واجب الادا",
+    "invoices": "انوائسز",
+    "average_invoice": "اوسط انوائس",
+    "total_quantity": "کل مقدار",
+    "distinct_items": "مختلف اشیاء",
+    "monthly_sales": "ماہانہ فروخت",
+    "top_items": "سب سے زیادہ خریدی گئی اشیاء",
+    "top_brands": "بہترین برانڈز",
+    "top_categories": "بہترین زمرے",
+    "returns": "واپسی کا خلاصہ",
+    "returned_value": "واپسی کی قیمت",
+    "return_rate": "واپسی کی شرح",
+    "credit_notes": "کریڈٹ نوٹس",
+    "units": "یونٹس",
+    "purchases": "خریداری",
+    "no_data": "کوئی ڈیٹا نہیں"
   },
   "reports": {
     "title": "رپورٹس",

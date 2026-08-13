@@ -7,10 +7,9 @@ import 'package:montajat_customer_app/features/products/data/models/product_list
 import 'package:montajat_customer_app/features/products/ui/widgets/product_listing_card.dart';
 
 class OfferProductsArguments {
-  const OfferProductsArguments({required this.offer, required this.imageAsset});
+  const OfferProductsArguments({required this.offer});
 
   final HomeExpiryOfferModel offer;
-  final String imageAsset;
 }
 
 class OfferProductsScreen extends StatelessWidget {
@@ -48,17 +47,15 @@ class OfferProductsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(7.r),
               child: AspectRatio(
                 aspectRatio: 380 / 102,
-                child: offer.imageUrl == null
-                    ? Image.asset(arguments.imageAsset, fit: BoxFit.cover)
+                child: offer.imageUrl == null || offer.imageUrl!.trim().isEmpty
+                    ? const _OfferImagePlaceholder()
                     : CachedNetworkImage(
                         imageUrl: offer.imageUrl!,
                         fit: BoxFit.cover,
                         placeholder: (_, _) =>
                             const ColoredBox(color: Color(0xFFF3F3F3)),
-                        errorWidget: (_, _, _) => Image.asset(
-                          arguments.imageAsset,
-                          fit: BoxFit.cover,
-                        ),
+                        errorWidget: (_, _, _) =>
+                            const _OfferImagePlaceholder(),
                       ),
               ),
             ),
@@ -138,6 +135,18 @@ class OfferProductsScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class _OfferImagePlaceholder extends StatelessWidget {
+  const _OfferImagePlaceholder();
+
+  @override
+  Widget build(BuildContext context) => const ColoredBox(
+    color: Color(0xFFF3F3F3),
+    child: Center(
+      child: Icon(Icons.image_not_supported_outlined, color: Color(0xFFBDBDBD)),
+    ),
+  );
 }
 
 class _Badge extends StatelessWidget {

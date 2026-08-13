@@ -10,6 +10,7 @@ class EndPoints {
   static const String addresses = '$baseUrl/api/b2b/v1/addresses';
   static const String addressCities = '$addresses/cities';
   static const String home = '$baseUrl/api/b2b/v1/home';
+  static const String banners = '$baseUrl/api/b2b/v1/banners';
   static const String categories = '$baseUrl/api/b2b/v1/categories';
   static const String brands = '$baseUrl/api/b2b/v1/brands';
   static const String expiryOffers = '$baseUrl/api/b2b/v1/offers/expiry';
@@ -36,6 +37,7 @@ class EndPoints {
   static const String notifications = '$baseUrl/api/b2b/v1/notifications';
   static const String notificationsUnreadCount = '$notifications/unread-count';
   static const String notificationsReadAll = '$notifications/read-all';
+  static const String insights = '$baseUrl/api/b2b/v1/insights';
 
   static String productDetails(String itemCode) =>
       '$catalogProducts/${Uri.encodeComponent(itemCode)}';

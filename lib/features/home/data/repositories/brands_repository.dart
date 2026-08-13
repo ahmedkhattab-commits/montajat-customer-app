@@ -7,7 +7,7 @@ import 'package:montajat_customer_app/core/api/end_points.dart';
 import 'package:montajat_customer_app/features/home/data/models/home_response_model.dart';
 
 abstract interface class BrandsRepository {
-  Future<List<HomeBrandModel>> getBrands();
+  Future<List<HomeBrandModel>> getBrands({required int limit});
 }
 
 class RemoteBrandsRepository implements BrandsRepository {
@@ -16,10 +16,13 @@ class RemoteBrandsRepository implements BrandsRepository {
   final ApiConsumer _apiConsumer;
 
   @override
-  Future<List<HomeBrandModel>> getBrands() async {
+  Future<List<HomeBrandModel>> getBrands({required int limit}) async {
     try {
+      final uri = Uri.parse(
+        EndPoints.brands,
+      ).replace(queryParameters: {'limit': '$limit'});
       final response = await _apiConsumer
-          .get(EndPoints.brands, null)
+          .get(uri.toString(), null)
           .timeout(const Duration(seconds: 20));
       final json = _decode(response.body);
       if (response.statusCode < 200 ||

@@ -13,6 +13,7 @@ void main() {
         200,
       ),
       offersResponse: http.Response('{"success":true,"data":[]}', 200),
+      bannersResponse: http.Response('{"success":true,"data":[]}', 200),
     );
     final repository = RemoteHomeRepository(consumer);
 
@@ -20,9 +21,9 @@ void main() {
 
     expect(
       consumer.paths,
-      containsAll([EndPoints.home, EndPoints.expiryOffers]),
+      containsAll([EndPoints.home, EndPoints.expiryOffers, EndPoints.banners]),
     );
-    expect(result.sectionCount, 0);
+    expect(result.sectionCount, 1);
     expect(result.expiryOffers, isEmpty);
   });
 
@@ -31,6 +32,7 @@ void main() {
       _FakeApiConsumer(
         homeResponse: http.Response('{"success":true,"data":{}}', 200),
         offersResponse: http.Response('{"success":true,"data":[]}', 200),
+        bannersResponse: http.Response('{"success":true,"data":[]}', 200),
       ),
     );
 
@@ -64,6 +66,7 @@ void main() {
           '"why":{"message":"Offer reason"}}]}',
           200,
         ),
+        bannersResponse: http.Response('{"success":true,"data":[]}', 200),
       ),
     );
 
@@ -75,6 +78,63 @@ void main() {
     expect(
       result.expiryOffers.single.imageUrl,
       'https://example.com/offers/7.png',
+    );
+    expect(
+      result.sections.map((section) => section.key),
+      contains('offers_for_you'),
+    );
+  });
+
+  test('replaces home banners with the dedicated banners endpoint', () async {
+    final repository = RemoteHomeRepository(
+      _FakeApiConsumer(
+        homeResponse: http.Response(
+          '{"success":true,"data":{"sections":[{"key":"hero_banners",'
+          '"type":"banners","title":null,"title_en":null,"items":[]}]}}',
+          200,
+        ),
+        offersResponse: http.Response('{"success":true,"data":[]}', 200),
+        bannersResponse: http.Response(
+          '{"success":true,"data":[{"id":3,"title":"Season",'
+          '"image_url":"https://example.com/banner.png",'
+          '"placement":"discounts"}]}',
+          200,
+        ),
+      ),
+    );
+
+    final result = await repository.getHome();
+    final banners = result.sections.single.items.cast<HomeBannerModel>();
+
+    expect(banners.single.id, 3);
+    expect(banners.single.imageUrl, 'https://example.com/banner.png');
+  });
+
+  test('keeps offers section when replacing hero banners', () async {
+    final repository = RemoteHomeRepository(
+      _FakeApiConsumer(
+        homeResponse: http.Response(
+          '{"success":true,"data":{"sections":['
+          '{"key":"hero_banners","type":"banners","title":null,'
+          '"title_en":null,"items":[]},'
+          '{"key":"offers_for_you","type":"banners","title":"Offers",'
+          '"title_en":"Offers","items":[]}]}}',
+          200,
+        ),
+        offersResponse: http.Response(
+          '{'
+          '"success":true,"data":[]}',
+          200,
+        ),
+        bannersResponse: http.Response('{"success":true,"data":[]}', 200),
+      ),
+    );
+
+    final result = await repository.getHome();
+
+    expect(
+      result.sections.map((section) => section.key),
+      containsAllInOrder(['hero_banners', 'offers_for_you']),
     );
   });
 
@@ -119,16 +179,25 @@ void main() {
 }
 
 class _FakeApiConsumer implements ApiConsumer {
-  _FakeApiConsumer({required this.homeResponse, required this.offersResponse});
+  _FakeApiConsumer({
+    required this.homeResponse,
+    required this.offersResponse,
+    required this.bannersResponse,
+  });
 
   final http.Response homeResponse;
   final http.Response offersResponse;
+  final http.Response bannersResponse;
   final List<String> paths = [];
 
   @override
   Future<http.Response> get(String path, Map<String, String>? headers) async {
     paths.add(path);
-    return path == EndPoints.expiryOffers ? offersResponse : homeResponse;
+    return switch (path) {
+      EndPoints.expiryOffers => offersResponse,
+      EndPoints.banners => bannersResponse,
+      _ => homeResponse,
+    };
   }
 
   @override

@@ -89,6 +89,9 @@
     "request_failed": "Unable to complete the request. Please try again.",
     "invalid_response": "The server returned an invalid response. Please try again."
   },
+  "offers": {
+    "empty": "No offers available"
+  },
   "brands": {
     "empty": "No brands available"
   },
@@ -299,6 +302,31 @@
     "aging_61_90": "61–90 days",
     "aging_over_90": "Over 90 days",
     "aging_90_plus": "Over 90 days"
+  },
+  "insights": {
+    "title": "Insights dashboard",
+    "period": "Reporting period",
+    "filter_by_date": "Filter by date",
+    "select_period": "Select date range",
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "total_spend": "Total spend",
+    "outstanding": "Outstanding",
+    "invoices": "Invoices",
+    "average_invoice": "Average invoice",
+    "total_quantity": "Total quantity",
+    "distinct_items": "Distinct items",
+    "monthly_sales": "Monthly sales",
+    "top_items": "Top purchased items",
+    "top_brands": "Top brands",
+    "top_categories": "Top categories",
+    "returns": "Returns summary",
+    "returned_value": "Returned value",
+    "return_rate": "Return rate",
+    "credit_notes": "Credit notes",
+    "units": "units",
+    "purchases": "purchases",
+    "no_data": "No data available"
   },
   "reports": {
     "title": "Reports",
