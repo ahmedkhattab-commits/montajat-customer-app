@@ -19,7 +19,6 @@ class ProfileScreen extends StatelessWidget {
       null,
       _ProfileMenuAction.profile,
     ),
-    _ProfileMenuItem('profile.points', Icons.stars_outlined),
     _ProfileMenuItem(
       'profile.addresses',
       Icons.location_on_outlined,
@@ -30,12 +29,22 @@ class ProfileScreen extends StatelessWidget {
       Icons.inventory_2_outlined,
       Routes.orders,
     ),
-    _ProfileMenuItem('profile.reports', Icons.bar_chart_rounded),
+    _ProfileMenuItem(
+      'profile.reports',
+      Icons.bar_chart_rounded,
+      Routes.reports,
+    ),
     _ProfileMenuItem(
       'profile.financial',
       Icons.account_balance_wallet_outlined,
       Routes.finance,
     ),
+    _ProfileMenuItem(
+      'returns.title',
+      Icons.assignment_return_outlined,
+      Routes.returns,
+    ),
+    _ProfileMenuItem('reorder.title', Icons.replay_rounded, Routes.reorder),
   ];
 
   @override
@@ -85,27 +94,38 @@ class _ProfileContent extends StatelessWidget {
       physics: const AlwaysScrollableScrollPhysics(),
       slivers: [
         SliverToBoxAdapter(child: _ProfileHeader(profile: profile)),
-        SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+        SliverToBoxAdapter(child: SizedBox(height: 20.h)),
         SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          sliver: SliverToBoxAdapter(
+            child: _MenuCard(
+              item: ProfileScreen._menuItems.first,
+              profile: profile,
+              featured: true,
+            ),
+          ),
+        ),
+        SliverToBoxAdapter(child: SizedBox(height: 12.h)),
+        SliverPadding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           sliver: SliverGrid.builder(
-            itemCount: ProfileScreen._menuItems.length,
+            itemCount: ProfileScreen._menuItems.length - 1,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 10.w,
-              mainAxisSpacing: 10.h,
-              childAspectRatio: 1.02,
+              crossAxisCount: 2,
+              crossAxisSpacing: 12.w,
+              mainAxisSpacing: 12.h,
+              childAspectRatio: 1.48,
             ),
             itemBuilder: (_, index) => _MenuCard(
-              item: ProfileScreen._menuItems[index],
+              item: ProfileScreen._menuItems[index + 1],
               profile: profile,
             ),
           ),
         ),
-        SliverToBoxAdapter(child: SizedBox(height: 14.h)),
+        SliverToBoxAdapter(child: SizedBox(height: 18.h)),
         SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: OutlinedButton.icon(
               key: const ValueKey('profile-logout'),
               onPressed: () => _confirmLogout(context),
@@ -115,9 +135,9 @@ class _ProfileContent extends StatelessWidget {
                 foregroundColor: const Color(0xFFD94B4B),
                 backgroundColor: Colors.white,
                 side: const BorderSide(color: Color(0x33D94B4B)),
-                minimumSize: Size.fromHeight(54.h),
+                minimumSize: Size.fromHeight(50.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.r),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
             ),
@@ -162,22 +182,34 @@ class _ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: EdgeInsets.fromLTRB(20.w, 58.h, 20.w, 22.h),
+    padding: EdgeInsets.fromLTRB(
+      20.w,
+      MediaQuery.paddingOf(context).top + 18.h,
+      20.w,
+      24.h,
+    ),
     decoration: BoxDecoration(
-      color: AppColors.onboardingPrimary,
-      borderRadius: BorderRadius.vertical(bottom: Radius.circular(18.r)),
+      gradient: LinearGradient(
+        begin: AlignmentDirectional.topStart,
+        end: AlignmentDirectional.bottomEnd,
+        colors: [
+          AppColors.onboardingPrimary,
+          AppColors.onboardingPrimary.withValues(alpha: .9),
+        ],
+      ),
+      borderRadius: BorderRadius.vertical(bottom: Radius.circular(24.r)),
     ),
     child: Column(
       children: [
         Row(
           children: [
             CircleAvatar(
-              radius: 33.r,
-              backgroundColor: Colors.white,
+              radius: 31.r,
+              backgroundColor: Colors.white.withValues(alpha: .96),
               child: Icon(
                 Icons.person_rounded,
                 color: AppColors.onboardingPrimary,
-                size: 38.sp,
+                size: 34.sp,
               ),
             ),
             SizedBox(width: 13.w),
@@ -189,7 +221,7 @@ class _ProfileHeader extends StatelessWidget {
                     profile.name,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18.sp,
+                      fontSize: 19.sp,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -200,7 +232,7 @@ class _ProfileHeader extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: .82),
-                      fontSize: 12.sp,
+                      fontSize: 11.sp,
                     ),
                   ),
                 ],
@@ -208,91 +240,26 @@ class _ProfileHeader extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 22.h),
-        Row(
-          children: [
-            const Expanded(
-              child: _SummaryCard(
-                icon: Icons.stars_rounded,
-                value: '--',
-                labelKey: 'profile.points_balance',
-              ),
-            ),
-            SizedBox(width: 9.w),
-            Expanded(
-              child: _SummaryCard(
-                icon: Icons.location_on_outlined,
-                value: '${profile.addressCount}',
-                labelKey: 'profile.addresses',
-              ),
-            ),
-            SizedBox(width: 9.w),
-            Expanded(
-              child: _SummaryCard(
-                icon: Icons.account_balance_wallet_outlined,
-                value: profile.canViewFinancials
-                    ? '${profile.credit.currentBalance} ${profile.credit.currency}'
-                    : '--',
-                labelKey: 'profile.balance',
-              ),
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
-}
-
-class _SummaryCard extends StatelessWidget {
-  const _SummaryCard({
-    required this.icon,
-    required this.value,
-    required this.labelKey,
-  });
-  final IconData icon;
-  final String value;
-  final String labelKey;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 12.h),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(8.r),
-    ),
-    child: Column(
-      children: [
-        Icon(icon, color: const Color(0xFFF5B335), size: 25.sp),
-        SizedBox(height: 6.h),
-        Text(
-          value,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w700),
-        ),
-        SizedBox(height: 2.h),
-        Text(
-          context.tr(labelKey),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: const Color(0xFF888888), fontSize: 10.sp),
-        ),
       ],
     ),
   );
 }
 
 class _MenuCard extends StatelessWidget {
-  const _MenuCard({required this.item, required this.profile});
+  const _MenuCard({
+    required this.item,
+    required this.profile,
+    this.featured = false,
+  });
   final _ProfileMenuItem item;
   final ProfileModel profile;
+  final bool featured;
 
   @override
   Widget build(BuildContext context) => Material(
     color: Colors.white,
-    borderRadius: BorderRadius.circular(8.r),
-    elevation: .6,
+    borderRadius: BorderRadius.circular(14.r),
+    elevation: 0,
     child: InkWell(
       key: ValueKey('profile-menu-${item.labelKey}'),
       onTap: () {
@@ -311,20 +278,74 @@ class _MenuCard extends StatelessWidget {
             return;
         }
       },
-      borderRadius: BorderRadius.circular(8.r),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(item.icon, color: const Color(0xFFF5B335), size: 31.sp),
-          SizedBox(height: 10.h),
-          Text(
-            context.tr(item.labelKey),
-            maxLines: 2,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
-          ),
-        ],
+      borderRadius: BorderRadius.circular(14.r),
+      child: Container(
+        height: featured ? 72.h : null,
+        padding: EdgeInsets.symmetric(
+          horizontal: featured ? 18.w : 12.w,
+          vertical: 13.h,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14.r),
+          border: Border.all(color: const Color(0xFFE9E9E9)),
+        ),
+        child: featured
+            ? Row(
+                children: [
+                  _MenuIcon(icon: item.icon),
+                  SizedBox(width: 14.w),
+                  Expanded(child: _MenuLabel(labelKey: item.labelKey)),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 15.sp,
+                    color: const Color(0xFF9A9A9A),
+                  ),
+                ],
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _MenuIcon(icon: item.icon),
+                  SizedBox(height: 9.h),
+                  _MenuLabel(labelKey: item.labelKey),
+                ],
+              ),
       ),
+    ),
+  );
+}
+
+class _MenuIcon extends StatelessWidget {
+  const _MenuIcon({required this.icon});
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: 40.r,
+    height: 40.r,
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      color: const Color(0xFFFFF5DE),
+      borderRadius: BorderRadius.circular(11.r),
+    ),
+    child: Icon(icon, color: const Color(0xFFF5A900), size: 23.sp),
+  );
+}
+
+class _MenuLabel extends StatelessWidget {
+  const _MenuLabel({required this.labelKey});
+  final String labelKey;
+
+  @override
+  Widget build(BuildContext context) => Text(
+    context.tr(labelKey),
+    maxLines: 2,
+    overflow: TextOverflow.ellipsis,
+    textAlign: TextAlign.start,
+    style: TextStyle(
+      color: const Color(0xFF202020),
+      fontSize: 13.sp,
+      fontWeight: FontWeight.w700,
     ),
   );
 }

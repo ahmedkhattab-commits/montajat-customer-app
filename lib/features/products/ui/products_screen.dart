@@ -9,6 +9,11 @@ import 'package:montajat_customer_app/features/products/logic/products_cubit.dar
 import 'package:montajat_customer_app/features/products/logic/products_state.dart';
 import 'package:montajat_customer_app/features/products/ui/widgets/product_listing_card.dart';
 import 'package:montajat_customer_app/config/routes/routes.dart';
+import 'package:montajat_customer_app/core/services/services_locator.dart';
+import 'package:montajat_customer_app/features/profile/data/repositories/profile_repository.dart';
+import 'package:montajat_customer_app/features/profile/data/models/profile_model.dart';
+import 'package:montajat_customer_app/features/cart/logic/cart_cubit.dart';
+import 'package:montajat_customer_app/features/cart/logic/cart_state.dart';
 
 class ProductsScreen extends StatelessWidget {
   const ProductsScreen({required this.arguments, super.key});
@@ -232,8 +237,16 @@ class _ProductsList extends StatelessWidget {
   }
 }
 
-class _OrderSummary extends StatelessWidget {
+class _OrderSummary extends StatefulWidget {
   const _OrderSummary();
+
+  @override
+  State<_OrderSummary> createState() => _OrderSummaryState();
+}
+
+class _OrderSummaryState extends State<_OrderSummary> {
+  late final Future<ProfileModel> _profile = getIt<ProfileRepository>()
+      .getProfile();
 
   @override
   Widget build(BuildContext context) {
@@ -280,14 +293,17 @@ class _OrderSummary extends StatelessWidget {
                       fontSize: 11.sp,
                     ),
                   ),
-                  Text(
-                    context.tr('products_listing.customer_name'),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: 'IBMPlexSansArabic',
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w700,
+                  FutureBuilder(
+                    future: _profile,
+                    builder: (context, snapshot) => Text(
+                      snapshot.data?.name ?? '-',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'IBMPlexSansArabic',
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ],
@@ -305,15 +321,19 @@ class _OrderSummary extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5.r),
                   ),
                 ),
-                child: Text(
-                  context.tr(
-                    'products_listing.complete_order',
-                    namedArgs: {'count': '5'},
-                  ),
-                  style: TextStyle(
-                    fontFamily: 'IBMPlexSansArabic',
-                    fontSize: 11.sp,
-                    fontWeight: FontWeight.w600,
+                child: BlocBuilder<CartCubit, CartState>(
+                  buildWhen: (previous, current) =>
+                      previous.cart?.itemsCount != current.cart?.itemsCount,
+                  builder: (context, state) => Text(
+                    context.tr(
+                      'products_listing.complete_order',
+                      namedArgs: {'count': '${state.cart?.itemsCount ?? 0}'},
+                    ),
+                    style: TextStyle(
+                      fontFamily: 'IBMPlexSansArabic',
+                      fontSize: 11.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),

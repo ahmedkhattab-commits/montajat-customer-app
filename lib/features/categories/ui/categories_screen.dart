@@ -25,7 +25,8 @@ class CategoriesScreen extends StatelessWidget {
       bottomNavigationBar: const HomeBottomNavigation(currentIndex: 1),
       body: Column(
         children: [
-          HomeHeader(
+          const HomeHeader(),
+          HomeSearchBar(
             onSearchChanged: (query) =>
                 context.read<CategoriesCubit>().searchChanged(context, query),
           ),
