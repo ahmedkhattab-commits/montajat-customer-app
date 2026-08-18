@@ -40,6 +40,9 @@ class OrderModel {
     'invoiced',
   }.contains(status.toLowerCase());
 
+  bool get canPayOnline =>
+      status.toLowerCase() == 'approved' && !isPaid && grandTotal > 0;
+
   String localizedStatus(String languageCode) =>
       languageCode == 'ar' || statusLabelEn.isEmpty
       ? statusLabel

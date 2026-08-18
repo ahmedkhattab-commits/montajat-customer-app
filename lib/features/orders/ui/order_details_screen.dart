@@ -86,6 +86,32 @@ class _OrderDetails extends StatelessWidget {
           ),
         ),
         _OrderSummary(order: order),
+        if (order.canPayOnline) ...[
+          SizedBox(height: 22.h),
+          FilledButton.icon(
+            key: const ValueKey('pay-approved-order'),
+            onPressed: () async {
+              final paid = await Navigator.of(
+                context,
+              ).pushNamed<bool>(Routes.orderPayment, arguments: order);
+              if (paid == true && context.mounted) {
+                await context.read<OrderDetailsCubit>().loadOrder();
+              }
+            },
+            icon: const Icon(Icons.payment_rounded),
+            style: FilledButton.styleFrom(
+              minimumSize: Size.fromHeight(54.h),
+              backgroundColor: AppColors.onboardingPrimary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6.r),
+              ),
+            ),
+            label: Text(
+              context.tr('payments.pay_order'),
+              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w700),
+            ),
+          ),
+        ],
         if (order.isCancellable) ...[
           SizedBox(height: 22.h),
           BlocBuilder<OrderDetailsCubit, OrderDetailsState>(

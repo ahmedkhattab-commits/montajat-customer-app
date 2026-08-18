@@ -79,6 +79,10 @@ import 'package:montajat_customer_app/features/notifications/ui/notifications_sc
 import 'package:montajat_customer_app/features/insights/data/repositories/insights_repository.dart';
 import 'package:montajat_customer_app/features/insights/logic/insights_cubit.dart';
 import 'package:montajat_customer_app/features/insights/ui/insights_screen.dart';
+import 'package:montajat_customer_app/features/payments/data/repositories/online_payments_repository.dart';
+import 'package:montajat_customer_app/features/payments/logic/order_payment_cubit.dart';
+import 'package:montajat_customer_app/features/payments/ui/order_payment_screen.dart';
+import 'package:montajat_customer_app/features/orders/data/models/order_model.dart';
 
 abstract final class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -328,6 +332,17 @@ abstract final class RouteGenerator {
                 OrderDetailsCubit(getIt<OrdersRepository>(), orderNumber)
                   ..loadOrder(),
             child: OrderDetailsScreen(orderNumber: orderNumber),
+          ),
+        );
+      case Routes.orderPayment:
+        final order = settings.arguments as OrderModel;
+        return MaterialPageRoute<bool>(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                OrderPaymentCubit(getIt<OnlinePaymentsRepository>(), order)
+                  ..loadMethods(),
+            child: OrderPaymentScreen(order: order),
           ),
         );
       case Routes.notifications:

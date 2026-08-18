@@ -18,6 +18,9 @@ class EndPoints {
   static const String cart = '$baseUrl/api/b2b/v1/cart';
   static const String cartItems = '$cart/items';
   static const String orders = '$baseUrl/api/b2b/v1/orders';
+  static const String payments = '$baseUrl/api/b2b/v1/payments';
+  static const String onlinePayments = '$baseUrl/api/b2b/v1/online-payments';
+  static const String onlinePaymentMethods = '$onlinePayments/methods';
   static const String finance = '$baseUrl/api/b2b/v1/finance';
   static const String financeSummary = '$finance/summary';
   static const String financeAging = '$finance/aging';
@@ -55,6 +58,18 @@ class EndPoints {
 
   static String cancelOrder(String orderNumber) =>
       '${orderDetails(orderNumber)}/cancel';
+
+  static String payOrder(String orderNumber) =>
+      '$onlinePayments/orders/${Uri.encodeComponent(orderNumber)}';
+
+  static String paymentDetails(String reference) =>
+      '$onlinePayments/${Uri.encodeComponent(reference)}';
+
+  static String paymentSession(String reference) =>
+      '$onlinePayments/${Uri.encodeComponent(reference)}/session';
+
+  static String executePayment(String reference) =>
+      '$onlinePayments/${Uri.encodeComponent(reference)}/execute';
 
   static String financeInvoiceDetails(String docNum) =>
       '$financeInvoices/${Uri.encodeComponent(docNum)}';

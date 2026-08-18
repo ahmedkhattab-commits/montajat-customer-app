@@ -27,6 +27,7 @@ import 'package:montajat_customer_app/features/reorder/data/repositories/reorder
 import 'package:montajat_customer_app/features/registration/data/repositories/registration_repository.dart';
 import 'package:montajat_customer_app/features/notifications/data/repositories/notifications_repository.dart';
 import 'package:montajat_customer_app/features/insights/data/repositories/insights_repository.dart';
+import 'package:montajat_customer_app/features/payments/data/repositories/online_payments_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -74,6 +75,9 @@ abstract final class ServicesLocator {
       )
       ..registerLazySingleton<OrdersRepository>(
         () => RemoteOrdersRepository(getIt<ApiConsumer>()),
+      )
+      ..registerLazySingleton<OnlinePaymentsRepository>(
+        () => RemoteOnlinePaymentsRepository(getIt<ApiConsumer>()),
       )
       ..registerLazySingleton<CartCubit>(
         () => CartCubit(getIt<CartRepository>(), getIt<OrdersRepository>()),

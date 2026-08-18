@@ -27,6 +27,7 @@ abstract final class Routes {
   static const String cart = '/cart';
   static const String orders = '/orders';
   static const String orderDetails = '/order-details';
+  static const String orderPayment = '/order-payment';
   static const String notifications = '/notifications';
   static const String insights = '/insights';
 }
