@@ -28,6 +28,7 @@ import 'package:montajat_customer_app/features/registration/data/repositories/re
 import 'package:montajat_customer_app/features/notifications/data/repositories/notifications_repository.dart';
 import 'package:montajat_customer_app/features/insights/data/repositories/insights_repository.dart';
 import 'package:montajat_customer_app/features/payments/data/repositories/online_payments_repository.dart';
+import 'package:montajat_customer_app/features/app_settings/data/repositories/app_settings_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -40,6 +41,9 @@ abstract final class ServicesLocator {
       ..registerLazySingleton<AppInterceptor>(AppInterceptor.new)
       ..registerLazySingleton<http.Client>(http.Client.new)
       ..registerLazySingleton<ApiConsumer>(() => HttpConsumer(getIt()))
+      ..registerLazySingleton<AppSettingsRepository>(
+        () => RemoteAppSettingsRepository(getIt<ApiConsumer>()),
+      )
       ..registerLazySingleton<AuthRepository>(
         () => RemoteAuthRepository(getIt<ApiConsumer>()),
       )

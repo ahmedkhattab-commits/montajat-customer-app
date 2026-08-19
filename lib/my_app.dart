@@ -7,6 +7,7 @@ import 'package:montajat_customer_app/config/routes/app_routes.dart';
 import 'package:montajat_customer_app/config/themes/app_white_theme.dart';
 import 'package:montajat_customer_app/core/services/services_locator.dart';
 import 'package:montajat_customer_app/features/cart/logic/cart_cubit.dart';
+import 'package:montajat_customer_app/features/app_settings/ui/app_settings_gate.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -22,21 +23,23 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return BlocProvider.value(
-          value: getIt<CartCubit>()..loadCart(),
-          child: MaterialApp(
-            onGenerateTitle: (context) => context.tr('app_name'),
-            debugShowCheckedModeBanner: false,
-            navigatorKey: navigatorKey,
-            theme: appWhiteTheme(),
-            localizationsDelegates: [
-              ...context.localizationDelegates,
-              CountryLocalizations.delegate,
-            ],
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            initialRoute: navigateWidget,
-            onGenerateRoute: RouteGenerator.generateRoute,
+        return AppSettingsGate(
+          child: BlocProvider.value(
+            value: getIt<CartCubit>()..loadCart(),
+            child: MaterialApp(
+              onGenerateTitle: (context) => context.tr('app_name'),
+              debugShowCheckedModeBanner: false,
+              navigatorKey: navigatorKey,
+              theme: appWhiteTheme(),
+              localizationsDelegates: [
+                ...context.localizationDelegates,
+                CountryLocalizations.delegate,
+              ],
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              initialRoute: navigateWidget,
+              onGenerateRoute: RouteGenerator.generateRoute,
+            ),
           ),
         );
       },

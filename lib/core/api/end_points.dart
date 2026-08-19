@@ -41,6 +41,7 @@ class EndPoints {
   static const String notificationsUnreadCount = '$notifications/unread-count';
   static const String notificationsReadAll = '$notifications/read-all';
   static const String insights = '$baseUrl/api/b2b/v1/insights';
+  static const String appSettings = '$baseUrl/api/b2b/v1/app-settings';
 
   static String productDetails(String itemCode) =>
       '$catalogProducts/${Uri.encodeComponent(itemCode)}';

@@ -1,5 +1,10 @@
 {
   "app_name": "Muntajat",
+  "app_settings": {
+    "unavailable": "The app is currently unavailable",
+    "load_failed": "Could not load app settings. Check your connection and try again.",
+    "retry": "Retry"
+  },
   "language_selection": {
     "title": "Choose your preferred language",
     "subtitle": "Choose the app's default language",
