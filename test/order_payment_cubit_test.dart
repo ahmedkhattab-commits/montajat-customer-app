@@ -44,11 +44,8 @@ void main() {
 
   test('starts STC Pay using hosted channel without a card session', () async {
     final repository = _FakeRepository();
-    final cubit = OrderPaymentCubit(
-      repository,
-      _order,
-      _FakePendingPaymentStore(),
-    );
+    final pendingStore = _FakePendingPaymentStore();
+    final cubit = OrderPaymentCubit(repository, _order, pendingStore);
 
     await cubit.loadMethods();
     await cubit.selectMethod('stc');
@@ -57,6 +54,22 @@ void main() {
     expect(repository.lastChannel, 'hosted');
     expect(cubit.state.session, isNull);
     expect(cubit.state.status.name, 'awaitingConfirmation');
+    expect(pendingStore.saved, isFalse);
+    await cubit.close();
+  });
+
+  test('opens checkout fresh without reading an old payment', () async {
+    final repository = _FakeRepository();
+    final pendingStore = _FakePendingPaymentStore(reference: 'TXN-OLD');
+    final cubit = OrderPaymentCubit(repository, _order, pendingStore);
+
+    await cubit.loadMethods();
+
+    expect(pendingStore.removed, isTrue);
+    expect(repository.paymentStatusRequests, 0);
+    expect(repository.requestedSessionReference, isNull);
+    expect(cubit.state.status.name, 'ready');
+    expect(cubit.state.payment, isNull);
     await cubit.close();
   });
 
@@ -67,40 +80,39 @@ void main() {
     expect(_method('ap').type, OnlinePaymentMethodType.applePay);
   });
 
-  test('resumes a pending sdk payment by requesting a new session', () async {
+  test('does not auto-resume a pending sdk payment', () async {
     final repository = _FakeRepository();
     final pendingStore = _FakePendingPaymentStore(reference: 'TXN-OLD');
     final cubit = OrderPaymentCubit(repository, _order, pendingStore);
 
     await cubit.loadMethods();
 
-    expect(repository.requestedSessionReference, 'TXN-OLD');
-    expect(cubit.state.status.name, 'sdkReady');
+    expect(repository.requestedSessionReference, isNull);
+    expect(repository.paymentStatusRequests, 0);
+    expect(cubit.state.status.name, 'ready');
     expect(cubit.state.methods.map((method) => method.gateway), [
       'md',
       'stc',
       'gp',
       'ap',
     ]);
-    expect(cubit.state.selectedGateway, 'md');
-
-    await cubit.selectMethod('stc');
-
-    expect(cubit.state.selectedGateway, 'stc');
-    expect(cubit.state.status.name, 'ready');
+    expect(cubit.state.selectedGateway, isNull);
     expect(cubit.state.session, isNull);
     expect(pendingStore.removed, isTrue);
     await cubit.close();
   });
 
   test('switches from Mada to Google Pay using the same sdk session', () async {
+    final repository = _FakeRepository();
     final cubit = OrderPaymentCubit(
-      _FakeRepository(),
+      repository,
       _order,
-      _FakePendingPaymentStore(reference: 'TXN-OLD'),
+      _FakePendingPaymentStore(),
     );
 
     await cubit.loadMethods();
+    await cubit.selectMethod('md');
+    await cubit.pay();
     final session = cubit.state.session;
     await cubit.selectMethod('gp');
 
@@ -116,6 +128,7 @@ class _FakePendingPaymentStore implements PendingPaymentStore {
 
   final String? reference;
   bool removed = false;
+  bool saved = false;
 
   @override
   String? read(String orderNumber) => reference;
@@ -124,7 +137,7 @@ class _FakePendingPaymentStore implements PendingPaymentStore {
   Future<void> remove(String orderNumber) async => removed = true;
 
   @override
-  Future<void> save(String orderNumber, String reference) async {}
+  Future<void> save(String orderNumber, String reference) async => saved = true;
 }
 
 const _order = OrderModel(
@@ -152,6 +165,7 @@ OnlinePaymentMethodModel _method(String gateway) =>
 class _FakeRepository implements OnlinePaymentsRepository {
   String? lastChannel;
   String? requestedSessionReference;
+  int paymentStatusRequests = 0;
 
   @override
   Future<List<OnlinePaymentMethodModel>> getMethods({
@@ -201,14 +215,17 @@ class _FakeRepository implements OnlinePaymentsRepository {
   }) => throw UnimplementedError();
 
   @override
-  Future<OnlinePaymentModel> getPayment(String reference) => Future.value(
-    OnlinePaymentModel(
-      reference: reference,
-      status: 'pending',
-      paymentUrl: null,
-      statusReason: null,
-      amount: 100,
-      currency: 'SAR',
-    ),
-  );
+  Future<OnlinePaymentModel> getPayment(String reference) {
+    paymentStatusRequests++;
+    return Future.value(
+      OnlinePaymentModel(
+        reference: reference,
+        status: 'pending',
+        paymentUrl: null,
+        statusReason: null,
+        amount: 100,
+        currency: 'SAR',
+      ),
+    );
+  }
 }

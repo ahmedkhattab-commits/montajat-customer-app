@@ -34,7 +34,9 @@ class OrderPaymentCubit extends Cubit<OrderPaymentState> {
             (method) => _visibleGateways.contains(method.gateway.toLowerCase()),
           )
           .toList(growable: false);
-      if (await _restorePendingPayment(methods)) return;
+      // Checkout must open with a fresh selection. Never resume or verify a
+      // previous attempt before the customer explicitly starts a new payment.
+      await _pendingPaymentStore.remove(order.orderNumber);
       if (isClosed) return;
       emit(
         state.copyWith(
@@ -60,77 +62,6 @@ class OrderPaymentCubit extends Cubit<OrderPaymentState> {
           errorMessageKey: 'auth_errors.invalid_response',
         ),
       );
-    }
-  }
-
-  Future<bool> _restorePendingPayment(
-    List<OnlinePaymentMethodModel> methods,
-  ) async {
-    final reference = _pendingPaymentStore.read(order.orderNumber);
-    if (reference == null || reference.isEmpty) return false;
-    try {
-      final payment = await _repository.getPayment(reference);
-      if (payment.isPaid) {
-        await _pendingPaymentStore.remove(order.orderNumber);
-        if (!isClosed) {
-          emit(
-            state.copyWith(
-              status: OrderPaymentStatus.success,
-              payment: payment,
-              clearError: true,
-            ),
-          );
-        }
-        return true;
-      }
-      if (payment.isTerminalFailure) {
-        await _pendingPaymentStore.remove(order.orderNumber);
-        return false;
-      }
-      if (payment.paymentUrl == null) {
-        _log(
-          'RESUME',
-          'Resuming pending SDK payment; reference=${payment.reference}',
-        );
-        final session = await _repository.createSession(payment.reference);
-        if (!isClosed) {
-          emit(
-            state.copyWith(
-              status: OrderPaymentStatus.sdkReady,
-              methods: methods,
-              selectedGateway:
-                  methods.any((method) => method.gateway.toLowerCase() == 'md')
-                  ? methods
-                        .firstWhere(
-                          (method) => method.gateway.toLowerCase() == 'md',
-                        )
-                        .gateway
-                  : null,
-              payment: payment,
-              session: session,
-              clearError: true,
-            ),
-          );
-        }
-        return true;
-      }
-      if (!isClosed) {
-        emit(
-          state.copyWith(
-            status: OrderPaymentStatus.awaitingConfirmation,
-            methods: methods,
-            payment: payment,
-            errorMessageKey: 'payments.pending',
-          ),
-        );
-      }
-      return true;
-    } on OnlinePaymentException catch (error) {
-      if (error.code == 'PAYMENT_NOT_FOUND') {
-        await _pendingPaymentStore.remove(order.orderNumber);
-        return false;
-      }
-      rethrow;
     }
   }
 
@@ -204,7 +135,6 @@ class OrderPaymentCubit extends Cubit<OrderPaymentState> {
       paymentMethodCode: gateway,
       channel: 'hosted',
     );
-    await _pendingPaymentStore.save(order.orderNumber, payment.reference);
     if (payment.isPaid || payment.isTerminalFailure) {
       await _pendingPaymentStore.remove(order.orderNumber);
     }
