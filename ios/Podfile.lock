@@ -2,25 +2,38 @@ PODS:
   - Flutter (1.0.0)
   - flutter_secure_storage (6.0.0):
     - Flutter
+  - MyFatoorah (2.0.164)
+  - myfatoorah_flutter (0.0.1):
+    - Flutter
+    - MyFatoorah (~> 2.0.152)
   - open_filex (0.0.2):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - myfatoorah_flutter (from `.symlinks/plugins/myfatoorah_flutter/ios`)
   - open_filex (from `.symlinks/plugins/open_filex/ios`)
+
+SPEC REPOS:
+  trunk:
+    - MyFatoorah
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  myfatoorah_flutter:
+    :path: ".symlinks/plugins/myfatoorah_flutter/ios"
   open_filex:
     :path: ".symlinks/plugins/open_filex/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
+  MyFatoorah: 5e1242ed0a810046c03e2ba81cb53103e728fc75
+  myfatoorah_flutter: db669d4dab4b6799643ea2ca3b617db007651846
   open_filex: 6e26e659846ec990262224a12ef1c528bb4edbe4
 
 PODFILE CHECKSUM: 53a6aebc29ccee84c41f92f409fc20cd4ca011f1

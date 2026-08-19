@@ -40,10 +40,14 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>FlutterDeepLinkingEnabled</key>
 	<false/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>نحتاج إلى الكاميرا لمسح باركود المنتج والبحث عنه.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>نستخدم Face ID لتأمين الدخول إلى حسابك وتأكيد هويتك بسرعة.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
