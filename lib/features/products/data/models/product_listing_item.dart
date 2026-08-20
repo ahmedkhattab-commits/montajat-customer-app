@@ -59,8 +59,8 @@ class ProductListingItem {
       ),
       imageUrl: _nullableString(json['image_url'], 'product.image_url'),
       price: _nullableNum(
-        priceData['unit_price_with_vat'],
-        'product.price.unit_price_with_vat',
+        priceData['carton_price'],
+        'product.price.carton_price',
       ),
       currency: _requiredString(
         priceData['currency'],

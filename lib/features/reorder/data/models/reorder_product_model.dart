@@ -45,10 +45,9 @@ class ReorderProductModel {
       nameEn: _text(product['name_en'] ?? json['name_en']),
       imageUrl: _text(product['image_url'] ?? json['image_url']),
       price: _number(
-        price['unit_price_with_vat'] ??
-            price['amount'] ??
-            json['unit_price_with_vat'] ??
-            json['price'],
+        price['carton_price'] ??
+            product['carton_price'] ??
+            json['carton_price'],
       ),
       currency:
           _text(price['currency'] ?? json['currency'])?.toUpperCase() ?? 'SAR',

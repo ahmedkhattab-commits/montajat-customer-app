@@ -10,7 +10,6 @@ class ProductDetailsModel {
     required this.productType,
     required this.animal,
     required this.variant,
-    required this.unitPrice,
     required this.vatRate,
     required this.isDiscontinued,
   });
@@ -23,7 +22,6 @@ class ProductDetailsModel {
   final String? productType;
   final String? animal;
   final String? variant;
-  final num? unitPrice;
   final num? vatRate;
   final bool isDiscontinued;
 
@@ -60,7 +58,6 @@ class ProductDetailsModel {
         classification['variant'],
         'product.classification.variant',
       ),
-      unitPrice: _nullableNum(price['unit_price'], 'product.price.unit_price'),
       vatRate: _nullableNum(price['vat_rate'], 'product.price.vat_rate'),
       isDiscontinued: _requiredBool(
         json['is_discontinued'],

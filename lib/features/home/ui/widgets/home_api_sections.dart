@@ -377,26 +377,9 @@ class _ProductCard extends StatelessWidget {
                     color: const Color(0xFF8D8D8D),
                   ),
                 ),
-                SizedBox(height: 2.h),
-                Text(
-                  context.tr(
-                    'products_listing.available_quantity',
-                    namedArgs: {
-                      'count': product.availableQuantity?.toString() ?? '--',
-                    },
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: 'IBMPlexSansArabic',
-                    fontSize: 10.sp,
-                    color: const Color(0xFF259B62),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
                 SizedBox(height: 3.h),
                 Text(
-                  '${product.unitPriceWithVat.toStringAsFixed(2)} ${product.currency}',
+                  '${product.cartonPrice.toStringAsFixed(2)} ${product.currency}',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     fontFamily: 'IBMPlexSansArabic',

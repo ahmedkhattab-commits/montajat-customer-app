@@ -428,7 +428,7 @@ class _FakeHomeRepository implements HomeRepository {
             uom: 'EA',
             unitsPerCarton: 6,
             imageUrl: null,
-            unitPriceWithVat: 150,
+            cartonPrice: 150,
             currency: 'SAR',
             availabilityLabel: 'متوفر',
             availabilityLabelEn: 'Available',
@@ -505,7 +505,6 @@ class _FakeProductDetailsRepository implements ProductDetailsRepository {
         productType: 'Puree',
         animal: 'Cats',
         variant: null,
-        unitPrice: 130,
         vatRate: 0.15,
         isDiscontinued: false,
       );

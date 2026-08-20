@@ -18,6 +18,7 @@ void main() {
         '"category":"Supplements & Treats","product_type":"Puree",'
         '"animal":"Cats","variant":null},'
         '"price":{"unit_price":7,"unit_price_with_vat":8.05,'
+        '"carton_price":42,"carton_price_with_vat":48.3,'
         '"vat_rate":0.15,"currency":"SAR","price_list":1},'
         '"availability":{"status":"out_of_stock",'
         '"label":"Unavailable","label_en":"Out of stock",'
@@ -36,7 +37,7 @@ void main() {
     expect(details.barcode, '763163284075');
     expect(details.brandCode, '173');
     expect(details.category, 'Supplements & Treats');
-    expect(details.product.price, 8.05);
+    expect(details.product.price, 42);
     expect(details.product.isAvailable, isFalse);
   });
 }

@@ -157,18 +157,6 @@ class _DetailsContent extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                if (details.unitPrice != null) ...[
-                  SizedBox(height: 4.h),
-                  Text(
-                    '${context.tr('product_details.before_vat')}: '
-                    '${details.unitPrice!.toStringAsFixed(2)} ${product.currency}',
-                    style: TextStyle(
-                      color: const Color(0xFF888888),
-                      fontFamily: 'IBMPlexSansArabic',
-                      fontSize: 12.sp,
-                    ),
-                  ),
-                ],
                 SizedBox(height: 24.h),
                 _InfoCard(details: details),
               ],
@@ -196,10 +184,6 @@ class _InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = details.product;
     final rows = <(String, String?)>[
-      (
-        context.tr('product_details.available_quantity'),
-        product.availableQuantity?.toString() ?? '--',
-      ),
       (context.tr('product_details.barcode'), details.barcode),
       (context.tr('product_details.brand'), details.brandCode),
       (context.tr('product_details.department'), details.department),

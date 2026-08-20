@@ -316,7 +316,7 @@ class HomeApiProductModel extends HomeSectionItemModel {
     required this.uom,
     required this.unitsPerCarton,
     required this.imageUrl,
-    required this.unitPriceWithVat,
+    required this.cartonPrice,
     required this.currency,
     required this.availabilityLabel,
     required this.availabilityLabelEn,
@@ -330,7 +330,7 @@ class HomeApiProductModel extends HomeSectionItemModel {
   final String uom;
   final num? unitsPerCarton;
   final String? imageUrl;
-  final num unitPriceWithVat;
+  final num cartonPrice;
   final String currency;
   final String availabilityLabel;
   final String availabilityLabelEn;
@@ -361,9 +361,9 @@ class HomeApiProductModel extends HomeSectionItemModel {
         'product.units_per_carton',
       ),
       imageUrl: _optionalString(json['image_url'], 'product.image_url'),
-      unitPriceWithVat: _requiredNum(
-        price['unit_price_with_vat'],
-        'product.price.unit_price_with_vat',
+      cartonPrice: _requiredNum(
+        price['carton_price'],
+        'product.price.carton_price',
       ),
       currency: _requiredString(price['currency'], 'product.price.currency'),
       availabilityLabel: _requiredString(

@@ -24,7 +24,7 @@ void main() {
     expect(result.hasMore, isTrue);
     expect(result.items.single.itemCode, 'P16100035');
     expect(result.items.single.name, isNull);
-    expect(result.items.single.price, isNull);
+    expect(result.items.single.price, 42);
     expect(result.items.single.availableQuantity, 25);
   });
 
@@ -83,7 +83,8 @@ final _response = http.Response(
   '"item_code":"P16100035","name":null,"name_en":null,'
   '"uom":"","units_per_carton":1,"brand_code":100,'
   '"image_url":"https://gal.holeno.com/imghd/P16100035.png",'
-  '"price":{"unit_price":null,"unit_price_with_vat":null,'
+  '"price":{"unit_price":7,"unit_price_with_vat":8.05,'
+  '"carton_price":42,"carton_price_with_vat":48.3,'
   '"vat_rate":0.15,"currency":"SAR","price_list":1},'
   '"availability":{"status":"in_stock","label":"Available",'
   '"label_en":"In stock","can_order":true,"available_quantity":25}}],'

@@ -156,7 +156,12 @@ void main() {
                 'uom': 'PC',
                 'units_per_carton': null,
                 'image_url': null,
-                'price': {'unit_price_with_vat': 8.05, 'currency': 'SAR'},
+                'price': {
+                  'unit_price_with_vat': 8.05,
+                  'carton_price': 70,
+                  'carton_price_with_vat': 80.5,
+                  'currency': 'SAR',
+                },
                 'availability': {
                   'label': 'متوفر',
                   'label_en': 'In stock',
@@ -173,7 +178,7 @@ void main() {
     final product = section.items.single as HomeApiProductModel;
     expect(section.localizedTitle('en'), 'Featured Products');
     expect(product.localizedName('ar'), 'منتج');
-    expect(product.unitPriceWithVat, 8.05);
+    expect(product.cartonPrice, 70);
     expect(product.canOrder, isTrue);
   });
 }

@@ -108,21 +108,6 @@ class _GridContent extends StatelessWidget {
           ),
         ],
       ),
-      SizedBox(height: 4.h),
-      Text(
-        context.tr(
-          'products_listing.available_quantity',
-          namedArgs: {'count': product.availableQuantity?.toString() ?? '--'},
-        ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          color: const Color(0xFF259B62),
-          fontFamily: 'IBMPlexSansArabic',
-          fontSize: 10.sp,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
       SizedBox(height: 10.h),
       SizedBox(
         height: 38.h,
@@ -195,21 +180,6 @@ class _ListContent extends StatelessWidget {
                 color: const Color(0xFFFF5151),
                 fontFamily: 'IBMPlexSansArabic',
                 fontSize: 11.sp,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              context.tr(
-                'products_listing.available_quantity',
-                namedArgs: {
-                  'count': product.availableQuantity?.toString() ?? '--',
-                },
-              ),
-              style: TextStyle(
-                color: const Color(0xFF259B62),
-                fontFamily: 'IBMPlexSansArabic',
-                fontSize: 10.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
