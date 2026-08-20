@@ -31,7 +31,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         if (state is VerificationCodeAccepted) {
           Navigator.of(
             context,
-          ).pushNamedAndRemoveUntil(Routes.home, (route) => false);
+          ).pushNamedAndRemoveUntil(Routes.profile, (route) => false);
         } else if (state is VerificationRequestFailure) {
           AppConstant.toast(_message(context, state.message), false, context);
         } else if (state is VerificationResent) {

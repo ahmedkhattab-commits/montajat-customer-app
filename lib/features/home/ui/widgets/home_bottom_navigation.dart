@@ -10,11 +10,11 @@ class HomeBottomNavigation extends StatelessWidget {
   final int currentIndex;
 
   static const _items = [
-    _NavigationItem('home.navigation.home', Icons.home_rounded),
+    _NavigationItem('home.navigation.more', Icons.person_rounded),
     _NavigationItem('home.navigation.categories', Icons.grid_view_rounded),
     _NavigationItem('home.navigation.cart', Icons.shopping_cart_rounded),
     _NavigationItem('home.navigation.orders', Icons.receipt_long_rounded),
-    _NavigationItem('home.navigation.more', Icons.more_horiz_rounded),
+    _NavigationItem('home.navigation.home', Icons.home_rounded),
   ];
 
   @override
@@ -56,11 +56,11 @@ class HomeBottomNavigation extends StatelessWidget {
     if (index == currentIndex) return;
 
     final route = switch (index) {
-      0 => Routes.home,
+      0 => Routes.profile,
       1 => Routes.categories,
       2 => Routes.cart,
       3 => Routes.orders,
-      4 => Routes.profile,
+      4 => Routes.home,
       _ => null,
     };
 

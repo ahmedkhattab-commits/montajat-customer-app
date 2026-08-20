@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
           } else if (state case SplashCompleted(shouldOpenHome: true)) {
             Navigator.of(
               context,
-            ).pushNamedAndRemoveUntil(Routes.home, (_) => false);
+            ).pushNamedAndRemoveUntil(Routes.profile, (_) => false);
           }
         },
         child: BlocBuilder<SplashCubit, SplashState>(

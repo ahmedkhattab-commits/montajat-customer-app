@@ -57,7 +57,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
     key: const ValueKey('profile-screen'),
     backgroundColor: const Color(0xFFF8F8F8),
-    bottomNavigationBar: const HomeBottomNavigation(currentIndex: 4),
+    bottomNavigationBar: const HomeBottomNavigation(currentIndex: 0),
     body: BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         if (state.status == ProfileLoadStatus.loading ||

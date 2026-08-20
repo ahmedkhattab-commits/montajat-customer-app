@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: const HomeBottomNavigation(currentIndex: 0),
+      bottomNavigationBar: const HomeBottomNavigation(currentIndex: 4),
       body: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) => RefreshIndicator(
           color: const Color(0xFF4F86C6),
