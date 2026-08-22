@@ -332,10 +332,14 @@ class _ProductCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           key: ValueKey('home-product-${product.itemCode}-$index'),
-          onTap: () => Navigator.of(context).pushNamed(
-            Routes.productDetails,
-            arguments: ProductDetailsArguments(itemCode: product.itemCode),
-          ),
+          onTap: product.itemCode.isEmpty
+              ? null
+              : () => Navigator.of(context).pushNamed(
+                  Routes.productDetails,
+                  arguments: ProductDetailsArguments(
+                    itemCode: product.itemCode,
+                  ),
+                ),
           child: Padding(
             padding: EdgeInsets.all(7.w),
             child: Column(
@@ -379,7 +383,10 @@ class _ProductCard extends StatelessWidget {
                 ),
                 SizedBox(height: 3.h),
                 Text(
-                  '${product.cartonPrice.toStringAsFixed(2)} ${product.currency}',
+                  product.cartonPrice == null
+                      ? ''
+                      : '${product.cartonPrice!.toStringAsFixed(2)} ${product.currency}'
+                            .trim(),
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     fontFamily: 'IBMPlexSansArabic',
@@ -393,7 +400,7 @@ class _ProductCard extends StatelessWidget {
                   height: 40.h,
                   child: AddToCartButton(
                     itemCode: product.itemCode,
-                    enabled: product.canOrder,
+                    enabled: product.canOrder && product.itemCode.isNotEmpty,
                   ),
                 ),
               ],
@@ -413,6 +420,12 @@ class _NetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (imageUrl.trim().isEmpty) {
+      return const ColoredBox(
+        color: Color(0xFFF7F7F7),
+        child: Icon(Icons.image_not_supported_outlined),
+      );
+    }
     return CachedNetworkImage(
       imageUrl: imageUrl,
       fit: fit,

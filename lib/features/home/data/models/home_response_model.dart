@@ -265,9 +265,9 @@ class HomeBannerModel extends HomeSectionItemModel {
 
   factory HomeBannerModel.fromJson(Map<String, dynamic> json) =>
       HomeBannerModel(
-        id: _requiredInt(json['id'], 'banner.id'),
-        title: _requiredString(json['title'], 'banner.title'),
-        imageUrl: _requiredString(json['image_url'], 'banner.image_url'),
+        id: _intOrZero(json['id'], 'banner.id'),
+        title: _stringOrEmpty(json['title'], 'banner.title'),
+        imageUrl: _stringOrEmpty(json['image_url'], 'banner.image_url'),
       );
 }
 
@@ -279,8 +279,8 @@ class HomeCategoryModel extends HomeSectionItemModel {
 
   factory HomeCategoryModel.fromJson(Map<String, dynamic> json) =>
       HomeCategoryModel(
-        value: _requiredString(json['value'], 'category.value'),
-        productCount: _requiredInt(
+        value: _stringOrEmpty(json['value'], 'category.value'),
+        productCount: _intOrZero(
           json['product_count'],
           'category.product_count',
         ),
@@ -301,10 +301,10 @@ class HomeBrandModel extends HomeSectionItemModel {
   final int productCount;
 
   factory HomeBrandModel.fromJson(Map<String, dynamic> json) => HomeBrandModel(
-    code: _requiredString(json['code'], 'brand.code'),
-    name: _requiredString(json['name'], 'brand.name'),
-    imageUrl: _requiredString(json['image_url'], 'brand.image_url'),
-    productCount: _requiredInt(json['product_count'], 'brand.product_count'),
+    code: _stringOrEmpty(json['code'], 'brand.code'),
+    name: _stringOrEmpty(json['name'], 'brand.name'),
+    imageUrl: _stringOrEmpty(json['image_url'], 'brand.image_url'),
+    productCount: _intOrZero(json['product_count'], 'brand.product_count'),
   );
 }
 
@@ -330,7 +330,7 @@ class HomeApiProductModel extends HomeSectionItemModel {
   final String uom;
   final num? unitsPerCarton;
   final String? imageUrl;
-  final num cartonPrice;
+  final num? cartonPrice;
   final String currency;
   final String availabilityLabel;
   final String availabilityLabelEn;
@@ -346,35 +346,35 @@ class HomeApiProductModel extends HomeSectionItemModel {
       : availabilityLabel;
 
   factory HomeApiProductModel.fromJson(Map<String, dynamic> json) {
-    final price = _requiredMap(json['price'], 'product.price');
-    final availability = _requiredMap(
+    final price = _mapOrEmpty(json['price'], 'product.price');
+    final availability = _mapOrEmpty(
       json['availability'],
       'product.availability',
     );
     return HomeApiProductModel(
-      itemCode: _requiredString(json['item_code'], 'product.item_code'),
-      name: _requiredString(json['name'], 'product.name'),
-      nameEn: _requiredString(json['name_en'], 'product.name_en'),
-      uom: _requiredString(json['uom'], 'product.uom'),
+      itemCode: _stringOrEmpty(json['item_code'], 'product.item_code'),
+      name: _stringOrEmpty(json['name'], 'product.name'),
+      nameEn: _stringOrEmpty(json['name_en'], 'product.name_en'),
+      uom: _stringOrEmpty(json['uom'], 'product.uom'),
       unitsPerCarton: _optionalNum(
         json['units_per_carton'],
         'product.units_per_carton',
       ),
       imageUrl: _optionalString(json['image_url'], 'product.image_url'),
-      cartonPrice: _requiredNum(
+      cartonPrice: _optionalNum(
         price['carton_price'],
         'product.price.carton_price',
       ),
-      currency: _requiredString(price['currency'], 'product.price.currency'),
-      availabilityLabel: _requiredString(
+      currency: _stringOrEmpty(price['currency'], 'product.price.currency'),
+      availabilityLabel: _stringOrEmpty(
         availability['label'],
         'product.availability.label',
       ),
-      availabilityLabelEn: _requiredString(
+      availabilityLabelEn: _stringOrEmpty(
         availability['label_en'],
         'product.availability.label_en',
       ),
-      canOrder: _requiredBool(
+      canOrder: _boolOrFalse(
         availability['can_order'],
         'product.availability.can_order',
       ),
@@ -407,6 +407,11 @@ Map<String, dynamic> _requiredMap(Object? value, String field) {
   throw FormatException('$field must be an object');
 }
 
+Map<String, dynamic> _mapOrEmpty(Object? value, String field) {
+  if (value == null) return const {};
+  return _requiredMap(value, field);
+}
+
 List<Object?> _requiredList(Object? value, String field) {
   if (value is List) return value.cast<Object?>();
   throw FormatException('$field must be an array');
@@ -416,6 +421,11 @@ String _requiredString(Object? value, String field) {
   if (value is String && value.isNotEmpty) return value;
   if (value is num) return value.toString();
   throw FormatException('$field must be a non-empty string');
+}
+
+String _stringOrEmpty(Object? value, String field) {
+  if (value == null) return '';
+  return _requiredString(value, field);
 }
 
 String? _optionalString(Object? value, String field) {
@@ -440,7 +450,17 @@ int _requiredInt(Object? value, String field) {
   throw FormatException('$field must be an integer');
 }
 
+int _intOrZero(Object? value, String field) {
+  if (value == null) return 0;
+  return _requiredInt(value, field);
+}
+
 bool _requiredBool(Object? value, String field) {
   if (value is bool) return value;
   throw FormatException('$field must be a boolean');
+}
+
+bool _boolOrFalse(Object? value, String field) {
+  if (value == null) return false;
+  return _requiredBool(value, field);
 }

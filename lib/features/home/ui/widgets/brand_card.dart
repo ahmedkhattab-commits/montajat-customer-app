@@ -43,18 +43,27 @@ class BrandCard extends StatelessWidget {
             ),
           ],
         ),
-        child: CachedNetworkImage(
-          imageUrl: brand.imageUrl,
-          fit: BoxFit.contain,
-          placeholder: (_, _) => const ColoredBox(color: Color(0xFFF7F7F7)),
-          errorWidget: (_, _, _) => Text(
-            brand.name,
-            maxLines: 2,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 11.sp),
-          ),
-        ),
+        child: brand.imageUrl.trim().isEmpty
+            ? Text(
+                brand.name,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 11.sp),
+              )
+            : CachedNetworkImage(
+                imageUrl: brand.imageUrl,
+                fit: BoxFit.contain,
+                placeholder: (_, _) =>
+                    const ColoredBox(color: Color(0xFFF7F7F7)),
+                errorWidget: (_, _, _) => Text(
+                  brand.name,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 11.sp),
+                ),
+              ),
       ),
     );
   }

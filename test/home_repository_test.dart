@@ -48,6 +48,24 @@ void main() {
     );
   });
 
+  test('keeps home available when optional sections fail', () async {
+    final repository = RemoteHomeRepository(
+      _FakeApiConsumer(
+        homeResponse: http.Response(
+          '{"success":true,"data":{"sections":[]}}',
+          200,
+        ),
+        offersResponse: http.Response('{"success":false}', 500),
+        bannersResponse: http.Response('not-json', 500),
+      ),
+    );
+
+    final result = await repository.getHome();
+
+    expect(result.sections, isEmpty);
+    expect(result.expiryOffers, isEmpty);
+  });
+
   test('loads expiry offers for the offers section', () async {
     final repository = RemoteHomeRepository(
       _FakeApiConsumer(
@@ -180,6 +198,68 @@ void main() {
     expect(product.localizedName('ar'), 'منتج');
     expect(product.cartonPrice, 70);
     expect(product.canOrder, isTrue);
+  });
+
+  test('maps nullable home values to empty display values', () {
+    final response = HomeResponseModel.fromJson({
+      'success': true,
+      'data': {
+        'sections': [
+          {
+            'key': 'new_products',
+            'type': 'new_products',
+            'title': null,
+            'title_en': null,
+            'items': [
+              {
+                'item_code': null,
+                'name': null,
+                'name_en': null,
+                'uom': null,
+                'units_per_carton': null,
+                'image_url': null,
+                'price': null,
+                'availability': null,
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    final product =
+        response.sections.single.items.single as HomeApiProductModel;
+    expect(product.itemCode, isEmpty);
+    expect(product.localizedName('ar'), isEmpty);
+    expect(product.cartonPrice, isNull);
+    expect(product.currency, isEmpty);
+    expect(product.localizedAvailability('ar'), isEmpty);
+    expect(product.canOrder, isFalse);
+
+    final banner = HomeBannerModel.fromJson({
+      'id': null,
+      'title': null,
+      'image_url': null,
+    });
+    final category = HomeCategoryModel.fromJson({
+      'value': null,
+      'product_count': null,
+    });
+    final brand = HomeBrandModel.fromJson({
+      'code': null,
+      'name': null,
+      'image_url': null,
+      'product_count': null,
+    });
+    expect(banner.id, 0);
+    expect(banner.title, isEmpty);
+    expect(banner.imageUrl, isEmpty);
+    expect(category.value, isEmpty);
+    expect(category.productCount, 0);
+    expect(brand.code, isEmpty);
+    expect(brand.name, isEmpty);
+    expect(brand.imageUrl, isEmpty);
+    expect(brand.productCount, 0);
   });
 }
 

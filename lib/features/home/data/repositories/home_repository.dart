@@ -18,38 +18,57 @@ class RemoteHomeRepository implements HomeRepository {
   @override
   Future<HomeResponseModel> getHome() async {
     try {
-      final responses = await Future.wait([
-        _apiConsumer.get(EndPoints.home, null),
-        _apiConsumer.get(EndPoints.expiryOffers, null),
-        _apiConsumer.get(EndPoints.banners, null),
-      ]).timeout(const Duration(seconds: 20));
-      final homeResponse = responses[0];
-      final offersResponse = responses[1];
-      final bannersResponse = responses[2];
+      final homeResponse = await _apiConsumer
+          .get(EndPoints.home, null)
+          .timeout(const Duration(seconds: 20));
       final homeJson = _decode(homeResponse.body);
-      final offersJson = _decode(offersResponse.body);
-      final bannersJson = _decode(bannersResponse.body);
 
       if (!_isSuccessful(homeResponse, homeJson)) {
         throw HomeException(_errorKey(homeResponse.statusCode));
       }
-      if (!_isSuccessful(offersResponse, offersJson)) {
-        throw HomeException(_errorKey(offersResponse.statusCode));
-      }
-      if (!_isSuccessful(bannersResponse, bannersJson)) {
-        throw HomeException(_errorKey(bannersResponse.statusCode));
-      }
 
-      final home = HomeResponseModel.fromJson(homeJson);
-      final offers = HomeResponseModel.expiryOffersFromJson(offersJson);
-      final banners = HomeResponseModel.bannersFromJson(bannersJson);
-      return home.withBanners(banners).withExpiryOffers(offers);
+      var home = HomeResponseModel.fromJson(homeJson);
+      final optionalSections = await Future.wait([
+        _loadExpiryOffers(),
+        _loadBanners(),
+      ]);
+      final offers = optionalSections[0] as List<HomeExpiryOfferModel>?;
+      final banners = optionalSections[1] as List<HomeBannerModel>?;
+      if (banners != null) home = home.withBanners(banners);
+      if (offers != null) home = home.withExpiryOffers(offers);
+      return home;
     } on TimeoutException {
       throw const HomeException('auth_errors.timeout');
     } on http.ClientException {
       throw const HomeException('auth_errors.network');
     } on FormatException {
       throw const HomeException('auth_errors.invalid_response');
+    }
+  }
+
+  Future<List<HomeExpiryOfferModel>?> _loadExpiryOffers() async {
+    try {
+      final response = await _apiConsumer
+          .get(EndPoints.expiryOffers, null)
+          .timeout(const Duration(seconds: 20));
+      final json = _decode(response.body);
+      if (!_isSuccessful(response, json)) return null;
+      return HomeResponseModel.expiryOffersFromJson(json);
+    } on Object {
+      return null;
+    }
+  }
+
+  Future<List<HomeBannerModel>?> _loadBanners() async {
+    try {
+      final response = await _apiConsumer
+          .get(EndPoints.banners, null)
+          .timeout(const Duration(seconds: 20));
+      final json = _decode(response.body);
+      if (!_isSuccessful(response, json)) return null;
+      return HomeResponseModel.bannersFromJson(json);
+    } on Object {
+      return null;
     }
   }
 
